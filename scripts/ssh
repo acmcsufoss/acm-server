@@ -10,7 +10,7 @@ main() {
 
 	publicIP=$(jq -r --arg name $name \
 		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[0].attributes.public_ip // empty' \
-		./terraform.tfstate)
+		./secrets/terraform.tfstate)
 	if [[ $publicIP == "" ]]; then
 		echo "Instance $name not found"
 		exit 1

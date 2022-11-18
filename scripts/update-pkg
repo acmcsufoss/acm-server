@@ -18,8 +18,21 @@ main() {
 		fi
 	fi
 
+	if [[ -d results ]]; then
+		rm -r results
+	fi
+	mkdir -p results
+	touch results/commit
+
 	niv update "$package" "${nivFlags[@]}"
-	( cd packages && nix-update --version=skip "$package" )
+
+	(
+		cd packages
+		nix-update \
+			--write-commit-message results/commit \
+			--version=skip \
+			"$package"
+	)
 }
 
 main "$@"
