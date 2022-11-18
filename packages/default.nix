@@ -2,4 +2,5 @@
 
 {
 	acmregister = pkgs.callPackage ./acmregister.nix { };
+	caddy = pkgs.callPackage ./caddy { };
 }
