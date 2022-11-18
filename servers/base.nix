@@ -1,0 +1,41 @@
+{ config, pkgs, lib, ... }:
+
+let sources = import ../nix/sources.nix;
+
+in {
+	imports = [
+		<nixpkgs/nixos/modules/virtualisation/amazon-image.nix>
+		../packages/imports.nix
+	];
+
+	nixpkgs.overlays = [
+		(self: super: import ../packages { pkgs = super; })
+	];
+
+	services.journald = {
+		enableHttpGateway = false;
+		extraConfig = ''
+			Compress=true
+			SystemMaxUse=50M
+			SystemMaxFileSize=1M
+			RuntimeMaxUse=1M
+			MaxRetentionSec=6month
+		'';
+	};
+
+	nix.settings.auto-optimise-store = true;
+
+	documentation.enable = false;
+	documentation.nixos.enable = false;
+
+	programs.command-not-found.enable = false;
+
+	xdg.autostart.enable = false;
+	xdg.icons.enable = false;
+	xdg.mime.enable = false;
+	xdg.sounds.enable = false;
+
+	# Use Terraform's AWS rules for this.
+	networking.firewall.enable = false;
+	networking.nat.enable = false;
+}
