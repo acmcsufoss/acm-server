@@ -1,0 +1,26 @@
+{
+    "acmregister": {
+        "branch": "main",
+        "description": "ACM register bot",
+        "homepage": null,
+        "owner": "diamondburned",
+        "repo": "acmregister",
+        "rev": "1fc9bd3cd79c6a6074551b1e740ed7b0afb46d8a",
+        "sha256": "0zy672w4pg11np6rblqkj6pj1safiiwdf9x4q8bwi6x72r6h52p1",
+        "type": "tarball",
+        "url": "https://github.com/diamondburned/acmregister/archive/1fc9bd3cd79c6a6074551b1e740ed7b0afb46d8a.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "nixpkgs": {
+        "branch": "release-21.05",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "5f244caea76105b63d826911b2a1563d33ff1cdc",
+        "sha256": "1xlgynfw9svy7nvh9nkxsxdzncv9hg99gbvbwv3gmrhmzc3sar75",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/5f244caea76105b63d826911b2a1563d33ff1cdc.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    }
+}

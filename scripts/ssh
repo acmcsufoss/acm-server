@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+
+main() {
+	name="$1"
+	if [[ $name == "" ]]; then
+		echo "Usage: ./scripts/ssh <instance-name>"
+		exit 1
+	fi
+
+	publicIP=$(jq -r --arg name $name \
+		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[0].attributes.public_ip // empty' \
+		./terraform.tfstate)
+	if [[ $publicIP == "" ]]; then
+		echo "Instance $name not found"
+		exit 1
+	fi
+
+	ssh -o 'IdentitiesOnly=yes' -i ./secrets/ssh/id_ed25519 "root@${publicIP}"
+}
+
+main "$@"
