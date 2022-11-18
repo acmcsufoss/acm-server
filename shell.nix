@@ -13,6 +13,7 @@ pkgs.mkShell {
 		niv
 		git
 		git-crypt
+		yamllint
 	];
 
 	shellHook = ''
