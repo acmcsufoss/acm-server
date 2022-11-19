@@ -22,6 +22,8 @@ locals {
 
 provider "aws" {
 	profile = "acm"
+	region = "us-west-2"
+	shared_credentials_files = [ "./secrets/aws/credentials" ]
 }
 
 resource "aws_key_pair" "secrets_ssh" {
