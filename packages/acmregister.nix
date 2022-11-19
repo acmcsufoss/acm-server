@@ -1,6 +1,6 @@
-{ buildGoModule, fetchFromGitHub, lib }:
+{ buildGo119Module, fetchFromGitHub, lib }:
 
-buildGoModule {
+buildGo119Module {
 	pname = "acmregister";
 	version = "d85e4b1";
 	src = (import ../nix/sources.nix).acmregister;
