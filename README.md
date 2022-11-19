@@ -24,6 +24,22 @@ Similarly to Terraform, Nix's input files will help us manage the servers in a
 more automatic fashion by allowing us to declare what we want on the servers and
 have everything else handled automatically.
 
+## Project Structure
+
+acm-aws has several root directories:
+
+- nix/ contains internal Nix files, such as the sources for some of our
+  packages.
+- packages/ contains our own Nix package files.
+- scripts/ contains utility scripts. See the "Quick Tasks" section.
+- secrets/ contains deployment secrets such as tokens. This should never be
+  pushed decrypted.
+- servers/ contains all the files that define servers.
+	- servers/base.nix is the base Nix server declaration.
+	- servers/cirno/* contains the files for just the `cirno` server.
+- main.tf declares the root Terraform module. Applying this file will deploy all
+  of our servers.
+
 ## Setting Up
 
 You need Terraform, Nix and git-crypt to develop and deploy. It's most
