@@ -1,0 +1,37 @@
+name: Deploy to Terraform
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Nix packages
+        uses: rikhuijzer/cache-install@v1.0.9
+        with:
+          key: nix-${{ hashFiles('nix/**') }}
+          nix_file: "nix/action_pkgs.nix"
+
+      - name: Decrypt git-crypt secrets
+        run: git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+
+      - name: Initialize Terraform
+        run: |-
+          chmod 640 secrets/terraform.tfstate*
+          terraform init
+
+      - name: Apply Terraform configurations
+        run: |-
+          terraform apply --auto-approve
+
+      - name: Commit changes, if any
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Update deployment using GitHub Actions"
+          branch: ${{ github.ref }}
