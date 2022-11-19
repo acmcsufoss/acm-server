@@ -23,7 +23,7 @@
 	systemd.services.acmregister = {
 		enable = true;
 		description = "ACM member registration Discord bot";
-		after = [ "network.target" ];
+		after = [ "network-online.target" ];
 		wantedBy = [ "multi-user.target" ];
 		environment = import ./secrets/acmregister-env.nix;
 		serviceConfig = {
@@ -31,4 +31,6 @@
 			ExecStart = "${pkgs.acmregister}/bin/acmregister";
 		};
 	};
+
+	environment.systemPackages = with pkgs; [];
 }

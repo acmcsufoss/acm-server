@@ -37,5 +37,4 @@ in {
 
 	# Use Terraform's AWS rules for this.
 	networking.firewall.enable = false;
-	networking.nat.enable = false;
 }
