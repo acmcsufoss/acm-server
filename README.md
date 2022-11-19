@@ -3,6 +3,27 @@
 acm-aws contains the Terraform deployment files for acmCSUF. It uses Terraform
 and Nix to orchestrate cloud servers.
 
+## What is?
+
+### Terraform
+
+Terraform is a tool that allows us to declare infrastructure as code (IaC). In
+other words, it allows us to declare what we want cloud providers (e.g. AWS) to
+do for us in code without having to touch buttons.
+
+The entire process of orchestrating cloud servers is automated using this tool,
+and any changes are done on these version-controlled text files, not any UI.
+
+### Nix
+
+Nix (used here) is a declarative package manager. Unlike any traditional package
+manager, Nix is used as a programming language capable of reproducing package
+builds in a sane manner with everything written in files.
+
+Similarly to Terraform, Nix's input files will help us manage the servers in a
+more automatic fashion by allowing us to declare what we want on the servers and
+have everything else handled automatically.
+
 ## Setting Up
 
 You need Terraform, Nix and git-crypt to develop and deploy. It's most
