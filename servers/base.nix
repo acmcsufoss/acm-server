@@ -4,12 +4,8 @@ let sources = import ../nix/sources.nix;
 
 in {
 	imports = [
-		<nixpkgs/nixos/modules/virtualisation/amazon-image.nix>
+		"${sources.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
 		../packages/imports.nix
-	];
-
-	nixpkgs.overlays = [
-		(self: super: import ../packages { pkgs = super; })
 	];
 
 	services.journald = {
