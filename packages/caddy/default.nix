@@ -1,6 +1,6 @@
 { stdenv, lib,
   runCommand, writeText,
-  buildGo118Module, go, modSha256 ? "",
+  buildGo119Module, go, modSha256 ? "",
   version ? "v2.4.3",
   plugins ? [] }:
 
@@ -36,7 +36,7 @@ ${imports}
 		"sha256:1b604qbr15vianpmwjdb99wni3ncaa9mgbykijd4nnn254g9gy35"
 	);
 
-in buildGo118Module rec {
+in buildGo119Module rec {
 	name = "caddy";
 	inherit version vendorSha256;
 
