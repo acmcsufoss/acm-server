@@ -33,4 +33,8 @@ in {
 
 	# Use Terraform's AWS rules for this.
 	networking.firewall.enable = false;
+
+	environment.systemPackages = with pkgs; [
+		htop
+	];
 }
