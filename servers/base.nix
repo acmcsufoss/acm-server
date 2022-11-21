@@ -36,5 +36,7 @@ in {
 
 	environment.systemPackages = with pkgs; [
 		htop
+		wget
+		git
 	];
 }
