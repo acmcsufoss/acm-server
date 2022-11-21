@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+main() {
+	for arg in "$@"; do
+		case "$arg" in
+		--one-line)
+			oneline=1
+			;;
+		--json)
+			json=1
+			;;
+		*)
+			echo "Unknown argument: $arg"
+			exit 1
+		esac
+	done
+
+	stdin="$(cat)"
+
+	while read -r line; do
+		printf "::add-mask::%s\n" "$line"
+	done <<< "$stdin"
+
+	if [[ "$json" == 1 ]]; then
+		json=$(jq --null-input --arg stdin "$stdin" '$stdin')
+		json=${json:1:-1}
+		printf "::add-mask::%s\n" "$json"
+	fi
+
+	if [[ "$oneline" == 1 ]]; then
+		oneline="${stdin//$'\n'/\\n}"
+		printf "::add-mask::%s\n" "$oneline"
+	fi
+}
+
+main "$@"

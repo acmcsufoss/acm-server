@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+main() {
+	file="$1"
+	if [[ "$file" == "" ]]; then
+		echo "Usage: $0 <file>" >&2
+		exit 1
+	fi
+
+	./scripts/github/mask-lines --one-line --json < "$file"
+}
+
+main "$@"
