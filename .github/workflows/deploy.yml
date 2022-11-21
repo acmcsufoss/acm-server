@@ -19,9 +19,7 @@ jobs:
 
       - name: Decrypt git-crypt secrets
         id: git-crypt
-        run: |-
-          git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
-          ./scripts/github/mask-all
+        run: git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
         env:
           GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
 
