@@ -8,4 +8,5 @@ let pkgs = import ./nixpkgs.nix; in with pkgs; [
 	git-crypt
 	yamllint
 	gomod2nix
+	expect
 ]

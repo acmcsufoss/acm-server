@@ -53,7 +53,8 @@ jobs:
         id: terraform-apply
         if: ${{ steps.terraform-plan.outputs.status == 2 }}
         run: |-
-          terraform apply --auto-approve "/tmp/acm-aws-plan"
+          unbuffer terraform apply --auto-approve "/tmp/acm-aws-plan" \
+            |& grep -v '^module.[a-zA-Z0-9]*.module.deployment.null_resource.deploy_nixos (\(local\|remote\)-exec)'
 
       - name: Commit changes, if any
         id: git-commit
