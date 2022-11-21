@@ -1,4 +1,16 @@
 {
+    "acm-nixie": {
+        "branch": "main",
+        "description": "acmCSUF's version of the nixie bot.",
+        "homepage": null,
+        "owner": "diamondburned",
+        "repo": "acm-nixie",
+        "rev": "ab0d66c30e38b0adf55cf778f11550bdf9305b3a",
+        "sha256": "08sikxpm3n86nilkvvl2144ym1w7hqg0dkz7aj9lmc8ypgxxdv1h",
+        "type": "tarball",
+        "url": "https://github.com/diamondburned/acm-nixie/archive/ab0d66c30e38b0adf55cf778f11550bdf9305b3a.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "acmregister": {
         "branch": "main",
         "description": "ACM register bot",
