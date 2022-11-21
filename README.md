@@ -1,5 +1,7 @@
 # acm-aws
 
+![Deployment status badge](https://github.com/diamondburned/acm-aws/actions/workflows/deploy.yml/badge.svg?branch=main)
+
 acm-aws contains the Terraform deployment files for acmCSUF. It uses Terraform
 and Nix to orchestrate cloud servers.
 
