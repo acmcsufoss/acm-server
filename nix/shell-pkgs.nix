@@ -1,4 +1,4 @@
-pkgs: with pkgs; [
+let pkgs = import ./nixpkgs.nix; in with pkgs; [
 	terraform
 	awscli2
 	nix_2_3
@@ -7,4 +7,5 @@ pkgs: with pkgs; [
 	git
 	git-crypt
 	yamllint
+	gomod2nix
 ]

@@ -40,35 +40,16 @@ in {
 			'';
 		};
 
-		plugins = mkOption {
-			default = [];
-			type = types.listOf types.str;
-			example = [
-				"github.com/tarent/loginsrv/caddy"
-			];
-			description = "List of plugins to use";
-		};
-
-		version = mkOption {
-			default = "v2.4.3";
-			type = types.str;
-			description = "The Caddy version to use";
-		};
-
-		modSha256 = mkOption {
-			default = "";
-			type = types.str;
-			description = "Only fill this if custom plugins are added";
+		environment = mkOption {
+			default = {};
+			type = types.attrsOf types.str;
+			description = "Environment variables to pass to the service";
 		};
 
 		openFirewall = mkEnableOption "Port-forward 80 and 443";
 
 		package = mkOption {
-			default = (pkgs.callPackage ./default.nix {
-				plugins   = cfg.plugins;
-				version   = cfg.version;
-				modSha256 = cfg.modSha256;
-			});
+			default = pkgs.callPackage ./default.nix {};
 			type = types.package;
 			description = "Caddy package to use.";
 		};
@@ -87,6 +68,7 @@ in {
 			after    = [ "network-online.target" ];
 			wantedBy = [ "multi-user.target"     ];
 			reloadIfChanged = true;
+			environment = cfg.environment;
 			serviceConfig = {
 				ExecStart = ''
 					${cfg.package}/bin/caddy run \
@@ -107,6 +89,7 @@ in {
 				AmbientCapabilities   = [ "cap_net_bind_service" "cap_net_raw" ];
 				CapabilityBoundingSet = [ "cap_net_bind_service" "cap_net_raw" ];
 				NoNewPrivileges = true;
+				StateDirectory = "caddy";
 				LimitNPROC  = 8192;
 				LimitNOFILE = 1048576;
 				PrivateTmp    = false;

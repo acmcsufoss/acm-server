@@ -23,6 +23,18 @@
         "url": "https://github.com/diamondburned/acmregister/archive/1fc9bd3cd79c6a6074551b1e740ed7b0afb46d8a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "gomod2nix": {
+        "branch": "master",
+        "description": "Convert applications using Go modules to Nix expressions [maintainer=@adisbladis]",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "gomod2nix",
+        "rev": "89cd0675b96775aa3ee86e7c0cf5bc238dd27976",
+        "sha256": "1x7w9ibp9nxzsaqg9lm6sav0438rwdh76r9pi40hikzn4nl9w4p0",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/gomod2nix/archive/89cd0675b96775aa3ee86e7c0cf5bc238dd27976.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "nixpkgs": {
         "branch": "nixos-unstable",
         "description": "Nix Packages collection",

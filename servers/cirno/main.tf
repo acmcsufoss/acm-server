@@ -58,7 +58,7 @@ resource "aws_instance" "cirno" {
 }
 
 module "deployment" {
-	source = "git::https://github.com/diamondburned/terraform-nixos.git//deploy_nixos?ref=d30b1494ec70dbb89c192ea977e81b08f9c95b1d"
+	source = "git::https://github.com/diamondburned/terraform-nixos.git//deploy_nixos?ref=9d26ace355b2ed7d64a253b11ab12395a1395030"
 	nixos_config = "${path.module}"
 	target_host = aws_instance.cirno.public_ip
 	ssh_private_key_file = var.ssh_private_key_file

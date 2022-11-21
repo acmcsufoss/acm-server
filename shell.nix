@@ -1,10 +1,6 @@
-{
-	pkgs ? import <nixpkgs> {
-		overlays = [
-		];
-	}
-}:
+{ pkgs ? import <nixpkgs> {} }:
 
 pkgs.mkShell {
-	buildInputs = (import ./nix/dev_pkgs.nix pkgs) ++ (with pkgs; []);
+	name = "acm-aws-shell";
+	buildInputs = import ./nix/shell-pkgs.nix;
 }
