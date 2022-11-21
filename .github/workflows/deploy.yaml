@@ -11,26 +11,51 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Nix packages
+        id: nix-install
         uses: rikhuijzer/cache-install@v1.0.9
         with:
           key: nix-${{ hashFiles('nix/**') }}
           nix_file: "nix/action_pkgs.nix"
 
       - name: Decrypt git-crypt secrets
+        id: git-crypt
         run: git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
         env:
           GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
 
       - name: Initialize Terraform
+        id: terraform-init
         run: |-
           chmod 640 secrets/terraform.tfstate*
           terraform init
 
-      - name: Apply Terraform configurations
+      - name: Calculate a Terraform deployment plan
+        id: terraform-plan
         run: |-
-          terraform apply --auto-approve
+          set +e
+          terraform plan --detailed-exitcode --out="/tmp/acm-aws-plan"
+          status=$?
+          set -e
+
+          if [[ $status == 1 ]]; then
+            echo "::error::Terraform plan failed, exiting..."
+            exit 1
+          fi
+
+          # 0 - Succeeded, diff is empty (no changes)
+          # 1 - Errored
+          # 2 - Succeeded, there is a diff
+          echo "status=$status" >> $GITHUB_OUTPUT
+
+      - name: Apply Terraform configurations
+        id: terraform-apply
+        if: ${{ steps.terraform-plan.outputs.status == 2 }}
+        run: |-
+          terraform apply --auto-approve "/tmp/acm-aws-plan"
 
       - name: Commit changes, if any
+        id: git-commit
+        if: ${{ steps.terraform-plan.outputs.status == 2 }}
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update deployment using GitHub Actions"
