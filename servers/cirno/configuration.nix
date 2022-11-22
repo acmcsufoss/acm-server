@@ -8,6 +8,7 @@
 	services.diamondburned.caddy = {
 		enable = true;
 		config = builtins.readFile ./secrets/Caddyfile;
+		environment = import ./secrets/caddy-env.nix;
 	};
 
 	systemd.services.acmregister = {
