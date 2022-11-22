@@ -47,5 +47,17 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/52b2ac8ae18bbad4374ff0dd5aeee0fdf1aea739.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": "nixos-unstable"
+    },
+    "sysmet": {
+        "branch": "v2",
+        "description": "Daemonless server metrics collector and frontend.",
+        "homepage": "https://unix.lgbt/~diamond/sysmet/",
+        "owner": "diamondburned",
+        "repo": "sysmet",
+        "rev": "bd087d2af04fc097a13827b1d52f1e2fd64e1501",
+        "sha256": "136khdyglf2568c3gzzy9q1l8xcn87w8x1yprj764p3azpkg2p5m",
+        "type": "tarball",
+        "url": "https://github.com/diamondburned/sysmet/archive/bd087d2af04fc097a13827b1d52f1e2fd64e1501.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

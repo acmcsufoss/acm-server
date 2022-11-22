@@ -11,6 +11,22 @@
 		environment = import ./secrets/caddy-env.nix;
 	};
 
+	services.diamondburned.sysmet = {
+		http = {
+			enable = true;
+			address = "127.0.0.1:40001";
+		};
+		update = {
+			enable = true;
+			onCalendar = "minutely";
+		};
+		delete = {
+			enable = true;
+			maxDays = 30;
+			onCalendar = "weekly";
+		};
+	};
+
 	systemd.services.acmregister = {
 		enable = true;
 		description = "ACM member registration Discord bot";
@@ -36,6 +52,15 @@
 			StateDirectory = "acm-nixie";
 			ReadWritePaths = [ "/var/lib/acm-nixie" ];
 		};
+	};
+
+	services.fcron = {
+		enable = true;
+		maxSerialJobs = 4;
+		systab = ''
+			# Run every 5 minutes
+			* * * * * ${pkgs.sysmet}/bin/sysmet --cron
+		'';
 	};
 
 	environment.systemPackages = with pkgs; [];
