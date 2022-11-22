@@ -212,8 +212,9 @@ schema = 3
     version = "v0.0.0-20211109042440-fc7440785c8e"
     hash = "sha256-fwfCHhHsLDnktt5nqaGUJi/TwZ/sOmzXd9DmPnX2M+8="
   [mod."github.com/libdns/netlify"]
-    version = "v1.0.1"
-    hash = "sha256-tVxagj3W/dgd0okfY6goPR4rAU2C5+d47Js0kNPuEzc="
+    version = "v0.0.0-20221122063218-2c8e26704c62"
+    hash = "sha256-vSrNhKzRLydUZMYf40zWPjQGnSiILETi75/oKjm/znM="
+    replaced = "github.com/diamondburned/libdns-netlify"
   [mod."github.com/lucas-clemente/quic-go"]
     version = "v0.29.2"
     hash = "sha256-jR8d+Zzd0lQd/jtTx9CHkU30jy+v1rjF9Xqnr8eAUlw="

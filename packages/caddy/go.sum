@@ -344,6 +344,8 @@ github.com/dgryski/go-farm v0.0.0-20190423205320-6a90982ecee2/go.mod h1:SqUrOPUn
 github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13 h1:fAjc9m62+UWV/WAFKLNi6ZS0675eEUC9y3AlwSbQu1Y=
 github.com/dgryski/go-farm v0.0.0-20200201041132-a6ae2369ad13/go.mod h1:SqUrOPUnsFjfmXRMNPybcSiG0BgUW2AuFH8PAnS2iTw=
 github.com/dgryski/go-sip13 v0.0.0-20181026042036-e10d5fee7954/go.mod h1:vAd38F8PWV+bWy6jNmig1y/TA+kYO4g3RSRF0IAv0no=
+github.com/diamondburned/libdns-netlify v0.0.0-20221122063218-2c8e26704c62 h1:85xI5d/80reBUF0jyhyKESrDqYZ6jyoCuhNtyfsuF7o=
+github.com/diamondburned/libdns-netlify v0.0.0-20221122063218-2c8e26704c62/go.mod h1:MUbIPYV9+/NW2ErSDWaYw3mXYJHC2eaH0HQcYAZYn9I=
 github.com/dimchansky/utfbom v1.1.0/go.mod h1:rO41eb7gLfo8SF1jd9F8HplJm1Fewwi4mQvIirEdv+8=
 github.com/dimchansky/utfbom v1.1.1/go.mod h1:SxdoEBH5qIqFocHMyGOXVAybYJdr71b1Q/j0mACtrfE=
 github.com/dlclark/regexp2 v1.1.6/go.mod h1:2pZnwuY/m+8K6iRw6wQdMtk+rH5tNGR1i55kozfMjCc=
@@ -975,8 +977,6 @@ github.com/libdns/libdns v0.2.1 h1:Wu59T7wSHRgtA0cfxC+n1c/e+O3upJGWytknkmFEDis=
 github.com/libdns/libdns v0.2.1/go.mod h1:yQCXzk1lEZmmCPa857bnk4TsOiqYasqpyOEeSObbb40=
 github.com/libdns/namecheap v0.0.0-20211109042440-fc7440785c8e h1:WCcKyxiiK/sJnST1ulVBKNg4J8luCYDdgUrp2ySMO2s=
 github.com/libdns/namecheap v0.0.0-20211109042440-fc7440785c8e/go.mod h1:dED6sMLZxIcilF1GjrcpwgVoCglXGMn86irqQzRhqRY=
-github.com/libdns/netlify v1.0.1 h1:+vX62Atk3FimnY+h01qcoJp2EF0JjZTej0qZkc0BLY0=
-github.com/libdns/netlify v1.0.1/go.mod h1:MUbIPYV9+/NW2ErSDWaYw3mXYJHC2eaH0HQcYAZYn9I=
 github.com/lightstep/lightstep-tracer-common/golang/gogo v0.0.0-20190605223551-bc2310a04743/go.mod h1:qklhhLq1aX+mtWk9cPHPzaBjWImj5ULL6C7HFJtXQMM=
 github.com/lightstep/lightstep-tracer-go v0.18.1/go.mod h1:jlF1pusYV4pidLvZ+XD0UBX0ZE6WURAspgAczcDHrL4=
 github.com/logrusorgru/aurora v0.0.0-20181002194514-a7b3b318ed4e/go.mod h1:7rIyQOR62GCctdiQpZ/zOJlFyk6y+94wXzv6RNZgaR4=
