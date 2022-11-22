@@ -28,10 +28,7 @@ main() {
 
 	(
 		cd packages
-		nix-update \
-			--write-commit-message results/commit \
-			--version=skip \
-			"$package"
+		nix-update --version=skip "$package"
 	)
 }
 

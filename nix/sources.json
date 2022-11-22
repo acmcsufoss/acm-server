@@ -49,15 +49,15 @@
         "version": "nixos-unstable"
     },
     "sysmet": {
-        "branch": "v2",
+        "branch": "v3",
         "description": "Daemonless server metrics collector and frontend.",
         "homepage": "https://unix.lgbt/~diamond/sysmet/",
         "owner": "diamondburned",
         "repo": "sysmet",
-        "rev": "bd087d2af04fc097a13827b1d52f1e2fd64e1501",
-        "sha256": "136khdyglf2568c3gzzy9q1l8xcn87w8x1yprj764p3azpkg2p5m",
+        "rev": "b79e527e6d3f24eee6432430a4b61279ec16d364",
+        "sha256": "0a4cjmsp32ka574zca3jfpxvkzfshg2c5c3xzv2qh28wya6cnrym",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/sysmet/archive/bd087d2af04fc097a13827b1d52f1e2fd64e1501.tar.gz",
+        "url": "https://github.com/diamondburned/sysmet/archive/b79e527e6d3f24eee6432430a4b61279ec16d364.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

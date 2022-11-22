@@ -18,11 +18,11 @@
 		};
 		update = {
 			enable = true;
-			onCalendar = "minutely";
+			onCalendar = "*:*:00,30"; # every 30 seconds
 		};
 		delete = {
 			enable = true;
-			maxDays = 30;
+			maxDays = 90;
 			onCalendar = "weekly";
 		};
 	};
@@ -52,15 +52,6 @@
 			StateDirectory = "acm-nixie";
 			ReadWritePaths = [ "/var/lib/acm-nixie" ];
 		};
-	};
-
-	services.fcron = {
-		enable = true;
-		maxSerialJobs = 4;
-		systab = ''
-			# Run every 5 minutes
-			* * * * * ${pkgs.sysmet}/bin/sysmet --cron
-		'';
 	};
 
 	environment.systemPackages = with pkgs; [];
