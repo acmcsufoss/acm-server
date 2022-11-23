@@ -7,7 +7,7 @@
 
 	services.diamondburned.caddy = {
 		enable = true;
-		config = builtins.readFile ./secrets/Caddyfile;
+		configFile = ./secrets/Caddyfile;
 		environment = import ./secrets/caddy-env.nix;
 	};
 

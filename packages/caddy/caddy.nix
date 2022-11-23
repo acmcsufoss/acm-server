@@ -3,15 +3,13 @@
 with lib;
 
 let cfg = config.services.diamondburned.caddy;
-	configFile = pkgs.writeText "caddyconfig" cfg.config;
 
 in {
 	options.services.diamondburned.caddy = {
 		enable = mkEnableOption "Caddy web server";
 
-		config = mkOption {
-			default = "";
-			example = ''
+		configFile = mkOption {
+			example = pkgs.writeText "Caddyfile" ''
 				example.com {
 					gzip
 					minify
@@ -20,7 +18,7 @@ in {
 					root /srv/http
 				}
 			'';
-			type = types.lines;
+			type = types.path;
 			description = "Configuration file to use with adapter";
 		};
 
@@ -73,12 +71,12 @@ in {
 				ExecStart = ''
 					${cfg.package}/bin/caddy run \
 						--environ                \
-						--config  ${configFile}  \
+						--config  ${cfg.configFile}  \
 						--adapter ${cfg.adapter} \
 				'';
 				ExecReload = ''
 					${cfg.package}/bin/caddy reload \
-						--config  ${configFile}  \
+						--config  ${cfg.configFile}  \
 						--adapter ${cfg.adapter} \
 				'';
 				TimeoutStopSec = "5s";
