@@ -1,5 +1,4 @@
 name: Deploy to Terraform
-concurrency: production
 
 on:
   push:
@@ -10,7 +9,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment: Production
+    concurrency: Production
     steps:
       - uses: actions/checkout@v3
 
