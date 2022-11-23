@@ -10,6 +10,6 @@ in {
 
 	nixpkgs.overlays = [
 		(import "${sources.gomod2nix}/overlay.nix")
-		(self: super: import ../packages { pkgs = super; })
+		(self: super: import ../packages { pkgs = self; })
 	];
 }
