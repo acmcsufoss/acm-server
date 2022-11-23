@@ -1,4 +1,4 @@
-{ lib, stdenv, makeWrapper, maven, jre }:
+{ lib, stdenv, makeWrapper, maven }:
 
 let name = "crying-counter";
 	src = (import ../../nix/sources.nix).crying-counter;
@@ -7,7 +7,7 @@ in stdenv.mkDerivation {
 	inherit name src;
 
 	buildInputs = [ maven ];
-	nativeBuildInputs = [ jre makeWrapper ];
+	nativeBuildInputs = [ makeWrapper ];
 
 	buildPhase = ''
 		mvn package -Dmaven.repo.local=$out/repository
