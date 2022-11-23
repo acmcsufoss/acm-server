@@ -3,20 +3,22 @@ set -e
 
 main() {
 	if [[ "$1" == "" ]]; then
-		echo "Usage: $0 <package> [commit]"
-		exit 1
+		usage
 	fi
 
 	local package="$1"
 	local nivFlags=()
 
-	if [[ "$2" != "" ]]; then
-		if [[ "$2" == "v"* ]]; then
-			nivFlags+=("-r" "$2")
-		else
-			nivFlags+=("-v" "$2")
-		fi
-	fi
+	case "$2" in
+	"v"*)
+		nivFlags+=("-v" "$2");;
+	[0-9a-f]*)
+		nivFlags+=("-r" "$2");;
+	"latest"|"")
+		;;
+	*)
+		usage;;
+	esac
 
 	if [[ -d results ]]; then
 		rm -r results
@@ -30,6 +32,11 @@ main() {
 		cd packages
 		nix-update --version=skip "$package"
 	)
+}
+
+usage() {
+	echo "Usage: $0 <package> [commit]" >&2
+	exit 1
 }
 
 main "$@"

@@ -1,18 +1,29 @@
-name: Deploy to Terraform
+name: Deploy with Terraform
 
 on:
   push:
     branches:
       - main
+  workflow_call:
+    secrets:
+      GIT_CRYPT_KEY:
+        required: true
   workflow_dispatch:
 
 jobs:
   deploy:
+    name: Deploy with Terraform
     runs-on: ubuntu-latest
     environment: Production
     concurrency: Production
+    outputs:
+      commit_hash: ${{ steps.git-commit.outputs.commit_hash }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Use ref_name instead of ref so we always get the branch to pull our
+          # latest commit from.
+          ref: ${{ github.ref_name }}
 
       - name: Install Nix packages
         id: nix-install
@@ -53,15 +64,15 @@ jobs:
 
       - name: Apply Terraform configurations
         id: terraform-apply
-        if: ${{ steps.terraform-plan.outputs.status == 2 }}
+        if: steps.terraform-plan.outputs.status == 2
         run: |-
           terraform apply --auto-approve "/tmp/acm-aws-plan" \
             |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
 
       - name: Commit changes, if any
         id: git-commit
-        if: ${{ steps.terraform-plan.outputs.status == 2 }}
+        if: steps.terraform-plan.outputs.status == 2
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update deployment using GitHub Actions"
-          branch: ${{ github.ref }}
+          branch: ${{ github.ref_name }}

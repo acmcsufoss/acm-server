@@ -4,18 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       package:
-        required: true
         type: string
+        required: true
       version:
         type: string
+        default: "latest"
 
 jobs:
-  deploy:
+  update:
+    name: Update ${{ inputs.package }}
     runs-on: ubuntu-latest
-    environment: Production
-    concurrency: Production
+    outputs:
+      updated: ${{ steps.update-pkg.outputs.updated }}
+      commit_hash: ${{ steps.git-commit.outputs.commit_hash }}
     steps:
       - uses: actions/checkout@v3
+        with:
+          # Use ref_name instead of ref so we always get the branch to pull our
+          # latest commit from.
+          ref: ${{ github.ref_name }}
 
       - name: Install Nix packages
         id: nix-install
@@ -24,19 +31,7 @@ jobs:
           key: nix-${{ hashFiles('nix/**') }}
           nix_file: "nix/shell-pkgs.nix"
 
-      - name: Decrypt git-crypt secrets
-        id: git-crypt
-        run: git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
-
-      - name: Initialize Terraform
-        id: terraform-init
-        run: |-
-          chmod 640 secrets/terraform.tfstate*
-          terraform init
-
-      - name: Update package ${{ inputs.package }}
+      - name: Update package ${{ inputs.package }} to ${{ inputs.version }}
         id: update-pkg
         run: |-
           ./scripts/update-pkg "${{ inputs.package }}" "${{ inputs.version }}"
@@ -46,36 +41,26 @@ jobs:
             echo "updated=1" >> $GITHUB_OUTPUT
           fi
 
-      - name: Calculate a Terraform deployment plan
-        id: terraform-plan
-        if: ${{ steps.update-pkg.outputs.updated == 1 }}
-        run: |-
-          set +e
-          terraform plan --detailed-exitcode --out="/tmp/acm-aws-plan"
-          status=$?
-          set -e
-
-          if [[ $status == 1 ]]; then
-            echo "::error::Terraform plan failed, exiting..."
-            exit 1
-          fi
-
-          # 0 - Succeeded, diff is empty (no changes)
-          # 1 - Errored
-          # 2 - Succeeded, there is a diff
-          echo "status=$status" >> $GITHUB_OUTPUT
-
-      - name: Apply Terraform configurations
-        id: terraform-apply
-        if: ${{ steps.terraform-plan.outputs.status == 2 }}
-        run: |-
-          terraform apply --auto-approve "/tmp/acm-aws-plan" \
-            |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
-
       - name: Commit changes, if any
         id: git-commit
-        if: ${{ steps.terraform-plan.outputs.status == 2 }}
+        if: steps.update-pkg.outputs.updated == 1
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Update deployment using GitHub Actions"
-          branch: ${{ github.ref }}
+          commit_message: |-
+            Update package ${{ inputs.package }} using GitHub Actions
+
+            Package ${{ inputs.package }} was updated to version:
+
+                ${{ inputs.version }}
+
+            The action workflow was triggered by ref:
+
+                ${{ github.sha }}
+
+          branch: ${{ github.ref_name }}
+
+  deploy:
+    needs: update
+    if: needs.update.outputs.updated == 1
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
