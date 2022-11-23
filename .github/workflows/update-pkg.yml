@@ -1,4 +1,6 @@
 name: Update a package
+concurrency: production
+
 on:
   workflow_dispatch:
     inputs:
@@ -7,9 +9,11 @@ on:
         type: string
       version:
         type: string
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     steps:
       - uses: actions/checkout@v3
 
