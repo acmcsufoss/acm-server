@@ -29,10 +29,10 @@
         "homepage": null,
         "owner": "EthanThatOneKid",
         "repo": "crying-counter",
-        "rev": "15a54fc9acc4929ab1f630240dae42028f1e5513",
-        "sha256": "1qxmsbwlg4lfyqqqqa0k7w07izik9sh5vzydjjadiv98inga7ii2",
+        "rev": "ac62fbcd26dc0aa30151f13f5a0b90fdf340abab",
+        "sha256": "0iq82r1fkn65f1ff5v6z6qj92fflg2kwaqnrjmhls3fcxhzvlcqf",
         "type": "tarball",
-        "url": "https://github.com/EthanThatOneKid/crying-counter/archive/15a54fc9acc4929ab1f630240dae42028f1e5513.tar.gz",
+        "url": "https://github.com/EthanThatOneKid/crying-counter/archive/ac62fbcd26dc0aa30151f13f5a0b90fdf340abab.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "diamondburned_nix-update": {
