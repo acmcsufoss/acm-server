@@ -1,4 +1,4 @@
-{ pkgs ? import <nixpkgs> {} }:
+{ pkgs ? import ./nix/nixpkgs.nix }:
 
 pkgs.mkShell {
 	name = "acm-aws-shell";

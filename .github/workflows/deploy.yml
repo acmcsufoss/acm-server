@@ -13,7 +13,7 @@ on:
 jobs:
   deploy:
     name: Deploy with Terraform
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     environment: Production
     concurrency: Production
     outputs:
@@ -27,16 +27,16 @@ jobs:
 
       - name: Install Nix packages
         id: nix-install
-        uses: rikhuijzer/cache-install@v1.0.9
+        uses: diamondburned/cache-install@57ae7b74633e956428c92f69f793bcf654149998
         with:
-          key: nix-${{ hashFiles('nix/**') }}
-          nix_file: "nix/shell-pkgs.nix"
+          auto-optimise: true
+          shell-file: shell.nix
+          instantiated-files: servers/*/default.nix
 
       - name: Decrypt git-crypt secrets
-        id: git-crypt
-        run: git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+        uses: ./.github/actions/git-crypt
+        with:
+          key: ${{ secrets.GIT_CRYPT_KEY }}
 
       - name: Initialize Terraform
         id: terraform-init
