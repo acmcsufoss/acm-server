@@ -55,6 +55,6 @@
 	};
 
 	environment.systemPackages = with pkgs; [
-		crying-counter-bin
+		# crying-counter-bin
 	];
 }
