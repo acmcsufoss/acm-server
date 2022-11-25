@@ -9,13 +9,13 @@ stdenv.mkDerivation {
 
 	installPhase = ''
 		mkdir -p $out/bin
+		mkdir -p $out/share
+		ln -s ${crying-counter}/share/java $out/share/java
 
-		classpath=""
-		classpath+=$(printf ":%s" ${crying-counter}/share/java/*.jar)
-		classpath+=$(find ${crying-counter}/repository -name "*.jar" -printf ':%h/%f');
+		jars=( $out/share/java/*.jar )
+		jar="''${jars[0]}"
 
 		makeWrapper ${jre_minimal}/bin/java $out/bin/crying-counter \
-			--add-flags "-classpath ''${classpath#:}" \
-			--add-flags "Main"
+			--add-flags "-jar $jar"
 	'';
 }

@@ -1,36 +1,23 @@
-{ lib, stdenv, makeWrapper, maven }:
+{ lib, stdenv, makeWrapper, gradle_7 }:
 
 let name = "crying-counter";
 	src = (import ../../nix/sources.nix).crying-counter;
 
 in stdenv.mkDerivation {
 	inherit name src;
-
-	buildInputs = [ maven ];
-	nativeBuildInputs = [ makeWrapper ];
+	nativeBuildInputs = [ makeWrapper gradle_7 ];
 
 	buildPhase = ''
-		mvn package -Dmaven.repo.local=$out/repository
-		find $out/repository -type f \
-			-name \*.lastUpdated -or \
-			-name resolver-status.properties -or \
-			-name _remote.repositories \
-			-delete
+		export GRADLE_USER_HOME=$(mktemp -d)
+		gradle --no-daemon build
 	'';
 
 	installPhase = ''
-		mkdir -p $out/bin
 		mkdir -p $out/share/java
-
-		for f in target/*.jar; do
-			install -Dm644 -t $out/share/java "$f"
-		done
+		cp build/libs/*.jar $out/share/java/
 	'';
-
-	# don't do any fixup
-	dontFixup = true;
 
 	outputHashAlgo = "sha256";
 	outputHashMode = "recursive";
-	outputHash = "0cd1qn9gw1fvzl1xfqa5767sf78kwwfgbdxjszh37byxwshrk5dg";
+	outputHash = "sha256:1qh443p21rcxk6633k2vh98hppzsby5hwzrxjr2nfk50q92svs28";
 }
