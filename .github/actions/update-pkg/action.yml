@@ -1,0 +1,103 @@
+name: Update package on acm-aws
+
+inputs:
+  token:
+    description: |-
+      A GitHub Personal Access Token with RW permissions on the Actions
+      permission for the acm-aws repository.
+    required: true
+  package:
+    description: |-
+      The name of the package.
+    required: true
+  version:
+    description: |-
+      The version that the package should be updated to. Defaults to github.ref.
+    default: ${{ github.ref }}
+
+outputs:
+  workflow-id:
+    description: The ID of the workflow that this action is running
+    value: ${{ steps.workflow-dispatch.outputs.workflowId }}
+  run-id:
+    description: The ID of the workflow run that was just created
+    value: ${{ steps.get-run.outputs.run-id }}
+  run-url:
+    description: The URL to the newly-created workflow run
+    value: ${{ steps.get-run.outputs.run-url }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Format the inputs JSON
+      id: inputs-json
+      run: |-
+        JSON=$(jq --null-input -c \
+          --arg package "$PACKAGE" \
+          --arg version "$VERSION" \
+          '{ $package, $version }')
+        printf "json=%s\n" "$JSON" >> $GITHUB_OUTPUT
+        printf "creation-time=%(%s)T\n" >> $GITHUB_OUTPUT
+      env:
+        PACKAGE: ${{ inputs.package }}
+        VERSION: ${{ inputs.version }}
+      shell: bash
+
+    - name: Dispatch to acm-aws/update-pkg.yml
+      id: workflow-dispatch
+      uses: benc-uk/workflow-dispatch@v1
+      with:
+        workflow: update-pkg.yml
+        repo: diamondburned/acm-aws
+        inputs: ${{ steps.inputs-json.outputs.json }}
+        token: ${{ inputs.token }}
+
+    - name: Extract the newly-created workflow run
+      id: get-run
+      run: |-
+        check_workflows() {
+          while read -r id created_at; do
+            created_at_epoch=$(date -d "$created_at" '+%s')
+            if (( created_at_epoch >= ${CREATION_TIME} )); then
+              echo "$id"
+              return 0
+            fi
+          done < <(
+            gh api /repos/diamondburned/acm-aws/actions/runs --jq "
+              .workflow_runs[]
+                | select(.workflow_id == ${WORKFLOW_ID})
+                | \"\(.id) \(.created_at)\""
+          )
+
+          # Not found.
+          return 1
+        }
+
+        # GitHub is trash since it doesn't actually expose the new run that it
+        # created by dispatching the workflow. We're forced to poll it until
+        # it's there.
+        #
+        # This runs for about (20 * 0.50)s, which is 10 seconds.
+        for ((i = 0; i < 20; i++)); do
+          if runID=$(check_workflows); then
+            break
+          fi
+          sleep 0.50
+        done
+
+        if [[ "$runID" == "" ]]; then
+          echo "::error::Cannot find the created run ID in time." >&2
+          echo "::error::Someone tell GitHub to fix their shit." >&2
+          exit 1
+        fi
+
+        runURL="https://github.com/diamondburned/acm-aws/actions/runs/${runID}"
+        echo "::info::Found run at ${runURL}" >&2
+
+        echo "run-id=${runID}" >> $GITHUB_OUTPUT
+        echo "run-url=${runURL}" >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        WORKFLOW_ID: ${{ steps.workflow-dispatch.outputs.workflowId }}
+        CREATION_TIME: ${{ steps.inputs-json.outputs.creation-time }}
+      shell: bash

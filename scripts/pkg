@@ -36,8 +36,10 @@ pkg::update() {
 	case "$2" in
 	"v"*)
 		nivFlags+=("-v" "$2");;
-	[0-9a-f]*)
+	"refs/tags/"*|[0-9a-f]*)
 		nivFlags+=("-r" "$2");;
+	"refs/heads/"*)
+		nivFlags+=("-b" "$2");;
 	"latest"|"")
 		;;
 	*)
