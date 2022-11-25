@@ -35,7 +35,7 @@ jobs:
       - name: Update package ${{ inputs.package }} to ${{ inputs.version }}
         id: update-pkg
         run: |-
-          ./scripts/update-pkg "${{ inputs.package }}" "${{ inputs.version }}"
+          ./scripts/pkg update "${{ inputs.package }}" "${{ inputs.version }}"
           # Check if there has been any git changes. updated=1 if there's one,
           # otherwise it's 0. We'll skip the rest if 0.
           if [[ $(git status --porcelain) ]]; then

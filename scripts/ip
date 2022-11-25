@@ -8,15 +8,50 @@ main() {
 		exit 1
 	fi
 
-	publicIP=$(jq -r --arg name $name \
-		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[0].attributes.public_ip // empty' \
-		./secrets/terraform.tfstate)
-	if [[ $publicIP == "" ]]; then
-		echo "Instance $name not found" >&2
+	if publicIP=$(ip::find "$name"); then
+		echo "$publicIP"
+	else
+		echo "No instance found" >&2
 		exit 1
 	fi
-
-	echo -n "$publicIP"
 }
 
-main "$@"
+# ip:;find($1: instance_name?) -> public_ip?
+ip::find() {
+	local name=$(jq -r \
+		--arg name "$1" \
+		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[].attributes.public_ip // empty' \
+		./secrets/terraform.tfstate)
+	if [[ "$name" == "" ]]; then
+		return 1
+	fi
+
+	echo "$name"
+	return 0
+}
+
+# ip::list() -> (name + " " + public_ip)[]
+ip::list() {
+	jq -r '
+		.resources[] |
+			select(.type == "aws_instance") |
+			"\(.name) \(.instances[].attributes.public_ip // empty)"' \
+		./secrets/terraform.tfstate
+}
+
+# ip::list_servers() -> name[]
+ip::list_servers() {
+	while read -r name ip; do
+		echo "$name"
+	done <<< "$(ip::list)"
+}
+
+ip::autocomplete() {
+	local cur="${COMP_WORDS[COMP_CWORD]}"
+	COMPREPLY=( $(compgen -W "$(tfstate::public_ip)" -- ${cur}) )
+}
+
+# Only run main if this script is not being sourced as a library.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	main "$@"
+fi

@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -e
+
+main() {
+	case "$1" in
+	"list")
+		pkg::list
+		;;
+	"update")
+		shift
+		if [[ "$1" == "" ]]; then
+			echo "Usage: $0 update <package> [commit]" >&2
+			return 1
+		fi
+		pkg::update "$@"
+		;;
+	""|"-h"|"--help")
+		echo "Usage: $0 {list|update}"
+		;;
+	*)
+		echo "Unknown argument: $1"
+		return 1;;
+	esac
+}
+
+pkg::list() {
+	nix-instantiate --eval --json \
+		-E 'builtins.attrNames (import ./packages {})' \
+		| jq -r '.[]'
+}
+
+pkg::update() {
+	local package="$1"
+	local nivFlags=()
+
+	case "$2" in
+	"v"*)
+		nivFlags+=("-v" "$2");;
+	[0-9a-f]*)
+		nivFlags+=("-r" "$2");;
+	"latest"|"")
+		;;
+	*)
+		echo "Unknown version or ref or \`latest'" >&2
+		exit 1;;
+	esac
+
+	niv update "$package" "${nivFlags[@]}" >&2
+	(
+		cd packages
+		nix-update --version=skip "$package" >&2
+	)
+}
+
+# Only run main if this script is not being sourced as a library.
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+	main "$@"
+fi
