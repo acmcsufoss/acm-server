@@ -12,8 +12,8 @@ inputs:
     required: true
   version:
     description: |-
-      The version that the package should be updated to. Defaults to github.ref.
-    default: ${{ github.ref }}
+      The version that the package should be updated to. Defaults to github.sha.
+    default: ${{ github.sha }}
 
 outputs:
   workflow-id:
