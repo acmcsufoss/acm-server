@@ -17,10 +17,10 @@
         "homepage": null,
         "owner": "diamondburned",
         "repo": "acmregister",
-        "rev": "7175a72989ee66bf90bf86a9236c067a3b201746",
-        "sha256": "07pray89508n913fsmkfy8mgdx83d7vplcpvhsc5l73yx0niqppk",
+        "rev": "bc1feecd05ef9a6920f5ed2976bf4f29205ae8eb",
+        "sha256": "1pimz3846fp5321f92b47a7gllxklayk28vja49c9yfvxlcqnaah",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/acmregister/archive/7175a72989ee66bf90bf86a9236c067a3b201746.tar.gz",
+        "url": "https://github.com/diamondburned/acmregister/archive/bc1feecd05ef9a6920f5ed2976bf4f29205ae8eb.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "crying-counter": {
