@@ -2,16 +2,16 @@ name: Update package on acm-aws
 
 inputs:
   token:
-    description: |-
+    description: |
       A GitHub Personal Access Token with RW permissions on the Actions
       permission for the acm-aws repository.
     required: true
   package:
-    description: |-
+    description: |
       The name of the package.
     required: true
   version:
-    description: |-
+    description: |
       The version that the package should be updated to. Defaults to github.sha.
     default: ${{ github.sha }}
 
@@ -31,7 +31,7 @@ runs:
   steps:
     - name: Format the inputs JSON
       id: inputs-json
-      run: |-
+      run: |
         JSON=$(jq --null-input -c \
           --arg package "$PACKAGE" \
           --arg version "$VERSION" \
@@ -54,7 +54,7 @@ runs:
 
     - name: Extract the newly-created workflow run
       id: get-run
-      run: |-
+      run: |
         check_workflows() {
           while read -r id created_at; do
             created_at_epoch=$(date -d "$created_at" '+%s')
@@ -92,7 +92,7 @@ runs:
         fi
 
         runURL="https://github.com/diamondburned/acm-aws/actions/runs/${runID}"
-        echo "::info::Found run at ${runURL}" >&2
+        echo "::notice::Found run at ${runURL}" >&2
 
         echo "run-id=${runID}" >> $GITHUB_OUTPUT
         echo "run-url=${runURL}" >> $GITHUB_OUTPUT
@@ -100,4 +100,83 @@ runs:
         GH_TOKEN: ${{ inputs.token }}
         WORKFLOW_ID: ${{ steps.workflow-dispatch.outputs.workflowId }}
         CREATION_TIME: ${{ steps.inputs-json.outputs.creation-time }}
+      shell: bash
+
+    - name: Wait for workflow run
+      id: wait-run
+      run: |
+        update_run() {
+          JSON=$(gh api /repos/diamondburned/acm-aws/actions/runs/$RUN_ID)
+          RUN_STATUS=$(j .status)
+          RUN_CONCLUSION=$(j .conclusion)
+          RUN_START=$(date -d "$(j .run_started_at)" +%s)
+          RUN_UPDATED=$(date -d "$(j .updated_at)" +%s)
+        }
+
+        j() { jq -r "$1 // empty" <<< "$JSON"; }
+        set_now() { printf -v "$1" "%(%s)T"; }
+
+        # Collect the start time in epoch. We'll use this for the timeout.
+        set_now start
+        set_now now
+        # We want to wait for 30 minutes, so calculate the end time now.
+        end=$[start + (30 * 60)]
+
+        while [[ "$RUN_STATUS" != completed ]] && (( now < end )); do
+          sleep 5
+          update_run
+          set_now now
+        done
+
+        {
+          echo "run-status=${RUN_STATUS}"
+          echo "run-conclusion=${RUN_CONCLUSION}"
+          echo "run-start=${RUN_START}"
+          echo "run-updated=${RUN_UPDATED}"
+          echo "run-duration=$[RUN_UPDATED - RUN_START]"
+        } >> $GITHUB_OUTPUT
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        RUN_ID: ${{ steps.get-run.outputs.run-id }}
+      shell: bash
+
+    - name: Write job summary
+      id: write-summary
+      run: |
+        {
+          echo -n "- :rocket: Deployment status: "
+          case "$RUN_CONCLUSION" in
+          success)
+            echo -n ":heavy_check_mark: success"
+            ;;
+          failure)
+            echo -n ":x: failure"
+            ;;
+          *)
+            echo -n ":x: $RUN_CONCLUSION"
+            ;;
+          esac
+          echo
+
+          echo -n "- :scroll: Workflow run: [diamondburned/acm-aws/actions/runs/$RUN_ID]($RUN_URL)"
+          echo -n " [[jobs]($RUN_URL/jobs)]"
+          echo -n " [[logs]($RUN_URL/logs)]"
+          echo
+
+          echo "- :stopwatch: Run time: $(date -d "@$RUN_TIME" -u +%Hh%Mm%Ss)"
+        } >> $GITHUB_STEP_SUMMARY
+      env:
+        RUN_ID: ${{ steps.get-run.outputs.run-id }}
+        RUN_URL: ${{ steps.get-run.outputs.run-url }}
+        RUN_TIME: ${{ steps.wait-run.outputs.run-duration }}
+        RUN_CONCLUSION: ${{ steps.wait-run.outputs.run-conclusion }}
+      shell: bash
+
+    - name: Apply status
+      run: |
+        if [[ "$RUN_CONCLUSION" != success ]]; then
+          exit 1
+        fi
+      env:
+        RUN_CONCLUSION: ${{ steps.wait-run.outputs.run-conclusion }}
       shell: bash
