@@ -12,15 +12,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "acmregister": {
-        "branch": "main",
+        "branch": "refs/heads/main",
         "description": "ACM register bot",
         "homepage": null,
         "owner": "diamondburned",
         "repo": "acmregister",
-        "rev": "1fc9bd3cd79c6a6074551b1e740ed7b0afb46d8a",
-        "sha256": "0zy672w4pg11np6rblqkj6pj1safiiwdf9x4q8bwi6x72r6h52p1",
+        "rev": "f1595e3a076fd27cff178ca5e90636fbba2a5529",
+        "sha256": "1w0fvvqai7g3iaxgm8rk8750ijdsn16y9a7iah35rbj9gw4zpp7r",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/acmregister/archive/1fc9bd3cd79c6a6074551b1e740ed7b0afb46d8a.tar.gz",
+        "url": "https://github.com/diamondburned/acmregister/archive/f1595e3a076fd27cff178ca5e90636fbba2a5529.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "crying-counter": {
