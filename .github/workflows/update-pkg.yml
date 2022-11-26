@@ -26,7 +26,7 @@ jobs:
 
       - name: Install Nix packages
         id: nix-install
-        uses: diamondburned/cache-install@7f1a01738fafef5af44707e9c234e5b72e97ce41
+        uses: diamondburned/cache-install@13956f4fa62fe1575ff101eb808ce8c6b8ec27a3
         with:
           shell-file: shell.nix
           instantiated-files: packages/
