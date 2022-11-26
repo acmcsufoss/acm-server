@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Nix packages
         id: nix-install
-        uses: diamondburned/cache-install@dd48a52be9279787e3f89ab1716efc5e0240efd0
+        uses: diamondburned/cache-install@7f1a01738fafef5af44707e9c234e5b72e97ce41
         with:
           auto-optimise: true
           shell-file: shell.nix
@@ -67,12 +67,17 @@ jobs:
         id: terraform-apply
         if: steps.terraform-plan.outputs.status == 2
         run: |-
-          terraform apply --auto-approve "/tmp/acm-aws-plan" \
-            |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
+          set +e
+          {
+            terraform apply --auto-approve "/tmp/acm-aws-plan"
+            status="$?"
+          } |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
+          set -e
+          exit "$status"
 
       - name: Commit changes, if any
         id: git-commit
-        if: steps.terraform-plan.outputs.status == 2 && success()
+        if: steps.terraform-plan.outputs.status == 2
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update deployment using GitHub Actions"
