@@ -72,7 +72,7 @@ jobs:
 
       - name: Commit changes, if any
         id: git-commit
-        if: steps.terraform-plan.outputs.status == 2
+        if: steps.terraform-plan.outputs.status == 2 && success()
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "Update deployment using GitHub Actions"
