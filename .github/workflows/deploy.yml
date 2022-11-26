@@ -10,12 +10,13 @@ on:
         required: true
   workflow_dispatch:
 
+concurrency: Production
+
 jobs:
   deploy:
     name: Deploy with Terraform
     runs-on: ubuntu-22.04
     environment: Production
-    concurrency: Production
     outputs:
       commit_hash: ${{ steps.git-commit.outputs.commit_hash }}
     steps:

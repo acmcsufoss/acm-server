@@ -28,7 +28,6 @@ jobs:
         id: nix-install
         uses: diamondburned/cache-install@e720fa74084ad3538254465860e204fcd44ffe5e
         with:
-          auto-optimise: true
           shell-file: shell.nix
           instantiated-files: packages/
 
