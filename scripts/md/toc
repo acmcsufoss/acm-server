@@ -40,7 +40,7 @@ main() {
 
 				title=$(parse_title "${path%/}")
 				if [[ -f "$path/README.md" ]]; then
-					echo "$prefix- [$title]($path)"
+					echo "$prefix- [$title]($(path_encode "$path"))"
 				else
 					echo "$prefix- $title"
 				fi
@@ -49,7 +49,7 @@ main() {
 				prefix=$(repeat $'\t' "$indent")
 
 				title=$(parse_title "$path")
-				echo "$prefix- [$title]($path)"
+				echo "$prefix- [$title]($(path_encode "$path"))"
 			fi
 		done
 	)
@@ -132,6 +132,26 @@ replace_between() {
 	echo
 	echo "$2"
 	echo -n "${in#*"$2"}"
+}
+
+# path_encode($1: path) > stdout
+#
+# path_encode is mostly taken from
+# https://github.com/sfinktah/bash/blob/master/rawurlencode.inc.sh.
+path_encode() {
+    local string="${1}"
+    local strlen=${#string}
+    local encoded=""
+    local pos c o
+    for ((pos=0; pos<strlen; pos++)); do
+        c=${string:$pos:1}
+        case "$c" in
+           [-_.~a-zA-Z0-9/] ) o="${c}" ;;
+           *) printf -v o '%%%02x' "'$c"
+        esac
+        encoded+="${o}"
+    done
+    echo "${encoded}"
 }
 
 main "$@"

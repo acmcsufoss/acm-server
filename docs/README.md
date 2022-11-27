@@ -4,7 +4,7 @@
 
 ## Table of Contents
 
-- [Autoupdating Guide](./Autoupdating Guide.md)
+- [Autoupdating Guide](./Autoupdating%20Guide.md)
 - Nix
 	- [Packaging](./Nix/Packaging.md)
 
