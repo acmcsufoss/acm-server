@@ -59,6 +59,18 @@
         "url": "https://github.com/nix-community/gomod2nix/archive/89cd0675b96775aa3ee86e7c0cf5bc238dd27976.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "nix-npm-buildpackage": {
+        "branch": "master",
+        "description": "Build nix packages that use npm/yarn",
+        "homepage": "",
+        "owner": "serokell",
+        "repo": "nix-npm-buildpackage",
+        "rev": "200e47aabd2b55993561c47e8390c89bdeb18b8a",
+        "sha256": "0msxyyip7syah5i0vb0r3wz16mfjmqwr3mxagsn8879asp071yf5",
+        "type": "tarball",
+        "url": "https://github.com/serokell/nix-npm-buildpackage/archive/200e47aabd2b55993561c47e8390c89bdeb18b8a.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "nixpkgs": {
         "branch": "nixos-unstable",
         "description": "Nix Packages collection",
