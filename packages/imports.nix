@@ -8,8 +8,5 @@ in {
 		./sysmet/sysmet.nix
 	];
 
-	nixpkgs.overlays = [
-		(import "${sources.gomod2nix}/overlay.nix")
-		(self: super: import ../packages { pkgs = self; })
-	];
+	nixpkgs.overlays = import ../nix/overlays.nix;
 }
