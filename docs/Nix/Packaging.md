@@ -61,15 +61,15 @@ to the [Nixpkgs manual, ch. 17 (Languages and Frameworks)](https://nixos.org/man
 > (e.g. `./packages/program.nix`) or as a directory (e.g.
 > `./packages/program/default.nix`).
 
-## Python
+### Python
 
 TODO. Err... I don't know myself.
 
-## JavaScript
+### JavaScript
 
 TODO. Use `buildNpmPackage`: https://github.com/serokell/nix-npm-buildpackage
 
-## Go
+### Go
 
 ```nix
 # Define the inputs of our package. We're building using Go 1.19, so that's what
@@ -216,7 +216,7 @@ like with other actual services.
 ## Making a Nix service option (recommended)
 
 If you choose to not be lazy, you can choose to write a nice Nix service option
-that wraps around the systemhttps://nixos.wiki/wiki/Declaration#Typesd service.
+that wraps around the systemd service.
 
 A Nix service option often looks something like this:
 
@@ -236,16 +236,16 @@ and the Nix service code:
 - `packages/`
 	- `hellobot/`
 		- `default.nix`
+			- This file will contain the package code. For example,
+			  if we're making a Go package, then that file will contain
+			  `buildGoModule` code.
 		- `service.nix`
-
-The `default.nix` file will contain the package code. For example, if we're
-making a Go package, then that file will contain `buildGoModule` code.
-
-The `service.nix` file will contain our Nix service code that we'll be writing.
-It will define all the options that we can use in `configuration.nix`.
+			- This file will contain our Nix service code that we'll be writing.
+			  It will define all the options that we can use in
+			  `configuration.nix`.
 
 As an example, let's make a Nix service option for our `hellobot` service that
-looks something like this:
+lets the user write something like this:
 
 ```nix
 { config, lib, pkgs, ... }:
@@ -367,3 +367,26 @@ For more resources:
 
 [nixos-wiki-decl-types]: https://nixos.wiki/wiki/Declaration#Types
 [nixpkgs-lib-options]: https://github.com/NixOS/nixpkgs/blob/master/lib/options.nix
+
+Once this is done, we can drop our new option settings into our
+`configuration.nix` file:
+
+```nix
+{ config, lib, pkgs, ... }:
+
+{
+	# Other stuff...
+
+	services.hellobot = {
+		enable = true;
+		httpAddress = "localhost:40002";
+		environment = {
+			BOT_TOKEN = "Bot token";
+		};
+	};
+
+	# Other stuff...
+}
+```
+
+This is much cleaner :)
