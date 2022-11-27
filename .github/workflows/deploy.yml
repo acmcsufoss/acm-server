@@ -67,13 +67,9 @@ jobs:
         id: terraform-apply
         if: steps.terraform-plan.outputs.status == 2
         run: |-
-          set +e
-          {
-            terraform apply --auto-approve "/tmp/acm-aws-plan"
-            status="$?"
-          } |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
-          set -e
-          exit "$status"
+          set -o pipefail
+          terraform apply --auto-approve "/tmp/acm-aws-plan" \
+            |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
 
       - name: Commit changes, if any
         id: git-commit
