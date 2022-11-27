@@ -1,0 +1,137 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+markBegin="<!-- toc begin -->"
+markEnd="<!-- toc end -->"
+
+main() {
+	if (( $# > 0 )); then
+		cd "$1"
+	fi
+
+	if [[ ! -f README.md ]]; then
+		echo "Error: README.md not found." >&2
+		echo "Usage: $0 [path/to/directory]" >&2
+		exit 1
+	fi
+
+	# Check that our markers are present.
+	if ! grep -q "$markBegin" README.md; then
+		printf "Error: begin mark %q not found in README.md\n" "$markBegin" >&2
+		exit 1
+	fi
+	if ! grep -q "$markEnd" README.md; then
+		printf "Error: end mark %q not found in README.md\n" "$markEnd" >&2
+		exit 1
+	fi
+
+	indexPaths=()
+	index_path indexPaths .
+
+	# Generate the new table of contents.
+	toc=$(
+		echo "## Table of Contents"
+		echo
+
+		for path in "${indexPaths[@]}"; do
+			if [[ "$path" == *"/" ]]; then
+				indent=$(( $(count "$path" /) - 2 ))
+				prefix=$(repeat $'\t' "$indent")
+
+				title=$(parse_title "${path%/}")
+				if [[ -f "$path/README.md" ]]; then
+					echo "$prefix- [$title]($path)"
+				else
+					echo "$prefix- $title"
+				fi
+			else
+				indent=$(( $(count "$path" /) - 1 ))
+				prefix=$(repeat $'\t' "$indent")
+
+				title=$(parse_title "$path")
+				echo "$prefix- [$title]($path)"
+			fi
+		done
+	)
+
+	file=$(< README.md)
+	file=$(replace_between "$markBegin" "$markEnd" "$toc" <<< "$file")
+	echo "$file" > README.md
+}
+
+# repeat($1: str, $2: count) > stdout
+repeat() {
+	local str="$1"
+	local count="$2"
+	local i
+	for (( i = 0; i < count; i++ )); do
+		printf "%s" "$str"
+	done
+}
+
+# count($1: str, $2: char) > stdout
+count() {
+	local str="$1"
+	local char="$2"
+	local count=0
+	local i
+	for (( i = 0; i < ${#str}; i++ )); do
+		if [[ "${str:i:1}" == "$char" ]]; then
+			(( count++ ))
+		fi
+	done
+	echo "$count"
+}
+
+# parse_title($1: filepath) > stdout
+parse_title() {
+	local title
+	title="$1"
+	title="${title//_/ }"
+	title="${title##*\/}"
+	title="${title%%.md}"
+	echo "$title"
+}
+
+# index_path($1: dst, $2: path)
+index_path() {
+	declare -n var="$1"
+	index_path_rec "$1" "$2"
+	readarray -t "$1" < <(printf '%s\n' "${var[@]}" | sort)
+}
+
+index_path_rec() {
+	declare -n var="$1"
+	for f in "$2"/*; do
+		# Skip README.md files.
+		if [[ -f "$f" && "$f" == */README.md ]]; then
+			continue
+		fi
+		# Add Markdown files to the index.
+		if [[ -f "$f" && "$f" == *".md" ]]; then
+			var+=( "$f" )
+			continue
+		fi
+		# Add directories to the index and keep recursing.
+		if [[ -d "$f" ]]; then
+			var+=( "$f/" )
+			index_path_rec "$1" "$f"
+			continue
+		fi
+	done
+}
+
+# replace_between($1: start, $2: end, $3: content) < stdin > stdout
+replace_between() {
+	local in
+	read -r -d '' in
+	echo -n "${in%%"$1"*}"
+	echo "$1"
+	echo
+	echo "$3"
+	echo
+	echo "$2"
+	echo -n "${in#*"$2"}"
+}
+
+main "$@"

@@ -12,5 +12,6 @@ pkgs.mkShell {
 		yamllint
 		gomod2nix
 		expect
+		shellcheck
 	];
 }
