@@ -33,7 +33,7 @@ in {
 }
 ```
 
-> **Note:** when importing `./nix`, pay attention to where the file that you're
+> **Note**: when importing `./nix`, pay attention to where the file that you're
 > writing is. If it's in `./packages/file.nix`, then you'll need to import it as
 > `../nix`.
 
@@ -57,7 +57,7 @@ languages. Hopefully, you'll get the gist of it.
 If you cannot find the programming language that you want to package for, refer
 to the [Nixpkgs manual, ch. 17 (Languages and Frameworks)](https://nixos.org/manual/nixpkgs/stable/#chap-language-support).
 
-> **Note:** Nix package files usually go in `./packages/`, either as a file
+> **Note**: Nix package files usually go in `./packages/`, either as a file
 > (e.g. `./packages/program.nix`) or as a directory (e.g.
 > `./packages/program/default.nix`).
 
@@ -99,7 +99,7 @@ in buildGo119Module {
 }
 ```
 
-> **Note:** if the source repository uses Go workspace, then packaging it
+> **Note**: if the source repository uses Go workspace, then packaging it
 > becomes a bit more tedious. Adding `GOWORK = "off";` should fix it.
 
 ## Making a systemd service
@@ -111,11 +111,11 @@ For example, if we want to run a Discord bot, we'd want it to stay up ideally
 forever. By making the bot process a systemd service, we're entrusting that task
 to the most reliable process on the server.
 
-> **Note:** systemd service is not magic. It does not protect the process
+> **Note**: systemd service is not magic. It does not protect the process
 > against data loss, power surge, etc. All it does is keep things alive for as
 > long as it can manage to.
 
-> **Note:** throughout the code, you'll see mentions of a "target". A target is
+> **Note**: throughout the code, you'll see mentions of a "target". A target is
 > a special kind of systemd service. Each target usually refers to a specific
 > event that the system can trigger. For example:
 >
@@ -265,15 +265,15 @@ When making a Nix service option, we will want to declare the options that we
 want to expose to the user. This is done by setting a new attribute set inside
 `options`.
 
-> **Note:** the `options` attribute is a special attribute that is used to
+> **Note**: the `options` attribute is a special attribute that is used to
 > declare options, while the `config` attribute is used to read and write
 > configuration values.
 
-> **Note:** [I](https://github.com/diamondburned) strongly advise to use GitHub
+> **Note**: [I](https://github.com/diamondburned) strongly advise to use GitHub
 > Copilot to write the options below. I don't really remember all the functions
 > that I should be using, so I just use Copilot to write most of it.
 
-> **Note:** we'll be using the term "attribute" and "attribute set" a lot. An
+> **Note**: we'll be using the term "attribute" and "attribute set" a lot. An
 > "attribute set" is like a JSON object, while an "attribute" is like a JSON
 > field within an object.
 
