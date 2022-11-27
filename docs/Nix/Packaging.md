@@ -61,6 +61,21 @@ to the [Nixpkgs manual, ch. 17 (Languages and Frameworks)](https://nixos.org/man
 > (e.g. `./packages/program.nix`) or as a directory (e.g.
 > `./packages/program/default.nix`).
 
+Once the package file is written, they need to be added into
+`packages/default.nix` like so:
+
+```nix
+{ pkgs ? import ../nix/nixpkgs.nix }:
+
+let self = {
+	# Other stuff...
+	acmregister = pkgs.callPackage ./acmregister.nix { };
+	# Other stuff...
+};
+
+in self
+```
+
 ### Python
 
 TODO. Err... I don't know myself.
@@ -261,7 +276,9 @@ lets the user write something like this:
 }
 ```
 
-When making a Nix service option, we will want to declare the options that we
+### Writing `service.nix`
+
+When writing a Nix service option, we will want to declare the options that we
 want to expose to the user. This is done by setting a new attribute set inside
 `options`.
 
@@ -368,8 +385,32 @@ For more resources:
 [nixos-wiki-decl-types]: https://nixos.wiki/wiki/Declaration#Types
 [nixpkgs-lib-options]: https://github.com/NixOS/nixpkgs/blob/master/lib/options.nix
 
-Once this is done, we can drop our new option settings into our
-`configuration.nix` file:
+### Registering `service.nix`
+
+`service.nix` files need to be imported into the system configuration. We have a
+single file that keeps track of all such imports.
+
+To add a new `service.nix` file, go to `./packages/imports.nix` and add it to
+the `imports` list:
+
+```nix
+{ config, pkgs, lib, ... }:
+
+let ...;
+
+in {
+	imports = [
+		# ...
+		./hellobot/service.nix
+		# ...
+	];
+}
+```
+
+### Using the new service
+
+Once we're done with the above steps, we can drop our new option settings into
+our `configuration.nix` file:
 
 ```nix
 { config, lib, pkgs, ... }:
@@ -389,4 +430,15 @@ Once this is done, we can drop our new option settings into our
 }
 ```
 
-This is much cleaner :)
+> **Note**: NixOS defines many options similar to the one that we just made. To
+> search for what's available, go to [search.nixos.org/options](https://search.nixos.org/options).
+> There are over 10,000 options available!
+>
+> Here are some options that you might be interested in:
+>
+> - `systemd.services`
+> - `services.postgresql`
+> - `services.minecraft-server`
+> - `networking.firewall`
+> - `environment.systemPackages`
+>
