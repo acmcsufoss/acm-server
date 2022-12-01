@@ -6,6 +6,6 @@ in buildGo119Module {
 	pname = "acm-nixie";
 	version = builtins.substring 0 7 src.rev;
 	inherit src;
-	vendorSha256 = "sha256-YwkotdQI/uSrdOjB2RKm7UQF77qXUPK4eulmOLQzwCU=";
+	vendorSha256 = "sha256:17sskd2bmxfkysxd5d33xnbs8qvaml5ng97d1z5i01idhk7nydk4";
 	subPackages = [ "." ];
 }
