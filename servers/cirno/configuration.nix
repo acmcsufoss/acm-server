@@ -18,7 +18,7 @@
 		};
 		update = {
 			enable = true;
-			onCalendar = "*:*:00,30"; # every 30 seconds
+			onCalendar = "*:*:00"; # every minute
 		};
 		delete = {
 			enable = true;
