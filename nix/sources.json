@@ -47,6 +47,18 @@
         "url": "https://github.com/diamondburned/nix-update/archive/2a9171bfdff91ca1e01681f0685cb2e8782bf7dc.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "dischord": {
+        "branch": "main",
+        "description": "A simple, easy-to-deploy Discord music bot written in go. Supports YouTube, Spotify and hundreds of other sites using youtube-dl.",
+        "homepage": null,
+        "owner": "xypwn",
+        "repo": "dischord",
+        "rev": "9174c1b23af8e54871ba01ad789a22c4cbd1c1e5",
+        "sha256": "1l674d2rbky79lyc4d908nr0balzppg5vadqjyhxi6l5jyf3p764",
+        "type": "tarball",
+        "url": "https://github.com/xypwn/dischord/archive/9174c1b23af8e54871ba01ad789a22c4cbd1c1e5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "gomod2nix": {
         "branch": "master",
         "description": "Convert applications using Go modules to Nix expressions [maintainer=@adisbladis]",
