@@ -1,9 +1,9 @@
 { fetchFromGitHub, makeWrapper, lib, stdenv,
-  buildGoModule, ffmpeg, youtube-dl }:
+  buildGoModule, ffmpeg, yt-dlp }:
 
 let src = (import ../../nix/sources.nix).dischord;
 
-	PATH = [ ffmpeg youtube-dl ];
+	PATH = [ ffmpeg yt-dlp ];
 
 in buildGoModule {
 	pname = "dischord";
@@ -12,6 +12,11 @@ in buildGoModule {
 	inherit src;
 	vendorSha256 = "sha256:12y3gqvprfzqdhfvqhz4pw45bv7wl0lbwa8ijfshdij28ly6l6x3";
 	subPackages = [ "cmd/dischord" ];
+
+	postPatch = ''
+		ytExtractor='extractor.AddExtractor("youtube", &Extractor{})'
+		sed -i "s|$ytExtractor|// &|" $(find . -name '*.go')
+	'';
 
 	nativeBuildInputs = [ makeWrapper ];
 	postInstall = ''
