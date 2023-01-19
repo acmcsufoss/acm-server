@@ -2,7 +2,7 @@ module localhost/caddy
 
 go 1.18
 
-replace github.com/libdns/netlify => github.com/diamondburned/libdns-netlify v0.0.0-20221122063218-2c8e26704c62
+replace github.com/libdns/netlify => github.com/diamondburned/libdns-netlify v0.0.0-20230119045856-65951346d6ee
 
 require (
 	github.com/antlr/antlr4/runtime/Go/antlr v1.4.10 // indirect
