@@ -1,4 +1,7 @@
 .terraform
 *.tfvars
+*.qcow2
 output
+result
 results
+/servers/exp*

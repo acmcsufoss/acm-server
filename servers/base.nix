@@ -4,7 +4,6 @@ let sources = import ../nix/sources.nix;
 
 in {
 	imports = [
-		"${sources.nixpkgs}/nixos/modules/virtualisation/amazon-image.nix"
 		../packages/imports.nix
 	];
 
