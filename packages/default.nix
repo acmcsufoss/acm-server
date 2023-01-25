@@ -10,9 +10,6 @@ let self = {
 
 	# Java (Maven)
 	crying-counter = pkgs.callPackage ./crying-counter { };
-	crying-counter-bin = pkgs.callPackage ./crying-counter/bin.nix {
-		inherit (self) crying-counter;
-	};
 };
 
 in self

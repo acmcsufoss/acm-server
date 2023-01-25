@@ -24,15 +24,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "crying-counter": {
-        "branch": "main",
+        "branch": "gradle-build",
         "description": "A Discord bot to reply to specific phrases (e.g. \"im crying\")",
         "homepage": null,
         "owner": "EthanThatOneKid",
         "repo": "crying-counter",
-        "rev": "ef3d669fb9fdcdea0f1c8b083ca9172d30bf94f3",
-        "sha256": "1x798im9ywczcpky4lifczqkplrmjh5kll9yw5cw5ycs51yr64jp",
+        "rev": "fcafbe8a31cf208f1973bf5bd7377f357834e8f8",
+        "sha256": "0kr7v3lmvxvznr2kxaa1yssl4ck0xgnxypm7ql5iifw18fgqi925",
         "type": "tarball",
-        "url": "https://github.com/EthanThatOneKid/crying-counter/archive/ef3d669fb9fdcdea0f1c8b083ca9172d30bf94f3.tar.gz",
+        "url": "https://github.com/EthanThatOneKid/crying-counter/archive/fcafbe8a31cf208f1973bf5bd7377f357834e8f8.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "diamondburned_nix-update": {
