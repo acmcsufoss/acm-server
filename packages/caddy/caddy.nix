@@ -54,8 +54,6 @@ in {
 	};
 
 	config = mkIf cfg.enable {
-		environment.systemPackages = [ cfg.package ];
-
 		networking.firewall = mkIf cfg.openFirewall {
 			allowedTCPPorts = [ 80 443 ];
 			allowedUDPPorts = [ 80 443 ]; # SPDY/QUIC soon.

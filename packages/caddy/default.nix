@@ -9,7 +9,6 @@ buildGoApplication {
 
 	go = go_1_19;
 	modules = ./gomod2nix.toml;
-	allowGoReference = true;
 	subPackages = [ "." ];
 
 	meta = with lib; {
