@@ -10,7 +10,7 @@ let self = rec {
 
 	# Java
 	jre = pkgs.callPackage ./jre { };
-	crying-counter = pkgs.callPackage ./crying-counter.nix { inherit jre; };
+	triggers = pkgs.callPackage ./triggers.nix { inherit jre; };
 };
 
 in self

@@ -1,8 +1,8 @@
 { lib, stdenv, writeShellScript, makeWrapper, jre, gradle_7 }:
 
 stdenv.mkDerivation rec {
-	name = "crying-counter";
-	src = (import ../nix/sources.nix).crying-counter;
+	name = "triggers";
+	src = (import ../nix/sources.nix).${name};
 
 	nativeBuildInputs = [ makeWrapper gradle_7 ];
 
@@ -16,10 +16,10 @@ stdenv.mkDerivation rec {
 		cp *.jar $out/share/java/
 
 		mkdir -p $out/bin
-		cp ${run} $out/bin/crying-counter
+		cp ${run} $out/bin/${name}
 	'';
 
-	run = writeShellScript "crying-counter" ''
+	run = writeShellScript name ''
 		# Hack to self-reference the derivation.
 		src="''${BASH_SOURCE[0]}"
 		dir="''${src%/*}"
@@ -28,5 +28,5 @@ stdenv.mkDerivation rec {
 
 	outputHashAlgo = "sha256";
 	outputHashMode = "recursive";
-	outputHash = "sha256:1967lv93b795nndx4y1c6k1lwislyax8bipvkw5gvjvz87zlhwpj";
+	outputHash = "sha256:1xn8gsdk1bk188hcsmkxg1gsj6mqlq8bbk6dlvacl1ljincypisw";
 }

@@ -44,15 +44,15 @@
 		};
 	};
 
-	systemd.services.crying-counter = {
+	systemd.services.triggers = {
 		enable = true;
-		description = "Crying counter Discord bot";
+		description = "Triggers (Crying Counter) Discord bot";
 		after = [ "network-online.target" ];
 		wantedBy = [ "multi-user.target" ];
-		environment = import ./secrets/crying-counter-env.nix;
+		environment = import ./secrets/triggers-env.nix;
 		serviceConfig = {
 			Type = "simple";
-			ExecStart = "${pkgs.crying-counter}/bin/crying-counter";
+			ExecStart = "${pkgs.triggers}/bin/triggers";
 			DynamicUser = true;
 		};
 	};
