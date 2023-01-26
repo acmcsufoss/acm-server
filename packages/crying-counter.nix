@@ -1,21 +1,8 @@
-{ lib, stdenv, writeShellScript, makeWrapper, jre_minimal, gradle_7 }:
+{ lib, stdenv, writeShellScript, makeWrapper, jre, gradle_7 }:
 
-let
-	jre = jre_minimal.override {
-		modules = [
-			"java.base"
-			"java.sql"
-			"java.net.http"
-			"java.management"
-			"jdk.crypto.cryptoki"
-			"jdk.crypto.ec"
-		];
-	};
-in
-	
 stdenv.mkDerivation rec {
 	name = "crying-counter";
-	src = (import ../../nix/sources.nix).crying-counter;
+	src = (import ../nix/sources.nix).crying-counter;
 
 	nativeBuildInputs = [ makeWrapper gradle_7 ];
 
@@ -41,5 +28,5 @@ stdenv.mkDerivation rec {
 
 	outputHashAlgo = "sha256";
 	outputHashMode = "recursive";
-	outputHash = "sha256:12f933qlqj4758sb3vg1p4lz89sn0sik5jgz61ycw4ddnfa6wnff";
+	outputHash = "sha256:1967lv93b795nndx4y1c6k1lwislyax8bipvkw5gvjvz87zlhwpj";
 }
