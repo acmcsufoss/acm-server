@@ -1,11 +1,14 @@
 { buildGo119Module, fetchFromGitHub, lib }:
 
-let src = (import ../nix/sources.nix).acm-nixie;
+let pkgutil = import <acm-aws/nix/pkgutil.nix>;
+in
 
-in buildGo119Module {
+buildGo119Module rec {
 	pname = "acm-nixie";
-	version = builtins.substring 0 7 src.rev;
-	inherit src;
+	version = pkgutil.version src;
+
+	src = (import <acm-aws/nix/sources.nix>).acm-nixie;
 	vendorSha256 = "sha256:1l6gpngrjasmfyh2x6rzr1czzasfd6dks2vj8pq6l5i3w393xfdf";
+
 	subPackages = [ "." ];
 }

@@ -1,16 +1,18 @@
 { fetchFromGitHub, makeWrapper, lib, stdenv,
   buildGoModule, ffmpeg, yt-dlp }:
 
-let src = (import ../../nix/sources.nix).dischord;
+let PATH = [ ffmpeg yt-dlp ];
 
-	PATH = [ ffmpeg yt-dlp ];
+	pkgutil = import <acm-aws/nix/pkgutil.nix>;
+in
 
-in buildGoModule {
+buildGoModule rec {
 	pname = "dischord";
-	version = builtins.substring 0 7 src.rev;
+	version = pkgutil.version src;
 
-	inherit src;
+	src = (import <acm-aws/nix/sources.nix>).dischord;
 	vendorSha256 = "sha256:12y3gqvprfzqdhfvqhz4pw45bv7wl0lbwa8ijfshdij28ly6l6x3";
+
 	subPackages = [ "cmd/dischord" ];
 
 	postPatch = ''

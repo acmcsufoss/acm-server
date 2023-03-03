@@ -1,19 +1,20 @@
-{ pkgs ? import ../nix/nixpkgs.nix }:
+{ pkgs ? import <acm-aws/nix/nixpkgs.nix> }:
 
 let self = rec {
+	jre_small = pkgs.callPackage ./jre-small {};
+
 	# Go
-	acmregister = pkgs.callPackage ./acmregister.nix { };
-	acm-nixie = pkgs.callPackage ./acm-nixie.nix { };
+	acmregister = pkgs.callPackage ./acmregister { };
+	acm-nixie = pkgs.callPackage ./acm-nixie { };
 	caddy = pkgs.callPackage ./caddy { };
 	sysmet = pkgs.callPackage ./sysmet { };
 	dischord = pkgs.callPackage ./dischord { };
 
 	# Java
-	jre = pkgs.callPackage ./jre { };
-	triggers = pkgs.callPackage ./triggers.nix { inherit jre; };
+	triggers = pkgs.callPackage ./triggers {};
 
 	# Deno
-	pomo = pkgs.callPackage ./pomo.nix { };
+	pomo = pkgs.callPackage ./pomo { };
 };
 
 in self
