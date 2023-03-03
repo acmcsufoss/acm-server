@@ -14,4 +14,8 @@ pkgs.mkShell {
 		expect
 		shellcheck
 	];
+
+	shellHook = ''
+		export NIX_PATH=$NIX_PATH:acm-aws=$PWD
+	'';
 }
