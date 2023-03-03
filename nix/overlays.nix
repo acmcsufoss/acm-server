@@ -7,6 +7,7 @@ let sources = import ./sources.nix;
 
 in [
 	(import "${sources.gomod2nix}/overlay.nix")
+	(import ./packaging.nix)
 	(nix-npm-buildpackage)
 	(self: super: {
 		nix-update = super.nix-update.overrideAttrs (old: {

@@ -16,6 +16,6 @@ pkgs.mkShell {
 	];
 
 	shellHook = ''
-		export NIX_PATH=$NIX_PATH:acm-aws=$PWD
+		export NIX_PATH=$NIX_PATH:acm-aws=${builtins.toString ./.}
 	'';
 }
