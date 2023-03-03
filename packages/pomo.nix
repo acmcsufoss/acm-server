@@ -1,13 +1,14 @@
 { pkgs, lib, deno }:
 
-let src = (import ../nix/sources.nix).pomo;
+let src = (import <acm-aws/nix/sources.nix>).pomo;
 	version = builtins.substring 0 7 src.rev;
 
 in pkgs.runCommand "pomo-${version}" {
+	inherit src;
+
 	nativeBuildInputs = [ deno ];
 
-	inherit src;
-	outputHash = "sha256:${lib.fakeSha256}";
+	outputHash = "sha256:0nwd2rhqrfa8v2nms410f1djxwyb4zc0c3v62m7ic8gvmb5d8h4d";
 	outputHashMode = "recursive";
 } ''
 	export DENO_DIR="$TMPDIR/deno"

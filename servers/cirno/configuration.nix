@@ -3,7 +3,7 @@
 {
 	imports = [
 		(modulesPath + "/virtualisation/amazon-image.nix")
-		../base.nix
+		<acm-aws/servers/base.nix>
 	];
 
 	services.diamondburned.caddy = {
@@ -53,6 +53,19 @@
 		serviceConfig = {
 			Type = "simple";
 			ExecStart = "${pkgs.triggers}/bin/triggers";
+			DynamicUser = true;
+		};
+	};
+
+	systemd.services.pomo = {
+		enable = true;
+		description = "Pomodoro timer server/Discord bot";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		environment = import ./secrets/pomo.nix;
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.pomo}/bin/pomo";
 			DynamicUser = true;
 		};
 	};

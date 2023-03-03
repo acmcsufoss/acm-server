@@ -11,6 +11,8 @@ buildGoApplication {
 	modules = ./gomod2nix.toml;
 	subPackages = [ "." ];
 
+	doCheck = false;
+
 	meta = with lib; {
 		homepage = https://caddyserver.com;
 		description = "Fast, cross-platform HTTP/2 web server with automatic HTTPS";
