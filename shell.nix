@@ -18,5 +18,5 @@ pkgs.mkShell {
 		shellcheck
 	];
 
-	NIX_PATH = "nixpkgs=${pkgssrc}:acm-aws=${builtins.toString ./.}";
+	ROOT = "${builtins.toString ./.}";
 }

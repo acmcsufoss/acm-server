@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 
-let sources = import <acm-aws/nix/sources.nix> { inherit pkgs; };
+let sources = import "${builtins.getEnv "ROOT"}/nix/sources.nix" { inherit pkgs; };
 
 in {
 	imports = [
@@ -9,5 +9,5 @@ in {
 		./dischord/service.nix
 	];
 
-	nixpkgs.overlays = import <acm-aws/nix/overlays.nix>;
+	nixpkgs.overlays = import "${builtins.getEnv "ROOT"}/nix/overlays.nix";
 }

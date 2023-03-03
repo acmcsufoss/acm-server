@@ -1,4 +1,4 @@
-{ pkgs ? import <acm-aws/nix/nixpkgs.nix> }:
+{ pkgs ? import "${builtins.getEnv "ROOT"}/nix/nixpkgs.nix" }:
 
 let self = rec {
 	jre_small = pkgs.callPackage ./jre-small {};
