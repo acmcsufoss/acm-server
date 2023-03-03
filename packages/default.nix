@@ -11,6 +11,9 @@ let self = rec {
 	# Java
 	jre = pkgs.callPackage ./jre { };
 	triggers = pkgs.callPackage ./triggers.nix { inherit jre; };
+
+	# Deno
+	pomo = pkgs.callPackage ./pomo.nix { };
 };
 
 in self
