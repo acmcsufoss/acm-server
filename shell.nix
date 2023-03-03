@@ -1,5 +1,8 @@
 { pkgs ? import ./nix/nixpkgs.nix }:
 
+let pkgssrc = (import ./nix/sources.nix).nixpkgs;
+in
+
 pkgs.mkShell {
 	name = "acm-aws-shell";
 	buildInputs = with pkgs; [
@@ -15,7 +18,5 @@ pkgs.mkShell {
 		shellcheck
 	];
 
-	shellHook = ''
-		export NIX_PATH=$NIX_PATH:acm-aws=${builtins.toString ./.}
-	'';
+	NIX_PATH = "nixpkgs=${pkgssrc}:acm-aws=${builtins.toString ./.}";
 }
