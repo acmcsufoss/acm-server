@@ -3,7 +3,7 @@
 {
 	imports = [
 		(modulesPath + "/virtualisation/amazon-image.nix")
-		"${builtins.getEnv "ROOT"}/servers/base.nix"
+		<acm-aws/servers/base.nix>
 	];
 
 	services.diamondburned.caddy = {

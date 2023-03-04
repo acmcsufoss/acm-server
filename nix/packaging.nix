@@ -1,6 +1,6 @@
 self: super:
 
-let pkgutil = import "${builtins.getEnv "ROOT"}/nix/pkgutil.nix";
+let pkgutil = import <acm-aws/nix/pkgutil.nix>;
 in
 
 {
