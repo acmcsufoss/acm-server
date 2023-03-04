@@ -29,10 +29,10 @@
         "homepage": "",
         "owner": "diamondburned",
         "repo": "nix-update",
-        "rev": "2a9171bfdff91ca1e01681f0685cb2e8782bf7dc",
-        "sha256": "1b85pmhqnhi2ab40n38ccvravsd74cnvpzqkfw7kcirwhyi30xij",
+        "rev": "28590d7e1653f8bc98b4e0310e70e139de99fe7f",
+        "sha256": "0nwzh4kw897vafx6c1frr3fa0f22cya5fsq117xrfi6wpji35drb",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/nix-update/archive/2a9171bfdff91ca1e01681f0685cb2e8782bf7dc.tar.gz",
+        "url": "https://github.com/diamondburned/nix-update/archive/28590d7e1653f8bc98b4e0310e70e139de99fe7f.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "dischord": {
@@ -95,7 +95,7 @@
         "type": "tarball",
         "url": "https://github.com/ethanthatonekid/pomo/archive/a770f5814a80bfc156bb73f0f707281ae87b554b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
-        "version": "v0.0.6"
+        "version": ""
     },
     "sysmet": {
         "branch": "v3",

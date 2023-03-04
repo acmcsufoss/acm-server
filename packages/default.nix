@@ -1,6 +1,6 @@
 { pkgs ? import <acm-aws/nix/nixpkgs.nix> }:
 
-let self = rec {
+rec {
 	jre_small = pkgs.callPackage ./jre-small {};
 
 	# Go
@@ -14,7 +14,5 @@ let self = rec {
 	triggers = pkgs.callPackage ./triggers {};
 
 	# Deno
-	pomo = pkgs.callPackage ./pomo { };
-};
-
-in self
+	pomo = pkgs.callPackage ./pomo/default.nix { };
+}

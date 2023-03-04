@@ -35,22 +35,37 @@ pkg::update() {
 
 	case "$2" in
 	"v"*)
-		nivFlags+=("-v" "$2");;
+		nivFlags+=(-v "$2");;
 	"refs/tags/"*|[0-9a-f]*)
-		nivFlags+=("-r" "$2");;
+		nivFlags+=(-r "$2" -v "");;
 	"refs/heads/"*)
-		nivFlags+=("-b" "$2");;
+		nivFlags+=(-b "$2" -v "");;
 	"latest"|"")
-		;;
+		nivFlags+=(-v "");;
 	*)
 		echo "Unknown version or ref or \`latest'" >&2
 		exit 1;;
 	esac
 
 	niv update "$package" "${nivFlags[@]}" >&2
+
 	(
 		cd packages
-		nix-update --version=skip "$package" >&2
+
+		# Fix nix-update being incompetent at figuring out where the source file
+		# is. We always use the callPackage <file> pattern, so we can just
+		# regex-search that.
+		file=$(< default.nix)
+		src=
+		re="$package\s*=.*callPackage\ (.*)\ \{.*\}.*"
+		if [[ "$file" =~ $re ]]; then
+			src="${BASH_REMATCH[1]}"
+		else
+			echo "Failed to find callPackage for $package" >&2
+			exit 1
+		fi
+
+		nix-update --version=skip "$package" --override-filename "$src" >&2
 	)
 }
 
