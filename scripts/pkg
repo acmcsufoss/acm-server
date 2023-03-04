@@ -65,6 +65,11 @@ pkg::update() {
 			exit 1
 		fi
 
+		# If we're importing a directory, then add the trailing filename.
+		if [[ -d "$src" ]]; then
+			src="$src/default.nix"
+		fi
+
 		nix-update --version=skip "$package" --override-filename "$src" >&2
 	)
 }

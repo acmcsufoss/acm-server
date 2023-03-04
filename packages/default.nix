@@ -14,5 +14,5 @@ rec {
 	triggers = pkgs.callPackage ./triggers {};
 
 	# Deno
-	pomo = pkgs.callPackage ./pomo/default.nix { };
+	pomo = pkgs.callPackage ./pomo { };
 }
