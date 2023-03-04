@@ -90,10 +90,10 @@
         "homepage": "https://deno.land/x/pomo/",
         "owner": "ethanthatonekid",
         "repo": "pomo",
-        "rev": "80298ae0d5446e267ab07f7f30f7203689e866c8",
-        "sha256": "038qpi5csjpnx8xmjvx2ks93mqlja8wrbdaq3friah2qc9iy92i7",
+        "rev": "a770f5814a80bfc156bb73f0f707281ae87b554b",
+        "sha256": "0s6pr0ycg80al5kg8s3q60qd9m14bjvjrxqnwj3add444y93hvh2",
         "type": "tarball",
-        "url": "https://github.com/ethanthatonekid/pomo/archive/80298ae0d5446e267ab07f7f30f7203689e866c8.tar.gz",
+        "url": "https://github.com/ethanthatonekid/pomo/archive/a770f5814a80bfc156bb73f0f707281ae87b554b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": "v0.0.6"
     },
