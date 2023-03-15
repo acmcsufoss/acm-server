@@ -12,6 +12,7 @@ pkgs.mkShell {
 		niv
 		git
 		git-crypt
+		openssl
 		yamllint
 		gomod2nix
 		expect
