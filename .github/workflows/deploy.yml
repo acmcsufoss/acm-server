@@ -69,7 +69,15 @@ jobs:
         run: |-
           set -o pipefail
           terraform apply --auto-approve "/tmp/acm-aws-plan" \
+            |& unbuffer \
+            |& tee /tmp/terraform-apply.log \
             |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
+
+          # Encrypt the full deployment logs so we can review them later if
+          # needed.
+          ./scripts/encrypt-ssh \
+            /tmp/terraform-apply.log \
+            /tmp/terraform-apply.log.enc
 
       - name: Commit changes, if any
         id: git-commit
@@ -78,3 +86,10 @@ jobs:
         with:
           commit_message: "Update deployment using GitHub Actions"
           branch: ${{ github.ref_name }}
+
+      - name: Upload Terraform deployment logs
+        if: steps.terraform-plan.outputs.status == 2
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-apply.log.enc
+          path: /tmp/terraform-apply.log.enc
