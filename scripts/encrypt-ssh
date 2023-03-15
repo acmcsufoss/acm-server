@@ -2,10 +2,12 @@
 set -e
 
 main() {
+	flags=()
+
 	for arg in "$@"; do
 		case "$arg" in
 		-d|--decrypt)
-			decrypt=-d
+			flags+=(-d)
 			;;
 		*)
 			break
@@ -14,23 +16,10 @@ main() {
 		shift
 	done
 	
-	input="$1"
-	output="$2"
-	
-	if [[ "$input" == "" ]]; then
-		echo "Usage: $(basename "$0") [-d|--decrypt] input [output]"
-		exit 1
-	fi
-	
-	if [[ "$output" == "" ]]; then
-		if [[ "$decrypt" == "1" ]]; then
-			output="$input.dec"
-		else
-			output="$input.enc"
-		fi
-	fi
+	input="${1:-/dev/stdin}"
+	output="${2:-/dev/stdout}"
 
-	openssl aes-256-cbc -pbkdf2 -iter 131072 $decrypt \
+	openssl aes-256-cbc -pbkdf2 -iter 131072 "${flags[@]}" \
 		-in "$input" -out "$output" \
 		-pass "file:./secrets/ssh/id_ed25519"
 }
