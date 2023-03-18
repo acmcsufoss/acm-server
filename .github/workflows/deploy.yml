@@ -87,7 +87,7 @@ jobs:
           branch: ${{ github.ref_name }}
 
       - name: Upload Terraform deployment logs
-        if: steps.terraform-plan.outputs.status == 2
+        if: steps.terraform-plan.outputs.status == 2 && failure()
         uses: actions/upload-artifact@v2
         with:
           name: terraform-apply.log.enc
