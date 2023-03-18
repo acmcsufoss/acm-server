@@ -72,12 +72,6 @@ jobs:
             |& tee /tmp/terraform-apply.log \
             |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
 
-          # Encrypt the full deployment logs so we can review them later if
-          # needed.
-          ./scripts/encrypt-ssh \
-            /tmp/terraform-apply.log \
-            /tmp/terraform-apply.log.enc
-
       - name: Commit changes, if any
         id: git-commit
         if: steps.terraform-plan.outputs.status == 2
@@ -86,7 +80,16 @@ jobs:
           commit_message: "Update deployment using GitHub Actions"
           branch: ${{ github.ref_name }}
 
+      - name: Prepare Terraform deployment logs
+        id: terraform-logs-prepare
+        if: steps.terraform-plan.outputs.status == 2 && failure()
+        run: |-
+          ./scripts/encrypt-ssh \
+            /tmp/terraform-apply.log \
+            /tmp/terraform-apply.log.enc
+
       - name: Upload Terraform deployment logs
+        id: terraform-logs-upload
         if: steps.terraform-plan.outputs.status == 2 && failure()
         uses: actions/upload-artifact@v2
         with:
