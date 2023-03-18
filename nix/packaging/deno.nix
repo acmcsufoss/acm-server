@@ -13,27 +13,26 @@ in
 	...
 }@args:
 
-runCommand name (args // {
-	inherit (args) src entrypoint outputHash;
-	outputHashMode = "recursive";
-
-	nativeBuildInputs = [
-		deno
-		makeWrapper
-	];
-
-	# Wrapper script to run with the right DENO_DIR environment variable.
-	# This allows dynamicUser to work.
-	wrapper = writeShellScript "${pname}-wrapper" ''
-		export TMPDIR="''${TMPDIR:-/tmp}"
-		export DENO_DIR="''${DENO_DIR:-$TMPDIR/.deno}"
-
-		binary="$(dirname "''${BASH_SOURCE[0]}")/.${pname}-wrapped"
-		exec "$binary" "$@"
+let denoPkg = runCommand "${name}-deno-pkg" (args // {
+		inherit (args) src entrypoint outputHash;
+		outputHashMode = "recursive";
+		nativeBuildInputs = [ deno ];
+	}) ''
+		export DENO_DIR="$TMPDIR/deno"
+		mkdir -p $out/bin
+		deno compile -A --output $out/bin/${pname} "$src/$entrypoint"
 	'';
-}) ''
-	export DENO_DIR="$TMPDIR/deno"
+in
+
+runCommand name {
+	nativeBuildInputs = [ makeWrapper ];
+	buildInputs = [ denoPkg ];
+	passthru = {
+		inherit outputHash;
+		outputHashMode = "recursive";
+	};
+} ''
 	mkdir -p $out/bin
-	deno compile -A --output $out/bin/.${pname}-wrapped "$src/$entrypoint"
-	cp $wrapper $out/bin/${pname}
+	makeWrapper ${denoPkg}/bin/${pname} $out/bin/${pname} \
+		--set-default DENO_DIR '/tmp/.deno'
 ''
