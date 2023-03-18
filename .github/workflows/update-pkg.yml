@@ -41,6 +41,10 @@ jobs:
             echo "updated=1" >> $GITHUB_OUTPUT
           fi
 
+      - name: Build package ${{ inputs.package }}
+        if: steps.update-pkg.outputs.updated == 1
+        run: nix-build ./packages -A "${{ inputs.package }}"
+
       - name: Commit changes, if any
         id: git-commit
         if: steps.update-pkg.outputs.updated == 1
