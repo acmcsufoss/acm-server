@@ -17,11 +17,12 @@
         "homepage": null,
         "owner": "diamondburned",
         "repo": "acmregister",
-        "rev": "b9cc3e289744b2442be37f6e3ea4a3a0328b266a",
-        "sha256": "18cd34v2bd0zckmxxj4z8shbry2x5h1xynxinrnax0hvahs1a9ld",
+        "rev": "f0e056d472ae30ee8111471d7d95697e6d9d9685",
+        "sha256": "03cxsjczrj9y3x3b6pb4vihglg48kbsjqgbgf4dgrjaaxdy375lj",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/acmregister/archive/b9cc3e289744b2442be37f6e3ea4a3a0328b266a.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+        "url": "https://github.com/diamondburned/acmregister/archive/f0e056d472ae30ee8111471d7d95697e6d9d9685.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "version": ""
     },
     "diamondburned_nix-update": {
         "branch": "master",
@@ -83,6 +84,18 @@
         "url": "https://github.com/NixOS/nixpkgs/archive/52b2ac8ae18bbad4374ff0dd5aeee0fdf1aea739.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": "nixos-unstable"
+    },
+    "nixpkgs_newer": {
+        "branch": "nixpkgs-unstable",
+        "description": "Nix Packages collection",
+        "homepage": "",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "29176972b4be60f7d3eb3101f696c99f2e6ada57",
+        "sha256": "1c8rjv87fv9bfnp6j4g5wnsf8lyl9aldvy947ihshkd178fpfw23",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs/archive/29176972b4be60f7d3eb3101f696c99f2e6ada57.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "pomo": {
         "branch": "main",
