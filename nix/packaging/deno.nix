@@ -18,11 +18,10 @@ let denoPkg = runCommand "${name}-deno-pkg" (args // {
 		outputHashMode = "recursive";
 		nativeBuildInputs = [ deno ];
 	}) ''
-		export DENO_DIR="$TMPDIR/deno"
+		export DENO_DIR=.deno
 		deno compile -A --output ${pname} "$src/$entrypoint"
-
 		mkdir -p $out/bin
-		cp ${pname} $out/bin/${pname}
+		install -Dm755 ${pname} $out/bin/${pname}
 	'';
 in
 
