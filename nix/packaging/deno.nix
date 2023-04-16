@@ -19,8 +19,10 @@ let denoPkg = runCommand "${name}-deno-pkg" (args // {
 		nativeBuildInputs = [ deno ];
 	}) ''
 		export DENO_DIR="$TMPDIR/deno"
+		deno compile -A --output ${pname} "$src/$entrypoint"
+
 		mkdir -p $out/bin
-		deno compile -A --output $out/bin/${pname} "$src/$entrypoint"
+		cp ${pname} $out/bin/${pname}
 	'';
 in
 
