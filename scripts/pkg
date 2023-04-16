@@ -55,12 +55,8 @@ pkg::update() {
 		# Fix nix-update being incompetent at figuring out where the source file
 		# is. We always use the callPackage <file> pattern, so we can just
 		# regex-search that.
-		file=$(< default.nix)
-		src=
-		re="$package\s*=.*callPackage\ (.*)\ \{.*\}.*"
-		if [[ "$file" =~ $re ]]; then
-			src="${BASH_REMATCH[1]}"
-		else
+		src=$(sed -n 's/.*'"$package"'\s*=.*callPackage \(.*\) {.*}.*/\1/p' default.nix)
+		if [[ ! "$src" ]]; then
 			echo "Failed to find callPackage for $package" >&2
 			exit 1
 		fi
@@ -69,6 +65,9 @@ pkg::update() {
 		if [[ -d "$src" ]]; then
 			src="$src/default.nix"
 		fi
+
+		echo "Source: $src"
+		echo "Package: $package"
 
 		nix-update --version=skip "$package" --override-filename "$src" >&2
 	)
