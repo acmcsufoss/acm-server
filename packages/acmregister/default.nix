@@ -5,7 +5,7 @@ buildGo119Module rec {
 	version = builtins.substring 0 7 src.rev;
 
 	src = (import <acm-aws/nix/sources.nix>).acmregister;
-	vendorSha256 = "sha256:0mh4awgj91zz81yqvlf12fpvfgsvk7h758vygkfhccdg42giic6h";
+	vendorSha256 = "sha256-2hrzIJU8ILqNy+XWkqdp9TtrtV3lJhdxKhhnuBctxP4=";
 
 	# GOWORK is incompatible with vendorSha256.
 	GOWORK = "off";
