@@ -26,6 +26,8 @@
 		serviceConfig = {
 			Type = "simple";
 			ExecStart = "${pkgs.acmregister}/bin/acmregister";
+			Restart = "on-failure";
+			RestartSec = "1s";
 		};
 	};
 
@@ -67,6 +69,8 @@
 			Type = "simple";
 			ExecStart = "${pkgs.pomo}/bin/pomo";
 			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
 		};
 	};
 
