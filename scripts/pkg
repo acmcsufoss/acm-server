@@ -82,7 +82,7 @@ pkg::make() {
 			echo "No Makefile found for $package, skipping" >&2
 			continue
 		fi
-		make -C "$dir"
+		make -BC "$dir"
 	done
 }
 
