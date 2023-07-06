@@ -2,8 +2,8 @@
 
 ![Deployment status badge](https://github.com/diamondburned/acm-aws/actions/workflows/deploy.yml/badge.svg?branch=main)
 
-acm-aws contains the Terraform deployment files for acmCSUF. It uses Terraform
-and Nix to orchestrate cloud servers.
+acm-aws contains the Terraform deployment files for ACM at CSUF. It uses
+Terraform and Nix to orchestrate cloud servers.
 
 ## What is?
 
@@ -64,38 +64,20 @@ terraform init
 
 ## Deploying
 
-Run:
+### Deploy locally
+
+To deploy locally, ensure you have Nix installed and have loaded the Nix shell.
+Then, run:
 
 ```sh
 terraform apply
 ```
 
-## Quick Tasks
+### Deploy using GitHub Actions
 
-The sections underneath describe small tasks that may be useful in certain
-scenarios.
+To deploy using GitHub Actions, push to the `main` branch. This will trigger the
+GitHub Actions workflow, which will deploy the servers.
 
-### SSH
+## Documentation
 
-```sh
-# Example: ./scripts/ssh <server name>
-
-./scripts/ssh cirno
-```
-
-### Obtaining an IP Address
-
-```sh
-# Example: ./scripts/ip <server name>
-
-ip=$(./scripts/ip cirno)
-curl -v ${ip}:80
-```
-
-### Updating a Dependency
-
-```sh
-# Example: ./scripts/update-pkg <package name>
-
-./scripts/update-pkg acmregister
-```
+For more detailed documentation, see the [Documentation folder](./docs/).
