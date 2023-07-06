@@ -53,8 +53,8 @@ schema = 3
     version = "v1.1.0"
     hash = "sha256-nVDTtXH9PC3yJ0THaQZEN243UP9xgLi/clt5xRqj3+M="
   [mod."github.com/cespare/xxhash/v2"]
-    version = "v2.1.2"
-    hash = "sha256-YV9SmXDtmmgQylQUfrUgQLAPfqYexcHxegMBT+IX9qM="
+    version = "v2.2.0"
+    hash = "sha256-nPufwYQfTkyrEkbBrpqM3C2vnMxfIz6tAaBmiUP7vd4="
   [mod."github.com/chzyer/readline"]
     version = "v0.0.0-20180603132655-2972be24d48e"
     hash = "sha256-2Uj5LGpHEbLQG3d/7z9AL8DknUBZyoTAMs4j+VVDmIA="
@@ -425,11 +425,11 @@ schema = 3
     version = "v0.1.12"
     hash = "sha256-D0kGneGMt+LFbdUDo9Axd0yB0a5t3Z0YKVAnJDDaBo8="
   [mod."google.golang.org/genproto"]
-    version = "v0.0.0-20220617124728-180714bec0ad"
-    hash = "sha256-9h/04xtGU2XSEK4gNjjolBZK0sSrw9zZS6Ec6YAb8Sw="
+    version = "v0.0.0-20230110181048-76db0878b65f"
+    hash = "sha256-Jc90F9KU+ZKI0ynF/p3Vwl7TJPb7/MxDFs0ebagty2s="
   [mod."google.golang.org/grpc"]
-    version = "v1.47.0"
-    hash = "sha256-bollpfZmc/+8Ga7cFKp4gKX83wTKo/lw7vBW5SV3e9o="
+    version = "v1.53.0"
+    hash = "sha256-LkB13k1JaQ7e4nGpCoEA9q4T8oIV0KvkFIDZmHhDr08="
   [mod."google.golang.org/protobuf"]
     version = "v1.28.1"
     hash = "sha256-sTJYgvlv5is7vHNxcuigF2lNASp0QonhUgnrguhfHSU="
