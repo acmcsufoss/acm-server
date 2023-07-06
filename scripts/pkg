@@ -6,6 +6,14 @@ main() {
 	"list")
 		pkg::list
 		;;
+	"src")
+		shift
+		pkg::src "$1"
+		;;
+	"make")
+		shift
+		pkg::make "$@"
+		;;
 	"update")
 		shift
 		if [[ "$1" == "" ]]; then
@@ -15,7 +23,7 @@ main() {
 		pkg::update "$@"
 		;;
 	""|"-h"|"--help")
-		echo "Usage: $0 {list|update}"
+		echo "Usage: $0 {list|src|make|update}"
 		;;
 	*)
 		echo "Unknown argument: $1"
@@ -27,6 +35,55 @@ pkg::list() {
 	nix-instantiate --eval --json \
 		-E 'builtins.attrNames (import ./packages {})' \
 		| jq -r '.[]'
+}
+
+pkg::src() {
+	local package="$1"	
+
+	cd packages
+	src=$(sed -n 's/.*'"$package"'\s*=.*callPackage \(.*\) {.*}.*/\1/p' default.nix)
+	if [[ ! "$src" ]]; then
+		echo "Failed to find callPackage for $package" >&2
+		exit 1
+	fi
+
+	# If we're importing a directory, then add the trailing filename.
+	if [[ -d "$src" ]]; then
+		src="$src/default.nix"
+	fi
+
+	if [[ ! -f "$src" ]]; then
+		echo "Failed to find source file for $package" >&2
+		exit 1
+	fi
+
+	realpath --relative-to=.. "$src"
+}
+
+pkg::make() {
+	local packages=( "$@" )
+
+	if (( ${#packages[@]} == 0 )); then
+		packages=( packages/*/Makefile )
+		for i in "${!packages[@]}"; do
+			p=$(dirname "${packages[$i]}")
+			p=${p#packages/}
+			packages[$i]=$p
+		done
+
+		echo "No packages specified, making all packages with a Makefile:" >&2
+		printf -- "- %s\n" "${packages[@]}" >&2
+	fi
+
+	for package in "${packages[@]}"; do
+		src=$(scripts/pkg src "$package")
+		dir=$(dirname "$src")
+		if [[ ! -f "$dir/Makefile" ]]; then
+			echo "No Makefile found for $package, skipping" >&2
+			continue
+		fi
+		make -C "$dir"
+	done
 }
 
 pkg::update() {
@@ -50,27 +107,15 @@ pkg::update() {
 	niv update "$package" "${nivFlags[@]}" >&2
 
 	(
-		cd packages
-
-		# Fix nix-update being incompetent at figuring out where the source file
-		# is. We always use the callPackage <file> pattern, so we can just
-		# regex-search that.
-		src=$(sed -n 's/.*'"$package"'\s*=.*callPackage \(.*\) {.*}.*/\1/p' default.nix)
-		if [[ ! "$src" ]]; then
-			echo "Failed to find callPackage for $package" >&2
-			exit 1
-		fi
-
-		# If we're importing a directory, then add the trailing filename.
-		if [[ -d "$src" ]]; then
-			src="$src/default.nix"
-		fi
-
+		src=$(pkg::src "$package")
 		echo "Source: $src"
 		echo "Package: $package"
 
+		cd packages
 		nix-update --version=skip "$package" --override-filename "$src" >&2
 	)
+
+	pkg::make "$package"
 }
 
 # Only run main if this script is not being sourced as a library.
