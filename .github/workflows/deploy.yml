@@ -38,6 +38,7 @@ jobs:
 
   deploy:
     name: Deploy with Terraform
+    needs: make-all
     runs-on: ubuntu-22.04
     environment: Production
     outputs:
