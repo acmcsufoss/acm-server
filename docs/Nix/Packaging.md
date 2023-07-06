@@ -442,3 +442,25 @@ our `configuration.nix` file:
 > - `networking.firewall`
 > - `environment.systemPackages`
 >
+
+## Optional: Package Makefiles
+
+Packages that need to run additional commands before it can be built in Nix can
+create a Makefile to do so. A few common use cases are:
+
+- Regenerating a hash/lock file for a package. For example, `caddy` needs to
+  regenerate its `gomod2nix.toml` file based on the `go.mod` file.
+- There might be more...
+
+To create a Makefile, create a `Makefile` file in the package directory. For
+example, `./packages/caddy/Makefile`:
+
+```makefile
+# The first target is always run by `scripts/pkg make`.
+gomod2nix.toml: go.mod go.sum
+    go mod download
+    gomod2nix
+```
+
+> **Note**: All package Makefiles are run during the deployment process within
+> the GitHub Actions workflow. Deploying locally does not run the Makefiles.
