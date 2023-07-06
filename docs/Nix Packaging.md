@@ -26,16 +26,12 @@ niv add github-username/github-repo
 To use the source in Nix, do
 
 ```nix
-let sources = import ./nix/sources.nix;
+let sources = import <acm-aws/nix/sources.nix>;
 
 in {
 	src = sources.github-repo;
 }
 ```
-
-> **Note**: when importing `./nix`, pay attention to where the file that you're
-> writing is. If it's in `./packages/file.nix`, then you'll need to import it as
-> `../nix`.
 
 Adding source code from sources other than GitHub is a bit more complicated.
 Refer to `niv add --help` for more information.
@@ -65,14 +61,14 @@ Once the package file is written, they need to be added into
 `packages/default.nix` like so:
 
 ```nix
-{ pkgs ? import ../nix/nixpkgs.nix }:
+{ pkgs ? import <acm-aws/nix/nixpkgs.nix> }:
 
-let self = {
-	# Other stuff...
-	acmregister = pkgs.callPackage ./acmregister.nix { };
-	# Other stuff...
-};
-
+let
+    self = {
+	    # Other stuff...
+	    acmregister = pkgs.callPackage ./acmregister.nix { };
+	    # Other stuff...
+    };
 in self
 ```
 
@@ -92,7 +88,7 @@ TODO. Use `buildNpmPackage`: https://github.com/serokell/nix-npm-buildpackage
 # new enough.
 { buildGo119Module }:
 
-let src = (import ./nix/sources.nix).acmregister;
+let src = (import <acm-aws/nix/sources.nix>).acmregister;
 
 in buildGo119Module {
 	# Define the name and version of the package.
@@ -161,7 +157,7 @@ A basic systemd service looks like this in Nix:
 		# Optionally clarify the environment variables that we want to pass
 		# into our service. It is recommended that this be a Nix file inside a
 		# folder named `secrets' for them to be hidden from public.
-		environment = import ./secrets/acm-nixie-env.nix;
+		environment = import <acm-aws/secrets/acm-nixie-env.nix>;
 		serviceConfig = {
 			# Declare that our service is a long-running process.
 			Type = "simple";
@@ -207,7 +203,7 @@ For example, we can paste our `hellobot` service directly into
 		description = "Hello world bot";
 		after = [ "network-online.target" ];
 		wantedBy = [ "multi-user.target" ];
-		environment = import ./secrets/acm-nixie-env.nix;
+		environment = import <acm-aws/secrets/acm-nixie-env.nix>;
 		serviceConfig = {
 			Type = "simple";
 			RuntimeDirectory = "hellobot";
@@ -239,8 +235,8 @@ A Nix service option often looks something like this:
 {
 	services.caddy = {
 		enable = true;
-		configFile = ./secrets/Caddyfile;
-		environment = import ./secrets/caddy-env.nix;
+		configFile = <acm-aws/secrets/Caddyfile>;
+		environment = import <acm-aws/secrets/caddy-env.nix>;
 	};
 }
 ```
