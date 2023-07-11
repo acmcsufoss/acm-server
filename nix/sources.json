@@ -110,6 +110,19 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": ""
     },
+    "sendlimiter": {
+        "branch": "main",
+        "description": "Discord bot that limits the ability to send messages in a channel given criteria.",
+        "homepage": null,
+        "owner": "acmcsufoss",
+        "repo": "sendlimiter",
+        "rev": "7aadbbc46015a2dfbc567184992ae65992726145",
+        "sha256": "0721v6gjxvdfxlsf9hgklbyyiaz8x3hfy5wrqnmdrzv7bnk8qask",
+        "type": "tarball",
+        "url": "https://github.com/acmcsufoss/sendlimiter/archive/7aadbbc46015a2dfbc567184992ae65992726145.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "version": ""
+    },
     "sysmet": {
         "branch": "v3",
         "description": "Daemonless server metrics collector and frontend.",

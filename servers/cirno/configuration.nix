@@ -74,6 +74,29 @@
 		};
 	};
 
+	systemd.services.sendlimiter =
+		let
+			extraArgs = [];
+			secrets = import ./secrets/sendlimiter.nix;
+			args = lib.concatStringsSep
+				" "
+				(map lib.escapeShellArg (extraArgs ++ secrets.channelIDs));
+		in {
+			enable = true;
+			description = "Send limiter Discord bot";
+			after = [ "network-online.target" ];
+			wantedBy = [ "multi-user.target" ];
+			environment = {
+				BOT_TOKEN = secrets.botToken;
+			};
+			serviceConfig = {
+				Type = "simple";
+				ExecStart = "${pkgs.sendlimiter}/bin/sendlimiter ${args}";
+				Restart = "on-failure";
+				RestartSec = "1s";
+			};
+		};
+
 	environment.systemPackages = with pkgs; [
 		ncdu
 	];
