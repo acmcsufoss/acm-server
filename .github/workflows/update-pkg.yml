@@ -12,9 +12,7 @@ on:
       deploy:
         type: boolean
         default: true
-        description: |
-          Whether to deploy the package after updating it. Unticking this is
-          useful if you only want to update the package but not deploy it.
+        description: Trigger deployment after updating the package.
 
 jobs:
   update:
