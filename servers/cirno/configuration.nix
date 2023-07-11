@@ -74,6 +74,20 @@
 		};
 	};
 
+	systemd.services.sendlimiter = {
+		enable = true;
+		description = "Send limiter Discord bot";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		environment = import ./secrets/sendlimiter-env.nix;
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.sendlimiter}/bin/sendlimiter $DISCORD_CHANNEL_ID";
+			Restart = "on-failure";
+			RestartSec = "1s";
+		};
+	};
+
 	environment.systemPackages = with pkgs; [
 		ncdu
 	];

@@ -7,6 +7,7 @@ rec {
 	acmregister = pkgs.callPackage ./acmregister { };
 	acm-nixie = pkgs.callPackage ./acm-nixie { };
 	caddy = pkgs.callPackage ./caddy { };
+	sendlimiter = pkgs.callPackage ./sendlimiter { };
 	sysmet = pkgs.callPackage ./sysmet { };
 	dischord = pkgs.callPackage ./dischord { };
 

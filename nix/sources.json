@@ -110,6 +110,19 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": ""
     },
+    "sendlimiter": {
+        "branch": "refs/heads/main",
+        "description": "A message limit bot for Discord",
+        "homepage": "https://oss.acmcsuf.com/sendlimiter#readme",
+        "owner": "acmcsufoss",
+        "repo": "sendlimiter",
+        "rev": "7aadbbc46015a2dfbc567184992ae65992726145",
+        "sha256": "0qpi5c54w2c2ynmbxfsdza5cx5ijanzf4305lbwjamal95k58bp9",
+        "type": "tarball",
+        "url": "https://github.com/acmcsufoss/sendlimiter/archive/7aadbbc46015a2dfbc567184992ae65992726145.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "version": ""
+    },
     "sysmet": {
         "branch": "v3",
         "description": "Daemonless server metrics collector and frontend.",
