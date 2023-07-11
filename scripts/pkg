@@ -108,6 +108,7 @@ pkg::update() {
 
 	(
 		src=$(pkg::src "$package")
+		src=$(realpath --relative-to=packages "$src")
 		echo "Source: $src"
 		echo "Package: $package"
 
