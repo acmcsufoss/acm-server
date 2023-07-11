@@ -9,6 +9,12 @@ on:
       version:
         type: string
         default: "latest"
+      deploy:
+        type: boolean
+        default: true
+        description: |
+          Whether to deploy the package after updating it. Unticking this is
+          useful if you only want to update the package but not deploy it.
 
 jobs:
   update:
@@ -65,6 +71,6 @@ jobs:
 
   deploy:
     needs: update
-    if: needs.update.outputs.updated == 1
+    if: needs.update.outputs.updated == 1 && inputs.deploy == true
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
