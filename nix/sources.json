@@ -116,10 +116,10 @@
         "homepage": null,
         "owner": "acmcsufoss",
         "repo": "sendlimiter",
-        "rev": "70211f640be82a0335063bed271d0223d414aa6c",
-        "sha256": "108iwr9yx16859bvkqhgkmwzkdql8820w0i216iyclnap9lmc4jn",
+        "rev": "0d28108e55876fff57744c087e1202d8061f7cf6",
+        "sha256": "1kfnvzbm9wzh2nwk0y63j6pcqr32f169ir3y6lvanjw84zc95dbd",
         "type": "tarball",
-        "url": "https://github.com/acmcsufoss/sendlimiter/archive/70211f640be82a0335063bed271d0223d414aa6c.tar.gz",
+        "url": "https://github.com/acmcsufoss/sendlimiter/archive/0d28108e55876fff57744c087e1202d8061f7cf6.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": ""
     },
