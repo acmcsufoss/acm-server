@@ -24,7 +24,7 @@ new workflow run that updates the given package onto acm-aws. Use it as such:
 
 ```yml
 - name: Update package on production
-  uses: diamondburned/acm-aws/.github/actions/update-pkg@main
+  uses: acmcsufoss/acm-aws/.github/actions/update-pkg@main
   with:
     token: ${{ secrets.PAT_TOKEN }}
     package: acmregister # !!!: swap with your own!
