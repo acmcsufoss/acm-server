@@ -1,5 +1,18 @@
 # Auto-update Guide
 
+**Attention**: this guide is deprecated. It no longer works due to GitHub
+permission issues.
+
+For more information, see:
+
+- https://github.com/orgs/community/discussions/26622#discussioncomment-3252561
+- https://github.com/orgs/community/discussions/26323
+- https://github.com/diamondburned/acmregister/actions/runs/5583858220/jobs/10204768453
+
+There currently is no way to automatically update packages from external
+packages. Please manually dispatch the workflow as needed.
+
+<!--
 The guide to automatically updating your package on production servers
 automatically using GitHub Actions.
 
@@ -66,3 +79,4 @@ jobs:
           token: ${{ secrets.PAT_TOKEN }}
           package: acmregister
 ```
+-->
