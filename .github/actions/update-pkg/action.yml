@@ -48,7 +48,7 @@ runs:
       uses: benc-uk/workflow-dispatch@v1
       with:
         workflow: update-pkg.yml
-        repo: diamondburned/acm-aws
+        repo: acmcsufoss/acm-aws
         inputs: ${{ steps.inputs-json.outputs.json }}
         token: ${{ inputs.token }}
 
