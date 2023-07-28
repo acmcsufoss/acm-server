@@ -1,5 +1,9 @@
 { config, lib, pkgs, modulesPath, ... }:
 
+let
+	sources = import <acm-aws/nix/sources.nix>;
+in
+
 {
 	imports = [
 		(modulesPath + "/virtualisation/amazon-image.nix")
@@ -96,6 +100,23 @@
 				RestartSec = "1s";
 			};
 		};
+
+	systemd.services."goworkshop.acmcsuf.com" =
+		let
+			shell = import "${sources.go-workshop}/shell.nix" { inherit pkgs; };
+			present = shell.present;
+		in
+			{
+				enable = true;
+				description = "Go x/tools/present server for goworkshop.acmcsuf.com";
+				after = [ "network.target" ];
+				wantedBy = [ "multi-user.target" ];
+				serviceConfig = {
+					ExecStart = "${present}/bin/present --play=true --use_playground --http=127.0.0.1:38572";
+					DynamicUser = true;
+					WorkingDirectory = "${sources.go-workshop}";
+				};
+			};
 
 	environment.systemPackages = with pkgs; [
 		ncdu
