@@ -8,6 +8,7 @@ pkgs.mkShell {
 	buildInputs = with pkgs; [
 		terraform
 		awscli2
+		rnix-lsp
 		nix-update
 		niv
 		git
