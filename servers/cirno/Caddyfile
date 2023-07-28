@@ -33,7 +33,8 @@ pomo.acmcsuf.com {
 	reverse_proxy * http://localhost:18485
 }
 
-goworkshop.acmcsuf.com {
+goworkshop.acmcsuf.com,
+go-workshop.acmcsuf.com {
 	handle / {
 		redir * /acm-go.slide
 	}
