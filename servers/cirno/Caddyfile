@@ -1,0 +1,34 @@
+{
+	email acmcsufullerton@gmail.com
+	acme_dns netlify {env.NETLIFY_TOKEN}
+	dynamic_dns {
+		provider netlify {env.NETLIFY_TOKEN}
+		domains {
+			# No need to add more subdomains here. dynamic_dns is just being
+			# dumb with how dynamic_domains is handled.
+			# https://github.com/mholt/caddy-dynamicdns/blob/master/caddyfile.go#L61
+			acmcsuf.com cirno
+		}
+		dynamic_domains
+		# AWS doesn't give us IPv6.
+		versions ipv4
+	}
+}
+
+http:// {
+}
+
+cirno.acmcsuf.com {
+	respond "cirno: Hello, world!"
+	# reverse_proxy * localhost:40001
+}
+
+oss.acmcsuf.com {
+	reverse_proxy * https://github.com {
+		rewrite /acmcsufoss{path}
+	}
+}
+
+pomo.acmcsuf.com {
+	reverse_proxy * http://localhost:18485
+}

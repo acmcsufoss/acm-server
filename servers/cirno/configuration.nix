@@ -8,7 +8,7 @@
 
 	services.diamondburned.caddy = {
 		enable = true;
-		configFile = ./secrets/Caddyfile;
+		configFile = ./Caddyfile;
 		environment = import ./secrets/caddy-env.nix;
 	};
 
