@@ -17,6 +17,7 @@ let sources = import ./sources.nix;
 in defaultOverlays ++ [
 	(self: super: {
 		buildDenoPackage = self.callPackage ./packaging/deno.nix { };
+		buildJavaPackage = self.callPackage ./packaging/java.nix { };
 		buildGradlePackage = self.callPackage ./packaging/gradle.nix { };
 	})
 	(self: super: {

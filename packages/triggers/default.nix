@@ -1,8 +1,20 @@
-{ lib, callPackage, buildGradlePackage, jre_small }:
+{ lib, buildJavaPackage, fetchFromGitHub }:
 
-buildGradlePackage rec {
+let
+	pkgs = import (fetchFromGitHub {
+		owner = "NixOS";
+		repo = "nixpkgs";
+		rev = "63e45105d84fe731ec720fb9dabd96e4b47de653";
+		sha256 = "sha256-Xn6by6uU3FDhKR9hU1TGvLGW4ES/IGOcpGZlO3MXSMc=";
+	}) {};
+
+	jre = pkgs.callPackage ../jre-small {};
+in
+
+assert lib.versionAtLeast jre.version "19.0.0";
+
+buildJavaPackage {
 	pname = "triggers";
-	src = (import <acm-aws/nix/sources.nix>).triggers;
-	jre = jre_small;
-	outputHash = "sha256:0s9rb110b8ks7mxxb298hlb97l4hgng5gk2nhs5p1sbnr6qr7762";
+	jar = (import <acm-aws/nix/sources.nix>).triggers;
+	inherit jre;
 }

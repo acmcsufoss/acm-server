@@ -1,6 +1,11 @@
-{ jre_minimal }:
+{ jdk, jre_minimal }:
 
 jre_minimal.override {
+	jdk = jdk.override {
+		headless = true;
+		enableJavaFX = false;
+		enableGnome2 = false;
+	};
 	# jdk.jpackage will link all of OpenJDK!
 	modules = [
 		"java.base"
@@ -35,8 +40,8 @@ jre_minimal.override {
 		"jdk.editpad"
 		"jdk.hotspot.agent"
 		"jdk.httpserver"
-		"jdk.incubator.foreign"
-		"jdk.incubator.vector"
+		# "jdk.incubator.foreign"
+		# "jdk.incubator.vector"
 		"jdk.internal.ed"
 		"jdk.internal.jvmstat"
 		"jdk.internal.le"

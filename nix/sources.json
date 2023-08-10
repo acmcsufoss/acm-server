@@ -148,15 +148,10 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "triggers": {
-        "branch": "gradle-build",
-        "description": "A Discord bot to reply to specific phrases (e.g. \"im crying\")",
-        "homepage": null,
-        "owner": "EthanThatOneKid",
-        "repo": "triggers",
-        "rev": "0348effecfb00690993d0fb662004d4adcb4fabe",
-        "sha256": "1xjxk7svsgqgckkls68dmgncx4ny4cj7xj6alllgcr91985y3php",
-        "type": "tarball",
-        "url": "https://github.com/EthanThatOneKid/triggers/archive/0348effecfb00690993d0fb662004d4adcb4fabe.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+        "sha256": "0xy9h58qzr8hg1ac9xb5m6drcj7ny1pfzl7bf6nk3mp1gyxw6adl",
+        "type": "file",
+        "url": "https://github.com/jjoeldaniel/triggers/releases/download/v2023.08.09_23-43/triggers.jar",
+        "url_template": "https://github.com/jjoeldaniel/triggers/releases/download/<version>/triggers.jar",
+        "version": "v2023.08.09_23-43"
     }
 }

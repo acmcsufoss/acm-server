@@ -51,7 +51,7 @@ in
 	};
 
 	systemd.services.triggers = {
-		enable = false;
+		enable = true;
 		description = "Triggers (Crying Counter) Discord bot";
 		after = [ "network-online.target" ];
 		wantedBy = [ "multi-user.target" ];
