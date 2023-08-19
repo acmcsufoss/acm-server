@@ -10,6 +10,7 @@ rec {
 	sendlimiter = pkgs.callPackage ./sendlimiter { };
 	sysmet = pkgs.callPackage ./sysmet { };
 	dischord = pkgs.callPackage ./dischord { };
+	discord-ical-reminder = pkgs.callPackage ./discord-ical-reminder { };
 
 	# Java
 	triggers = pkgs.callPackage ./triggers {};

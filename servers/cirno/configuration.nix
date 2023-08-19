@@ -60,6 +60,8 @@ in
 			Type = "simple";
 			ExecStart = "${pkgs.triggers}/bin/triggers";
 			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
 		};
 	};
 
@@ -115,6 +117,25 @@ in
 					ExecStart = "${present}/bin/present --play=true --use_playground --http=127.0.0.1:38572";
 					DynamicUser = true;
 					WorkingDirectory = "${sources.go-workshop}";
+				};
+			};
+
+	systemd.services.discord-ical-reminder =
+		let
+			configFile = pkgs.writeText "discord-ical-reminder.json"
+				(builtins.toJSON (import ./secrets/ical-reminders.nix));
+		in
+			{
+				enable = true;
+				description = "Daemon for posting ICal reminders using Discord webhooks";
+				after = [ "network-online.target" ];
+				wantedBy = [ "multi-user.target" ];
+				serviceConfig = {
+					Type = "simple";
+					ExecStart = "${pkgs.discord-ical-reminder}/bin/discord-ical-reminder -c ${configFile}";
+					DynamicUser = true;
+					Restart = "on-failure";
+					RestartSec = "1s";
 				};
 			};
 

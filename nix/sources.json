@@ -48,6 +48,18 @@
         "url": "https://github.com/xypwn/dischord/archive/9174c1b23af8e54871ba01ad789a22c4cbd1c1e5.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "discord-ical-reminder": {
+        "branch": "main",
+        "description": "Daemon for posting ICal reminders using Discord webhooks",
+        "homepage": null,
+        "owner": "diamondburned",
+        "repo": "discord-ical-reminder",
+        "rev": "73b57693f062dc46a376e1c5e1f8827fbd8cbd93",
+        "sha256": "1l08vc7npxw7zhcs3zxm52rr84a3m47sp1sm8ii8mma8b8lzmgid",
+        "type": "tarball",
+        "url": "https://github.com/diamondburned/discord-ical-reminder/archive/73b57693f062dc46a376e1c5e1f8827fbd8cbd93.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "go-workshop": {
         "branch": "main",
         "description": "Go workshop for first-time Go programmers. ",
