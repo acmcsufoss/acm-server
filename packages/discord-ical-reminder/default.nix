@@ -28,5 +28,5 @@ buildGo121Module rec {
  
   src = (import <acm-aws/nix/sources.nix>).discord-ical-reminder;
   subPackages = [ "." ];
-  vendorSha256 = "sha256-id6AZWYk/IY12KygRq+C6rnerY5UizZ/xMcRV2afb5k=";
+  vendorSha256 = "sha256-nYBaqD4atFpTgxW2UqxhLNGJ5rAtJrZ13wdAgW0908w=";
 }
