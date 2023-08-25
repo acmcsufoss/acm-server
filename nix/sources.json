@@ -54,10 +54,10 @@
         "homepage": null,
         "owner": "diamondburned",
         "repo": "discord-ical-reminder",
-        "rev": "d90cd423b7830106fd433228b87200111342aff8",
-        "sha256": "0ahap8kz5vdy7zxgmmg8ixfy5w0j24f6rpj87snif3fnr2fcmqm3",
+        "rev": "5c5ef6470f7f7c2f4fac57cd4417659b7d7cb867",
+        "sha256": "0jpa4sdn175bjlnh45ww59r9nmz5rvnssxbcx1lqvylnfcyxz5sc",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/discord-ical-reminder/archive/d90cd423b7830106fd433228b87200111342aff8.tar.gz",
+        "url": "https://github.com/diamondburned/discord-ical-reminder/archive/5c5ef6470f7f7c2f4fac57cd4417659b7d7cb867.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": ""
     },
