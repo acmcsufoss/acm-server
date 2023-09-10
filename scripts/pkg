@@ -90,6 +90,14 @@ pkg::update() {
 	local package="$1"
 	local nivFlags=()
 
+	nivOwner=$(jq --arg name "$package" -r '.[$name].owner //empty' nix/sources.json)
+	nivRepo=$(jq --arg name "$package" -r '.[$name].repo //empty' nix/sources.json)
+
+	isGit=
+	if [[ "$nivOwner" && "$nivRepo" ]]; then
+		isGit=1
+	fi
+
 	case "$2" in
 	"v"*)
 		nivFlags+=(-v "$2");;
@@ -98,15 +106,22 @@ pkg::update() {
 	"refs/heads/"*)
 		nivFlags+=(-b "$2" -v "");;
 	"latest"|"")
-		nivFlags+=(-v "");;
+		nivFlags+=();;
 	*)
 		echo "Unknown version or ref or \`latest'" >&2
 		exit 1;;
 	esac
 
+	if [[ ! $isGit && ${#nivFlags[@]} == 0 ]]; then
+		echo "No version specified, and \`$package' is not a git package" >&2
+		exit 1
+	fi
+
 	niv update "$package" "${nivFlags[@]}" >&2
 
-	(
+	noNixUpdate=$(
+		nix-instantiate --eval ./packages/ -A "$package".meta.noNixUpdate || true)
+	if [[ $noNixUpdate != true ]]; then (
 		src=$(pkg::src "$package")
 		src=$(realpath --relative-to=packages "$src")
 		echo "Source: $src"
@@ -114,7 +129,7 @@ pkg::update() {
 
 		cd packages
 		nix-update --version=skip "$package" --override-filename "$src" >&2
-	)
+	) fi
 
 	pkg::make "$package"
 }
