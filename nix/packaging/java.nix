@@ -1,4 +1,4 @@
-{ stdenv, jre, writeShellScriptBin }:
+{ stdenv, jre, writeTextFile }:
 
 let
 	pkgutil = import <acm-aws/nix/pkgutil.nix>;
@@ -9,9 +9,14 @@ in
 	version ? pkgutil.version jar,
 	jar,
 	jre ? jre,
+	meta ? {},
 	...
 }@args:
 
-writeShellScriptBin pname ''
-	exec ${jre}/bin/java -jar ${jar} "$@"
-''
+writeTextFile {
+	name = "${pname}-${version}";
+	text = "exec ${jre}/bin/java -jar ${jar} \"\$@\"";	
+	executable = true;
+	destination = "/bin/${pname}";
+	meta = meta // { noNixUpdate = true; };
+}
