@@ -139,6 +139,21 @@ in
 				};
 			};
 
+	systemd.services.discord-ical-srv = {
+		enable = true;
+		description = "Discord bot that synchronizes Discord events to a hosted iCal feed";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		environment = import ./secrets/discord-ical-srv-env.nix;
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.discord-ical-srv}/bin/discord-ical-srv -l unix:///tmp/discord-ical-srv.sock";
+			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
+		};
+	};
+
 	environment.systemPackages = with pkgs; [
 		ncdu
 	];

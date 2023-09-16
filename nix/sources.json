@@ -61,6 +61,18 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": ""
     },
+    "discord-ical-srv": {
+        "branch": "main",
+        "description": "A Discord bot that synchronizes Discord events to a hosted iCal feed.",
+        "homepage": null,
+        "owner": "diamondburned",
+        "repo": "discord-ical-srv",
+        "rev": "915e72cdc20677004c578f61ec924d65a8b8966e",
+        "sha256": "03rv5czxcm0a8xh5dynmri566c7hwnyy7hskfblbzr5np4fr85py",
+        "type": "tarball",
+        "url": "https://github.com/diamondburned/discord-ical-srv/archive/915e72cdc20677004c578f61ec924d65a8b8966e.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "go-workshop": {
         "branch": "main",
         "description": "Go workshop for first-time Go programmers. ",

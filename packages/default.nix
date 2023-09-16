@@ -11,6 +11,7 @@ rec {
 	sysmet = pkgs.callPackage ./sysmet { };
 	dischord = pkgs.callPackage ./dischord { };
 	discord-ical-reminder = pkgs.callPackage ./discord-ical-reminder { };
+	discord-ical-srv = pkgs.callPackage ./discord-ical-srv { };
 
 	# Java
 	triggers = pkgs.callPackage ./triggers {};
