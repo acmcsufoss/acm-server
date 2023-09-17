@@ -147,11 +147,15 @@ in
 		environment = import ./secrets/discord-ical-srv-env.nix;
 		serviceConfig = {
 			Type = "simple";
-			ExecStart = "${pkgs.discord-ical-srv}/bin/discord-ical-srv -l unix:///tmp/discord-ical-srv.sock";
 			DynamicUser = true;
 			Restart = "on-failure";
 			RestartSec = "1s";
+			RuntimeDirectory = "discord-ical-srv";
 		};
+		script = ''
+			${pkgs.discord-ical-srv}/bin/discord-ical-srv \
+				-l unix:///$RUNTIME_DIRECTORY/http.sock
+		'';
 	};
 
 	environment.systemPackages = with pkgs; [

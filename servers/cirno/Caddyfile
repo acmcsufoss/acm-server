@@ -44,5 +44,5 @@ go-workshop.acmcsuf.com {
 }
 
 ics.acmcsuf.com {
-	reverse_proxy * unix//tmp/discord-ical-srv.sock
+	reverse_proxy * unix//run/discord-ical-srv/http.sock
 }
