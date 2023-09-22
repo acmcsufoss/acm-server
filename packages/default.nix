@@ -2,6 +2,7 @@
 
 rec {
 	jre_small = pkgs.callPackage ./jre-small {};
+	quizler = pkgs.callPackage ./quizler {};
 
 	# Go
 	acmregister = pkgs.callPackage ./acmregister { };

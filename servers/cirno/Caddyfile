@@ -46,3 +46,9 @@ go-workshop.acmcsuf.com {
 ics.acmcsuf.com {
 	reverse_proxy * unix//run/discord-ical-srv/http.sock
 }
+
+q.acmcsuf.com,
+quiz.acmcsuf.com,
+quizler.acmcsuf.com {
+	reverse_proxy * http://localhost:37867
+}
