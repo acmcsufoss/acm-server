@@ -54,5 +54,7 @@ quizler.acmcsuf.com {
 }
 
 spookathon.acmcsuf.com {
-	reverse_proxy * spookathon.libdb.so
+	reverse_proxy * spookathon.libdb.so {
+		header_up Host {upstream_hostport}
+	}
 }
