@@ -52,3 +52,7 @@ quiz.acmcsuf.com,
 quizler.acmcsuf.com {
 	reverse_proxy * http://localhost:37867
 }
+
+spookathon.acmcsuf.com {
+	reverse_proxy * spookathon.libdb.so
+}
