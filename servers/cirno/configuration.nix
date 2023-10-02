@@ -10,6 +10,8 @@ in
 		<acm-aws/servers/base.nix>
 	];
 
+	services.tailscale.enable = true;
+
 	services.diamondburned.caddy = {
 		enable = true;
 		configFile = ./Caddyfile;
