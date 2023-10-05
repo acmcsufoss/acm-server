@@ -15,7 +15,7 @@ in
 
 writeTextFile {
 	name = "${pname}-${version}";
-	text = "exec ${jre}/bin/java -jar ${jar} \"\$@\"";	
+	text = "#!/bin/sh\nexec ${jre}/bin/java -jar ${jar} \"\$@\"";	
 	executable = true;
 	destination = "/bin/${pname}";
 	meta = meta // { noNixUpdate = true; };
