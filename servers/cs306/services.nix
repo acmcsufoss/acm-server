@@ -3,7 +3,7 @@
 {
 	imports = [
 		./caddy
-		];
+	];
 	
 	systemd.services.quizler = {
 		enable = true;
@@ -28,6 +28,36 @@
 			TasksMax = 128;
 			CPUQuota = "50%";
 			RestrictNetworkInterfaces = "lo"; # enough for localhost
+		};
+	};
+
+	systemd.services.triggers = {
+		enable = true;
+		description = "Triggers (Crying Counter) Discord bot";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		environment = import <acm-aws/secrets/triggers-env.nix>;
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.triggers}/bin/triggers";
+			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
+		};
+	};
+
+	systemd.services.pomo = {
+		enable = true;
+		description = "Pomodoro timer server/Discord bot";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		environment = import <acm-aws/secrets/pomo.nix>;
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.pomo}/bin/pomo";
+			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
 		};
 	};
 }
