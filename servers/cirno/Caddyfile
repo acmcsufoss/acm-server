@@ -58,3 +58,11 @@ spookathon.acmcsuf.com {
 		header_up Host {upstream_hostport}
 	}
 }
+
+(cs306) {
+	reverse_proxy * http://cs306:80
+}
+
+cs306.acmcsuf.com {
+	import cs306
+}

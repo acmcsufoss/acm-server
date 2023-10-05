@@ -36,3 +36,8 @@ module "cirno" {
 	key_name = aws_key_pair.secrets_ssh.key_name
 	ssh_private_key_file = local.ssh.private_key
 }
+
+module "cs306" {
+	source = "./servers/cs306"
+	ssh_private_key_file = local.ssh.private_key
+}

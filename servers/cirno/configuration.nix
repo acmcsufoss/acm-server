@@ -15,7 +15,7 @@ in
 	services.diamondburned.caddy = {
 		enable = true;
 		configFile = ./Caddyfile;
-		environment = import ./secrets/caddy-env.nix;
+		environment = import <acm-aws/secrets/caddy-env.nix>;
 	};
 
 	services.dischord = {
@@ -53,7 +53,7 @@ in
 	};
 
 	systemd.services.triggers = {
-		enable = false;
+		enable = true;
 		description = "Triggers (Crying Counter) Discord bot";
 		after = [ "network-online.target" ];
 		wantedBy = [ "multi-user.target" ];

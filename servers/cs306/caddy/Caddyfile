@@ -1,0 +1,10 @@
+{
+	debug
+	http_port 80
+	auto_https off # rely on cirno's Caddy proxy
+}
+
+http://cs306.acmcsuf.com {
+	log
+	respond "Hello from CS306! Brought to you by ACM at CSUF."
+}
