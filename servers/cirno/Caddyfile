@@ -47,22 +47,17 @@ ics.acmcsuf.com {
 	reverse_proxy * unix//run/discord-ical-srv/http.sock
 }
 
-q.acmcsuf.com,
-quiz.acmcsuf.com,
-quizler.acmcsuf.com {
-	reverse_proxy * http://localhost:37867
-}
-
 spookathon.acmcsuf.com {
 	reverse_proxy * spookathon.libdb.so {
 		header_up Host {upstream_hostport}
 	}
 }
 
-(cs306) {
+# Forward all unhandled subdomains to the CS306 server over Tailscale.
+#
+# This means we won't have to worry about getting a public IP address
+# for the server. Note that Tailscale traffic is encrypted, so we don't
+# need to worry about MITM attacks.
+*.acmcsuf.com {
 	reverse_proxy * http://cs306:80
-}
-
-cs306.acmcsuf.com {
-	import cs306
 }
