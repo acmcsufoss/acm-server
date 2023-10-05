@@ -10,5 +10,5 @@ module "deployment" {
 	ssh_private_key_file = var.ssh_private_key_file
 	ssh_agent = false
 	hermetic = true
-	build_on_target = true
+	build_on_target = false
 }
