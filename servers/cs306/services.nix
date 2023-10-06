@@ -14,18 +14,25 @@ in
 		enable = true;
 		extraConfig = {
 			inputs = {
+				# TODO: per-service procstat
 				net      = {};
 				mem      = {};
 				cpu      = { percpu = true; totalcpu = true; };
 				disk     = {};
 				swap     = {};
+				temp		 = {};
 				system   = {};
 				kernel   = {}; # ctx switch go brr
 				diskio   = {};
+				processes = {};
 				prometheus = {
 					urls = [
 						"http://localhost:2019/metrics" # Caddy
 					];
+				};
+				systemd_units = {};
+				internet_speed = {
+					interval = "2h";
 				};
 			};
 			outputs = {

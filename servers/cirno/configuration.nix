@@ -119,10 +119,15 @@ in
 				swap   = {};
 				system = {};
 				diskio = {};
+				processes = {};
 				prometheus = {
 					urls = [
 						"http://localhost:2019/metrics" # Caddy
 					];
+				};
+				systemd_units = {};
+				internet_speed = {
+					interval = "2h";
 				};
 			};
 			outputs = {
