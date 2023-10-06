@@ -40,7 +40,16 @@ spookathon.acmcsuf.com {
 }
 
 status.acmcsuf.com {
-	reverse_proxy * localhost:38573
+	@unauthenticated {
+		# Match if the Cookie header is missing.
+		header !Cookie
+	}
+	handle @unauthenticated {
+		redir * https://status.acmcsuf.com/public-dashboards/6a7d2bd924764b8b91ffdd4aa33fc11b
+	}
+	handle * {
+		reverse_proxy * localhost:38573
+	}
 }
 
 # Forward all unhandled subdomains to the CS306 server over Tailscale.
