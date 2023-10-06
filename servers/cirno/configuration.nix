@@ -10,6 +10,8 @@ in
 		<acm-aws/servers/base.nix>
 	];
 
+	networking.hostName = "cirno";
+
 	services.tailscale.enable = true;
 
 	# Use Terraform's AWS rules for this.
