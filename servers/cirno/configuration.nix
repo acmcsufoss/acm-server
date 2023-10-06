@@ -147,7 +147,7 @@ in
 				http_addr = "0.0.0.0";
 				http_port = 38573;
 				domain = "status.acmcsuf.com";
-				root_url = "https://grafana.acmcsuf.com";
+				root_url = "https://status.acmcsuf.com";
 				enable_gzip = true;
 			};
 			security = {
