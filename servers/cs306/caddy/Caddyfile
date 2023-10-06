@@ -13,3 +13,17 @@ quiz.acmcsuf.com,
 quizler.acmcsuf.com {
 	reverse_proxy * http://localhost:37867
 }
+
+goworkshop.acmcsuf.com,
+go-workshop.acmcsuf.com {
+	handle / {
+		redir * /acm-go.slide
+	}
+	handle * {
+		reverse_proxy * localhost:38572
+	}
+}
+
+pomo.acmcsuf.com {
+	reverse_proxy * http://localhost:18485
+}
