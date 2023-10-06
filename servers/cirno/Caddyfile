@@ -40,11 +40,11 @@ spookathon.acmcsuf.com {
 }
 
 status.acmcsuf.com {
-	@unauthenticated {
-		# Match if the Cookie header is missing.
-		header !Cookie
+	@public_dashboard {
+		path /
+		header !Cookie # if the Cookie header is missing
 	}
-	handle @unauthenticated {
+	handle @public_dashboard {
 		redir * https://status.acmcsuf.com/public-dashboards/6a7d2bd924764b8b91ffdd4aa33fc11b
 	}
 	handle * {
