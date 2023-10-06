@@ -17,6 +17,10 @@
 	networking.hostName = "cs306"; # Define your hostname.
 	networking.networkmanager.enable = true;
 
+	networking.firewall.enable = true; # Enable the firewall.
+	networking.firewall.allowedTCPPorts = [ ];
+	networking.firewall.allowedUDPPorts = [ ];
+
 	# Set your time zone.
 	time.timeZone = "America/Los_Angeles";
 
@@ -44,6 +48,11 @@
 
 	services.openssh.enable = true;
 	services.tailscale.enable = true;
+
+	networking.firewall.interfaces.tailscale0 = {
+		allowedTCPPortRanges = [ { from = 0; to = 65535; } ];
+		allowedUDPPortRanges = [ { from = 0; to = 65535; } ];
+	};
 
 	system.stateVersion = "23.05"; # Did you read the comment?
 }

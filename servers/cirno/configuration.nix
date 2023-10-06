@@ -12,6 +12,9 @@ in
 
 	services.tailscale.enable = true;
 
+	# Use Terraform's AWS rules for this.
+	networking.firewall.enable = false;
+
 	services.diamondburned.caddy = {
 		enable = true;
 		configFile = ./Caddyfile;

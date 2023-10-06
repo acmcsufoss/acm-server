@@ -30,9 +30,6 @@ in {
 	xdg.mime.enable = false;
 	xdg.sounds.enable = false;
 
-	# Use Terraform's AWS rules for this.
-	networking.firewall.enable = false;
-
 	environment.systemPackages = with pkgs; [
 		htop
 		wget
