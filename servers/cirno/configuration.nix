@@ -151,6 +151,9 @@ in
 				cookie_samesite = "strict";
 				angular_support_enabled = false;
 			};
+			feature_toggles = {
+				publicDashboards = true;
+			};
 		};
 	};
 
