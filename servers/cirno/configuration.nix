@@ -114,7 +114,11 @@ in
 		extraConfig = {
 			inputs = {
 				net    = {};
+				mem    = {};
+				disk   = {};
+				swap   = {};
 				system = {};
+				diskio = {};
 				prometheus = {
 					urls = [
 						"http://localhost:2019/metrics" # Caddy
