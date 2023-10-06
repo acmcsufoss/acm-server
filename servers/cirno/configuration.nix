@@ -97,6 +97,57 @@ in
 		'';
 	};
 
+	# Enable VictoriaMetrics, which is a lightweight alternative to InfluxDB.
+	# VictoriaMetrics also seems to have better compression and performance.
+	# It's used for storing metrics from Telegraf.
+	services.victoriametrics = {
+		enable = true;
+		listenAddress = ":8428";
+		retentionPeriod = 3; # months
+	};
+
+	# Gather system metrics using Telegraf into cirno's VictoriaMetrics.
+	services.telegraf = {
+		enable = true;
+		extraConfig = {
+			inputs = {
+				net    = {};
+				system = {};
+				prometheus = {
+					urls = [
+						"http://localhost:2019/metrics" # Caddy
+					];
+				};
+			};
+			outputs = {
+				influxdb = {
+					database = "telegraf";
+					urls = [ "http://localhost:8428" ];
+				};
+			};
+		};
+	};
+
+	# Also host the dashboard here.
+	services.grafana = {
+		enable = true;
+		settings = {
+			server = {
+				http_addr = "0.0.0.0";
+				http_port = 38573;
+				domain = "status.acmcsuf.com";
+				root_url = "https://grafana.acmcsuf.com";
+				enable_gzip = true;
+			};
+			security = {
+				disable_initial_admin_creation = false;
+				cookie_secure = true;
+				cookie_samesite = "strict";
+				angular_support_enabled = false;
+			};
+		};
+	};
+
 	environment.systemPackages = with pkgs; [
 		ncdu
 	];

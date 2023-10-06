@@ -8,6 +8,34 @@ in
 	imports = [
 		./caddy
 	];
+
+	# Gather system metrics using Telegraf into cirno's VictoriaMetrics.
+	services.telegraf = {
+		enable = true;
+		extraConfig = {
+			inputs = {
+				net      = {};
+				mem      = {};
+				cpu      = { percpu = true; totalcpu = true; };
+				disk     = {};
+				swap     = {};
+				system   = {};
+				kernel   = {}; # ctx switch go brr
+				diskio   = {};
+				prometheus = {
+					urls = [
+						"http://localhost:2019/metrics" # Caddy
+					];
+				};
+			};
+			outputs = {
+				influxdb = {
+					database = "telegraf";
+					urls = [ "http://cirno:8428" ];
+				};
+			};
+		};
+	};
 	
 	systemd.services.quizler = {
 		enable = true;

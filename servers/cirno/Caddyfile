@@ -39,6 +39,10 @@ spookathon.acmcsuf.com {
 	}
 }
 
+status.acmcsuf.com {
+	reverse_proxy * localhost:38573
+}
+
 # Forward all unhandled subdomains to the CS306 server over Tailscale.
 #
 # This means we won't have to worry about getting a public IP address
