@@ -21,4 +21,10 @@ pkgs.mkShell {
 	];
 
 	NIX_PATH = "nixpkgs=${pkgssrc}:acm-aws=${builtins.toString ./.}";
+
+	shellHook = ''
+		set -o allexport
+		source .env
+		set +o allexport
+	'';
 }

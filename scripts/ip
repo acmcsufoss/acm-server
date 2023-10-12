@@ -10,9 +10,16 @@ main() {
 
 	if publicIP=$(ip::find "$name"); then
 		echo "$publicIP"
-	else
-		echo "$name" # Tailscale fallback
+		return
 	fi
+
+	if getent hosts "$name.$TAILNET_NAME.ts.net" > /dev/null; then
+		echo "$name.$TAILNET_NAME.ts.net"
+		return
+	fi
+
+	echo "Could not find IP for $name" >&2
+	exit 1
 }
 
 # ip::find($1: instance_name?) -> public_ip?
