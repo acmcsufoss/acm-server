@@ -3,7 +3,7 @@ variable "ssh_private_key_file" {
 	type = string
 }
 
-variable "TAILNET_NAME" {
+variable "tailnet_name" {
 	description = "The name of the Tailscale tailnet"
 	type = string
 }
