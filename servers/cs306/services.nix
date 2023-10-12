@@ -96,7 +96,8 @@ in
 			ExecStart = "${pkgs.pomo}/bin/pomo";
 			DynamicUser = true;
 			Restart = "on-failure";
-			RestartSec = "1s";
+			RestartSec = "10s";
+			StartLimitInterval = "0"; # permit unlimited restarts
 		};
 	};
 	
