@@ -20,6 +20,11 @@ locals {
 	}
 }
 
+variable "tailnet_name" {
+	description = "The name of the Tailscale tailnet"
+	type = string
+}
+
 provider "aws" {
 	profile = "acm"
 	region = "us-west-2"
@@ -38,6 +43,7 @@ module "cirno" {
 }
 
 module "cs306" {
+	host = "cs306.${var.tailnet_name}.ts.net"
 	source = "./servers/cs306"
 	ssh_private_key_file = local.ssh.private_key
 }
