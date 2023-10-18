@@ -95,8 +95,8 @@ schema = 3
     version = "v0.5.1"
     hash = "sha256-t50m9ffvW8PiGvO+2svnLI+N/XaWaBS+ZlhwrEQn2gU="
   [mod."github.com/go-logr/logr"]
-    version = "v1.2.3"
-    hash = "sha256-2L7k6GfrcW3GXXYr1FYIu20aZBjIF0cTKdte6D4riH8="
+    version = "v1.2.4"
+    hash = "sha256-+FhzmqKsAnsra5p8LuxENXJBHSeuWjQG8Tzhpyd/ps4="
   [mod."github.com/go-logr/stdr"]
     version = "v1.2.2"
     hash = "sha256-rRweAP7XIb4egtT1f2gkz4sYOu7LDHmcJ5iNsJUd0sE="
@@ -356,11 +356,11 @@ schema = 3
     version = "v0.0.0-20210826202110-33d05740a352"
     hash = "sha256-x5OuHrnMWNfcLZCyQ6zaGm+ah8DMli2CCQg5z6qWgb8="
   [mod."go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"]
-    version = "v0.34.0"
-    hash = "sha256-/ZyRX5qjNUhvGO9X1UCG87dws28BwB+839ixVfdKAyA="
+    version = "v0.44.0"
+    hash = "sha256-V1fEoq1PpHB7KJ6ScfRNGFIrmMV03gOlyXCSCDQkLws="
   [mod."go.opentelemetry.io/otel"]
-    version = "v1.9.0"
-    hash = "sha256-rP9kSnsGDaUDiYrQkBchHPLHGBJv5D16lR+UJ4wIzw8="
+    version = "v1.18.0"
+    hash = "sha256-gRETIwDXVMuxGZEoX2/SXkMvxNI3j7Qz0FCAYh2bKZ0="
   [mod."go.opentelemetry.io/otel/exporters/otlp/internal/retry"]
     version = "v1.4.0"
     hash = "sha256-w2Mijx+TrOtmvXRXhqD11HUy4UAQjFczA5DbTtnIjRI="
@@ -371,14 +371,14 @@ schema = 3
     version = "v1.4.0"
     hash = "sha256-foDkdUPzhDbII2tusO2hzN7eKoaoz6oam+4d/CUh8/Q="
   [mod."go.opentelemetry.io/otel/metric"]
-    version = "v0.31.0"
-    hash = "sha256-r8PJRiP8SwNRguhoDVaK/uSkXQhplMtKZoGfEQJoa4k="
+    version = "v1.18.0"
+    hash = "sha256-rSQRem8ZO6N7LKgRikJ3Ffv6g1dMeXUh+cOwT/VLuPM="
   [mod."go.opentelemetry.io/otel/sdk"]
     version = "v1.4.0"
     hash = "sha256-/ytwnbIcTA4KP50aVuFm2F2wK+AD7XPysxx5HZpHAJI="
   [mod."go.opentelemetry.io/otel/trace"]
-    version = "v1.9.0"
-    hash = "sha256-zHQ67CcTsSVukBH3MKIycJKeWYXSnEgql/Jxq8ixjLI="
+    version = "v1.18.0"
+    hash = "sha256-wLwQZwb7dw6lbhBm2i1Pm8SpVW+XDmOKYYm/HE/b/w4="
   [mod."go.opentelemetry.io/proto/otlp"]
     version = "v0.12.0"
     hash = "sha256-2faHqCARouQft8l8xuHmJW+NWuB8vz9Pl8HR9J7q4WI="
