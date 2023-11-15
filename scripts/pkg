@@ -122,7 +122,7 @@ pkg::update() {
 	niv update "$package" "${nivFlags[@]}" >&2
 
 	noNixUpdate=$(
-		nix-instantiate --eval ./packages/ -A "$package".meta.noNixUpdate || true)
+		nix-instantiate --eval ./packages/ -A "$package".noNixUpdate || true)
 	if [[ $noNixUpdate != true ]]; then (
 		src=$(pkg::src "$package")
 		src=$(realpath --relative-to=packages "$src")

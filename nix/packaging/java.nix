@@ -10,6 +10,7 @@ in
 	jar,
 	jre ? jre,
 	meta ? {},
+	passthru ? {},
 	...
 }@args:
 
@@ -18,5 +19,6 @@ writeTextFile {
 	text = "#!/bin/sh\nexec ${jre}/bin/java -jar ${jar} \"\$@\"";	
 	executable = true;
 	destination = "/bin/${pname}";
-	meta = meta // { noNixUpdate = true; };
+	meta = meta;
+	passthru = passthru // { noNixUpdate = true; };
 }
