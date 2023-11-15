@@ -10,6 +10,7 @@ pkgs.mkShell {
 		awscli2
 		rnix-lsp
 		nix-update
+		jq
 		niv
 		git
 		git-crypt
