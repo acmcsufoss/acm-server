@@ -26,6 +26,7 @@ jobs:
         with:
           auto-optimise: true
           instantiated-files: packages/
+          nix-install-url: https://releases.nixos.org/nix/nix-2.18.1/install
 
       - name: Run all package Makefiles
         run: ./scripts/pkg make
@@ -57,6 +58,7 @@ jobs:
           auto-optimise: true
           shell-file: shell.nix
           instantiated-files: servers/*/default.nix
+          nix-install-url: https://releases.nixos.org/nix/nix-2.18.1/install
 
       - name: Decrypt git-crypt secrets
         uses: ./.github/actions/git-crypt

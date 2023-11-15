@@ -34,6 +34,7 @@ jobs:
         with:
           shell-file: shell.nix
           instantiated-files: packages/
+          nix-install-url: https://releases.nixos.org/nix/nix-2.18.1/install
 
       - name: Update package ${{ inputs.package }} to ${{ inputs.version }}
         id: update-pkg
