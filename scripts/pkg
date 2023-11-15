@@ -119,11 +119,19 @@ pkg::update() {
 		exit 1
 	fi
 
+	echo "Updating package source for $package" >&2
 	niv update "$package" "${nivFlags[@]}" >&2
+
+	# Force .meta to build before we call nix-instantiate on it.
+	# This seems to be necessary, otherwise nix-instantiate will error out.
+	echo "Evaluating package meta for $package" >&2
+	nix-build ./packages/ -A "$package".meta >&2
 
 	noNixUpdate=$(
 		nix-instantiate --eval ./packages/ -A "$package".meta.noNixUpdate || true)
 	if [[ $noNixUpdate != true ]]; then (
+		echo "Updating miscelaneous package derivations for $package" >&2
+
 		src=$(pkg::src "$package")
 		src=$(realpath --relative-to=packages "$src")
 		echo "Source: $src"
