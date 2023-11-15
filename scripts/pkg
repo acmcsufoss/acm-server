@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
+[[ "$RUNNER_DEBUG" == 1 ]] && set -x
+
 main() {
 	case "$1" in
 	"list")
