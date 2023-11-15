@@ -173,10 +173,10 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "triggers": {
-        "sha256": "0vb2qb8r1pikq68imicwi3jd5i4ym1ljd434hb4714w9848snydx",
+        "sha256": "0m8xnn90zqyvrrzll0fpwcj7mn87g2h0hkf5ysycw5jal0wsadcr",
         "type": "file",
-        "url": "https://github.com/jjoeldaniel/triggers/releases/download/v2023.09.09_02-39/triggers.jar",
+        "url": "https://github.com/jjoeldaniel/triggers/releases/download/v2023.11.15_02-48/triggers.jar",
         "url_template": "https://github.com/jjoeldaniel/triggers/releases/download/<version>/triggers.jar",
-        "version": "v2023.09.09_02-39"
+        "version": "v2023.11.15_02-48"
     }
 }
