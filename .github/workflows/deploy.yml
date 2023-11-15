@@ -10,8 +10,6 @@ on:
         required: true
   workflow_dispatch:
 
-concurrency: Production
-
 jobs:
   make-all:
     name: Run all package Makefiles
@@ -42,6 +40,7 @@ jobs:
     needs: make-all
     runs-on: ubuntu-22.04
     environment: Production
+    concurrency: Production
     outputs:
       commit_hash: ${{ steps.git-commit.outputs.commit_hash }}
     steps:
