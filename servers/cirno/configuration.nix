@@ -92,6 +92,7 @@ in
 			RestartSec = "1s";
 			RuntimeDirectory = "discord-ical-srv";
 			RuntimeDirectoryMode = "0777";
+			UMask = "0000";
 		};
 		script = ''
 			${pkgs.discord-ical-srv}/bin/discord-ical-srv \

@@ -67,10 +67,10 @@
         "homepage": null,
         "owner": "diamondburned",
         "repo": "discord-ical-srv",
-        "rev": "915e72cdc20677004c578f61ec924d65a8b8966e",
-        "sha256": "03rv5czxcm0a8xh5dynmri566c7hwnyy7hskfblbzr5np4fr85py",
+        "rev": "23448d314d007af122b7ebf20500593e4b104fae",
+        "sha256": "1hi8i8x2vn7mhf767dmbg87n23d3rs30phnamxzchvc3zhbq2wxm",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/discord-ical-srv/archive/915e72cdc20677004c578f61ec924d65a8b8966e.tar.gz",
+        "url": "https://github.com/diamondburned/discord-ical-srv/archive/23448d314d007af122b7ebf20500593e4b104fae.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "go-workshop": {
