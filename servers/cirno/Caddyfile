@@ -35,15 +35,10 @@ ics.acmcsuf.com {
 
 dev.acmcsuf.com {
 	vars githubUser acmCSUFDev
-	vars assetsPath {$CADDY_ASSETS}
-
-	handle / {
-		redir * https://github.com/{vars.githubUser}
-	}
 
 	@go_get query go-get=1
 	handle @go_get {
-		root * {vars.assetsPath}
+		root * /etc/deployment/static
 		rewrite * /go-get.html
 		file_server
 		templates

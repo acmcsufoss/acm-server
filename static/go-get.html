@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+{{ $path := .OriginalReq.URL.Path }}
+{{ $name := $path | splitList "/" | rest | first }}
+{{ $user := (placeholder "http.vars.githubUser") }}
+<meta charset="utf-8">
+<meta name="go-import" content="dev.acmcsuf.com/{{ $name }} git https://github.com/{{ $user }}/{{ $name }}.git">
+<meta http-equiv="refresh" content="0; url=https://github.com/{{ $user }}{{ $path }}">
+<a href="https://github.com/{{ $user }}{{ $path }}">
+	Click here if you are not redirected.
+</a>
