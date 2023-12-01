@@ -33,6 +33,35 @@ ics.acmcsuf.com {
 	reverse_proxy * unix//run/discord-ical-srv/http.sock
 }
 
+dev.acmcsuf.com {
+	vars githubUser acmCSUFDev
+	vars assetsPath {$CADDY_ASSETS}
+
+	handle / {
+		redir * https://github.com/{vars.githubUser}
+	}
+
+	@go_get query go-get=1
+	handle @go_get {
+		root * {vars.assetsPath}
+		rewrite * /go-get.html
+		file_server
+		templates
+		header Cache-Control "public, max-age=604800, immutable"
+	}
+
+	handle {
+		rewrite * /{vars.githubUser}{path}
+		reverse_proxy * https://github.com
+	}
+}
+
+blink.acmcsuf.com {
+	reverse_proxy * blink.acm.libdb.so {
+		header_up Host {upstream_hostport}
+	}
+}
+
 spookathon.acmcsuf.com {
 	reverse_proxy * spookathon.libdb.so {
 		header_up Host {upstream_hostport}
