@@ -5,6 +5,7 @@ let sources = import ../nix/sources.nix;
 in {
 	imports = [
 		../packages/imports.nix
+		../nix/modules
 	];
 
 	services.journald = {
@@ -35,4 +36,7 @@ in {
 		wget
 		git
 	];
+
+	# Deploy ./static to all servers.
+	deployment.staticPaths = [ ../static ];
 }

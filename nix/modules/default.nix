@@ -1,0 +1,7 @@
+{ ... }:
+
+{
+	imports = [
+		./static.nix
+	];
+}
