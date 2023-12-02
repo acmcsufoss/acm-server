@@ -13,6 +13,7 @@ rec {
 	dischord = pkgs.callPackage ./dischord { };
 	discord-ical-reminder = pkgs.callPackage ./discord-ical-reminder { };
 	discord-ical-srv = pkgs.callPackage ./discord-ical-srv { };
+	christmasd = pkgs.callPackage ./christmasd { };
 
 	# Java
 	triggers = pkgs.callPackage ./triggers {};

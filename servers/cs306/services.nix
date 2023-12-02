@@ -208,4 +208,13 @@ in
 					WorkingDirectory = "${sources.go-workshop}";
 				};
 			};
+
+	services.christmasd-test = {
+		enable = true;
+		ledPointsFile = builtins.fetchurl
+			"https://raw.githubusercontent.com/acmCSUFDev/christmas/main/data/fake/led-points.csv";
+		extraFlags = {
+			http-addr = "unix://$RUNTIME_DIRECTORY/http.sock";
+		};
+	};
 }

@@ -24,6 +24,18 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": ""
     },
+    "christmasd": {
+        "branch": "main",
+        "description": null,
+        "homepage": null,
+        "owner": "acmcsufdev",
+        "repo": "christmasd",
+        "rev": "41097d81a327abf997fca49b8d4fce28bc08b95b",
+        "sha256": "1nm365ph280vrc12k8ymzihbgb1l5k7np7v8m9x9zw4x11zn9mk8",
+        "type": "tarball",
+        "url": "https://github.com/acmcsufdev/christmasd/archive/41097d81a327abf997fca49b8d4fce28bc08b95b.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "diamondburned_nix-update": {
         "branch": "master",
         "description": "Swiss-knife for updating nix packages.",

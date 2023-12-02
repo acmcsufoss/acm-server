@@ -7,7 +7,7 @@ let
 		# Ensure that all acmcsuf.com domains are prefixed with "http://".
 		# Otherwise, Caddy will refuse to listen on port 80 at all, which
 		# we want for our reverse proxy in cirno.
-		sed -i 's/\(^\|, \)\([a-zA-Z0-9]*\.acmcsuf.com\)/\1http:\/\/\2/g' $out
+		sed -i 's/\(^\|, \)\([a-zA-Z0-9\-_.]*\.acmcsuf.com\)/\1http:\/\/\2/g' $out
 	'';
 in
 
