@@ -29,10 +29,6 @@ oss.acmcsuf.com {
 	}
 }
 
-ics.acmcsuf.com {
-	reverse_proxy * unix//run/discord-ical-srv/http.sock
-}
-
 dev.acmcsuf.com {
 	vars githubUser acmCSUFDev
 
@@ -60,19 +56,6 @@ blink.acmcsuf.com {
 spookathon.acmcsuf.com {
 	reverse_proxy * spookathon.libdb.so {
 		header_up Host {upstream_hostport}
-	}
-}
-
-status.acmcsuf.com {
-	@public_dashboard {
-		path /
-		header !Cookie # if the Cookie header is missing
-	}
-	handle @public_dashboard {
-		redir * https://status.acmcsuf.com/public-dashboards/6a7d2bd924764b8b91ffdd4aa33fc11b
-	}
-	handle * {
-		reverse_proxy * localhost:38573
 	}
 }
 

@@ -38,10 +38,81 @@ in
 			outputs = {
 				influxdb = {
 					database = "telegraf";
-					urls = [ "http://cirno:8428" ];
+					urls = [ "http://cs306:8428" ];
 				};
 			};
 		};
+	};
+
+	# Enable VictoriaMetrics, which is a lightweight alternative to InfluxDB.
+	# VictoriaMetrics also seems to have better compression and performance.
+	# It's used for storing metrics from Telegraf.
+	services.victoriametrics = {
+		enable = true;
+		listenAddress = ":8428";
+		retentionPeriod = 3; # months
+	};
+
+	services.grafana = {
+		enable = true;
+		settings = {
+			server = {
+				http_addr = "0.0.0.0";
+				http_port = 38573;
+				domain = "status.acmcsuf.com";
+				root_url = "https://status.acmcsuf.com";
+				enable_gzip = true;
+			};
+			security = {
+				disable_initial_admin_creation = false;
+				cookie_secure = true;
+				cookie_samesite = "strict";
+				angular_support_enabled = false;
+			};
+			feature_toggles = {
+				publicDashboards = true;
+			};
+		};
+	};
+
+	systemd.services.discord-ical-reminder =
+		let
+			configFile = pkgs.writeText "discord-ical-reminder.json"
+				(builtins.toJSON (import <acm-aws/secrets/ical-reminders.nix>));
+		in
+			{
+				enable = true;
+				description = "Daemon for posting ICal reminders using Discord webhooks";
+				after = [ "network-online.target" ];
+				wantedBy = [ "multi-user.target" ];
+				serviceConfig = {
+					Type = "simple";
+					ExecStart = "${pkgs.discord-ical-reminder}/bin/discord-ical-reminder -c ${configFile}";
+					DynamicUser = true;
+					Restart = "on-failure";
+					RestartSec = "1s";
+				};
+			};
+
+	systemd.services.discord-ical-srv = {
+		enable = true;
+		description = "Discord bot that synchronizes Discord events to a hosted iCal feed";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		environment = import <acm-aws/secrets/discord-ical-srv-env.nix>;
+		serviceConfig = {
+			Type = "simple";
+			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
+			RuntimeDirectory = "discord-ical-srv";
+			RuntimeDirectoryMode = "0777";
+			UMask = "0000";
+		};
+		script = ''
+			${pkgs.discord-ical-srv}/bin/discord-ical-srv \
+				-l unix:///$RUNTIME_DIRECTORY/http.sock
+		'';
 	};
 	
 	systemd.services.quizler = {

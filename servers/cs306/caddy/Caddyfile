@@ -27,3 +27,20 @@ go-workshop.acmcsuf.com {
 pomo.acmcsuf.com {
 	reverse_proxy * http://localhost:18485
 }
+
+status.acmcsuf.com {
+	@public_dashboard {
+		path /
+		header !Cookie # if the Cookie header is missing
+	}
+	handle @public_dashboard {
+		redir * https://status.acmcsuf.com/public-dashboards/6a7d2bd924764b8b91ffdd4aa33fc11b
+	}
+	handle * {
+		reverse_proxy * localhost:38573
+	}
+}
+
+ics.acmcsuf.com {
+	reverse_proxy * unix//run/discord-ical-srv/http.sock
+}
