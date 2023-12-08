@@ -212,7 +212,7 @@ in
 	services.christmasd-test = {
 		enable = true;
 		ledPointsFile = builtins.fetchurl
-			"https://raw.githubusercontent.com/acmCSUFDev/christmas/main/data/fake/led-points.csv";
+			"https://gist.githubusercontent.com/diamondburned/1d9a83347e153686ca192c6f5baf0b79/raw/63b06ed82fd858bdb8b15a5971df92dd4bab40c3/led-points.csv";
 		extraFlags = {
 			http-addr = "unix://$RUNTIME_DIRECTORY/http.sock";
 		};

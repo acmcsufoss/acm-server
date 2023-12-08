@@ -11,7 +11,7 @@ buildGoModule rec {
 	src = sources.christmasd;
 	version = pkgutil.version src;
 
-	vendorHash = "sha256-BSE6uZISZGF09S40b/q7owmsOVDvoJVg65Msd7ExM1U=";
+	vendorHash = "sha256-oCqA4dPfdo5tOehZzdQzlOgcfBJWzW3QppI68nBPi7w=";
 
 	subPackages = [
 		"cmd/christmasd"
