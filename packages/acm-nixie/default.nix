@@ -8,7 +8,7 @@ buildGo119Module rec {
 	version = pkgutil.version src;
 
 	src = (import <acm-aws/nix/sources.nix>).acm-nixie;
-	vendorSha256 = "sha256:1l6gpngrjasmfyh2x6rzr1czzasfd6dks2vj8pq6l5i3w393xfdf";
+	vendorSha256 = "sha256-fkDpovDJTn0Moj6eIZU+3e4Kp/DGv/KEUPE3+ahmBR4=";
 
 	subPackages = [ "." ];
 }

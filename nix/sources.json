@@ -5,10 +5,10 @@
         "homepage": null,
         "owner": "diamondburned",
         "repo": "acm-nixie",
-        "rev": "b67d679f4880a25decd2ba8b4df66cf2c1a3c678",
-        "sha256": "1jz27mwdwp03vwhcx8l6gzbpiyggvhpkw7azxlsbfw25kmcpb2xm",
+        "rev": "3d7c0b4eeaa3e919469052604d6f7c234f5bc6ed",
+        "sha256": "05lih901r21kva6pywqfc8dcp679ny82w011icgyq387qan66zl0",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/acm-nixie/archive/b67d679f4880a25decd2ba8b4df66cf2c1a3c678.tar.gz",
+        "url": "https://github.com/diamondburned/acm-nixie/archive/3d7c0b4eeaa3e919469052604d6f7c234f5bc6ed.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "acmregister": {
