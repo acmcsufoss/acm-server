@@ -44,7 +44,3 @@ status.acmcsuf.com {
 ics.acmcsuf.com {
 	reverse_proxy * unix//run/discord-ical-srv/http.sock
 }
-
-blinktest.acmcsuf.com {
-	reverse_proxy * unix//run/christmasd-test/http.sock
-}

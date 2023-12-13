@@ -48,8 +48,10 @@ dev.acmcsuf.com {
 }
 
 blink.acmcsuf.com {
-	reverse_proxy * blink.acm.libdb.so {
-		header_up Host {upstream_hostport}
+	handle {
+		reverse_proxy * blink.acm.libdb.so {
+			header_up Host {upstream_hostport}
+		}
 	}
 }
 
@@ -66,4 +68,8 @@ spookathon.acmcsuf.com {
 # need to worry about MITM attacks.
 *.acmcsuf.com {
 	reverse_proxy * http://cs306:80
+}
+
+blinktest.acmcsuf.com {
+	reverse_proxy * unix//run/christmasd-test/http.sock
 }
