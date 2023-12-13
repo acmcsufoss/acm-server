@@ -21,9 +21,7 @@ in defaultOverlays ++ [
 		buildGradlePackage = self.callPackage ./packaging/gradle.nix { };
 	})
 	(self: super: {
-		nix-update = newer.nix-update.overrideAttrs (old: {
-			src = sources.diamondburned_nix-update;
-		});
+		nix-update = super.callPackage ./nix-update.nix { };
 	})
 	(self: super: import ../packages { pkgs = self; })
 ]

@@ -42,10 +42,10 @@
         "homepage": "",
         "owner": "diamondburned",
         "repo": "nix-update",
-        "rev": "28590d7e1653f8bc98b4e0310e70e139de99fe7f",
-        "sha256": "0nwzh4kw897vafx6c1frr3fa0f22cya5fsq117xrfi6wpji35drb",
+        "rev": "54060d7",
+        "sha256": "1591156248brwry1ihhc1i9wfxc72x1x8q33ai16nbfr8day2fik",
         "type": "tarball",
-        "url": "https://github.com/diamondburned/nix-update/archive/28590d7e1653f8bc98b4e0310e70e139de99fe7f.tar.gz",
+        "url": "https://github.com/diamondburned/nix-update/archive/54060d7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "dischord": {
