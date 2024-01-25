@@ -47,7 +47,12 @@
 	];
 
 	services.openssh.enable = true;
-	services.tailscale.enable = true;
+
+	services.tailscale = {
+		enable = true;
+		openFirewall = true;
+		useRoutingFeatures = "both";
+	};
 
 	networking.firewall.interfaces.tailscale0 = {
 		allowedTCPPortRanges = [ { from = 0; to = 65535; } ];
