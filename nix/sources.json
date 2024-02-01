@@ -85,6 +85,18 @@
         "url": "https://github.com/diamondburned/discord-ical-srv/archive/23448d314d007af122b7ebf20500593e4b104fae.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "discord_conversation_summary_bot": {
+        "branch": "main",
+        "description": "Discord conversation summary update event handler in Go.",
+        "homepage": "",
+        "owner": "EthanThatOneKid",
+        "repo": "discord_conversation_summary_bot",
+        "rev": "3771e8cabc7f7992b81f21dea53f7bd338a9aa07",
+        "sha256": "0qlyiyhfpvp0fy5j0fykgcbq90ql7nnpqrybwvpcc8gn74dsip5i",
+        "type": "tarball",
+        "url": "https://github.com/EthanThatOneKid/discord_conversation_summary_bot/archive/3771e8cabc7f7992b81f21dea53f7bd338a9aa07.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "go-workshop": {
         "branch": "main",
         "description": "Go workshop for first-time Go programmers. ",

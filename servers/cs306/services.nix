@@ -114,6 +114,23 @@ in
 				-l unix:///$RUNTIME_DIRECTORY/http.sock
 		'';
 	};
+
+	systemd.services.discord_conversation_summary_bot = {
+		enable = true;
+		description = " Discord conversation summary update event handler in Go";
+		after = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
+		serviceConfig = {
+			Type = "simple";
+			ExecStart = "${pkgs.discord_conversation_summary_bot}/bin/discord_conversation_summary_bot";
+			WorkingDirectory = pkgs.writeTextDir
+				"config.json"
+				(builtins.readFile <acm-aws/secrets/discord_conversation_summary_bot.json>);
+			DynamicUser = true;
+			Restart = "on-failure";
+			RestartSec = "1s";
+		};
+	};
 	
 	systemd.services.quizler = {
 		enable = true;
