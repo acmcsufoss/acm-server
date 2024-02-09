@@ -20,6 +20,30 @@ in
 				arch = "x86_64";
 			};
 
+			unminifiedUbuntuImage = pkgs.dockerTools.buildImage {
+				name = "unminified-ubuntu";
+				tag = "latest";
+
+				fromImage = ubuntuImage;
+				fromImageName = null;
+				fromImageTag = "latest";
+
+				runAsRoot = ''
+					#!${pkgs.runtimeShell}
+					unminimize
+					apt update
+					apt install -y --no-install-recommends \
+						ca-certificates \
+						curl \
+						bash \
+						git
+				'';
+
+				config = {
+					Entrypoint = [ "/bin/bash" ];
+				};
+			};
+
 			cmdArgs = [];
 
 			# See https://nixos.org/manual/nixpkgs/stable/#ssec-pkgs-dockerTools-buildLayeredImage.
@@ -27,17 +51,17 @@ in
 				name = "experimental-discord-bot-image";
 				tag = "latest";
 				enableFakechroot = true;
-				fromImage = ubuntuImage;
+
+				fromImage = unminifiedUbuntuImage;
+				fromImageName = null;
+				fromImageTag = "latest";
+
 				contents = pkgs.writeShellScriptBin "experimental-discord-bot" ''
 					echo "Checking for Internet connectivity..."
 					wget --spider http://google.com
 
-					echo "Initializing Ubuntu..."
-					apt update
-					apt install -y git golang
-
-					echo "Dropping into a shell..."
-					exec /bin/sh
+					echo "Installing Go..."
+					apt install -y golang
 
 					echo "Downloading Discord bot..."
 					git clone https://libdb.so/arikawa
@@ -52,7 +76,10 @@ in
 					echo "Running the bot..."
 					exec ./commands-hybrid
 				'';
-				config.Cmd = [ "/bin/experimental-discord-bot" ] ++ cmdArgs;
+
+				config = {
+					Entrypoint = [ "/bin/experimental-discord-bot" ] ++ cmdArgs;
+				};
 			};
 		in
 		{
@@ -68,6 +95,7 @@ in
 						"127.0.0.1:48765:80"
 					];
 					image = "experimental-discord-bot-image:latest";
+
 					inherit imageFile;
 				};
 			};
