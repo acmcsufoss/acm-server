@@ -73,12 +73,9 @@ in
 			};
 		};
 
-	systemd.services.${podmanServiceName "experimental-discord-bot"} = {
-		serviceConfig = {
-			Restart = "on-failure";
-			RestartSec = "5s";
-		};
-		startLimitBurst = 3;
-		startLimitIntervalSec = 5 * 60; # 5 minutes
+	systemd.services.${podmanServiceName "experimental-discord-bot"} = with lib; {
+		serviceConfig.RestartSec = mkForce "5s";
+		startLimitBurst = mkForce 3;
+		startLimitIntervalSec = mkForce 5 * 60; # 5 minutes
 	};
 }
