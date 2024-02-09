@@ -30,14 +30,14 @@ in
 				fromImage = ubuntuImage;
 				contents = pkgs.writeShellScriptBin "experimental-discord-bot" ''
 					echo "Checking for Internet connectivity..."
-					ping -c 1 google.com
+					wget --spider http://google.com
 
 					echo "Initializing Ubuntu..."
 					apt update
 					apt install -y git golang
 
 					echo "Dropping into a shell..."
-					exec /bin/bash
+					exec /bin/sh
 
 					echo "Downloading Discord bot..."
 					git clone https://libdb.so/arikawa
