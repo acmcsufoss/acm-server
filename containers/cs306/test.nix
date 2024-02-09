@@ -1,5 +1,9 @@
 { config, lib, pkgs, ... }:
 
+let
+	podmanServiceName = containerName: "podman-" + containerName;
+in
+
 {
 	virtualisation.oci-containers =
 		let
@@ -62,4 +66,13 @@
 				};
 			};
 		};
+
+	systemd.services.${podmanServiceName "experimental-discord-bot"} = {
+		serviceConfig = {
+			Restart = "on-failure";
+			RestartSec = "5s";
+		};
+		startLimitBurst = 3;
+		startLimitIntervalSec = 5 * 60; # 5 minutes
+	};
 }
