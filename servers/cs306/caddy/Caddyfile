@@ -7,7 +7,7 @@
 			# No need to add more subdomains here. dynamic_dns is just being
 			# dumb with how dynamic_domains is handled.
 			# https://github.com/mholt/caddy-dynamicdns/blob/master/caddyfile.go#L61
-			acmcsuf.com cs306
+			acmcsuf.com cs306 status q quiz quizler goworkshop go-workshop pomo ics fullyhacksqr
 		}
 		dynamic_domains
 		# AWS doesn't give us IPv6.
