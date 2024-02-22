@@ -12,6 +12,8 @@
 		dynamic_domains
 		# AWS doesn't give us IPv6.
 		versions ipv4
+		# Use cirno's public-facing IP.
+		ip_source static {env.CADDY_PUBLIC_IP}
 	}
 }
 
