@@ -1,4 +1,4 @@
-{ stdenv, lib, buildGoApplication, go_1_19 }:
+{ stdenv, lib, buildGoApplication, go_1_21 }:
 
 with lib;
 
@@ -7,7 +7,7 @@ buildGoApplication {
 	version = "v2.6.2";
 	src = ./.;
 
-	go = go_1_19;
+	go = go_1_21;
 	modules = ./gomod2nix.toml;
 	subPackages = [ "." ];
 
