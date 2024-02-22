@@ -103,10 +103,10 @@
         "homepage": null,
         "owner": "acmCSUFDev",
         "repo": "fullyhacks-qrms",
-        "rev": "9eb1b854ac4becdf0219fb7aa2d9b5239a9e6edc",
-        "sha256": "1bxs777l0hsa5b0qi0ljaxadp33zdx3i0zh8hyr4zq5a6q51kqbl",
+        "rev": "f08d0f3ecbf753041fea26dabd220a080536aaf7",
+        "sha256": "01npbicvviwiiwmkkhr1awrn4zb1lp4lkd2klifbxp84acvzdqvp",
         "type": "tarball",
-        "url": "https://github.com/acmCSUFDev/fullyhacks-qrms/archive/9eb1b854ac4becdf0219fb7aa2d9b5239a9e6edc.tar.gz",
+        "url": "https://github.com/acmCSUFDev/fullyhacks-qrms/archive/f08d0f3ecbf753041fea26dabd220a080536aaf7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "go-workshop": {
