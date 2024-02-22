@@ -1,4 +1,6 @@
-let sources = import ./sources.nix;
+let
+	sources = import ./sources.nix;
+
 	nix-npm-buildpackage = self: super:
 		let pkg = super.callPackage sources.nix-npm-buildpackage { };
 		in {

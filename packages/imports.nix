@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 
-let sources = import <acm-aws/nix/sources.nix> { inherit pkgs; };
+let sources = import <acm-aws/nix/sources.nix> { };
 
 in {
 	imports = [
