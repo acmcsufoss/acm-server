@@ -7,7 +7,7 @@
 {
 	imports = [ # Include the results of the hardware scan.
 		<acm-aws/servers/base.nix>
-		<acm-aws/containers/cs306/test.nix>
+		# <acm-aws/containers/cs306/test.nix>
 		./hardware-configuration.nix
 		./services.nix
 	];
