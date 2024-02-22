@@ -15,6 +15,7 @@ rec {
 	discord-ical-srv = pkgs.callPackage ./discord-ical-srv { };
 	discord_conversation_summary_bot = pkgs.callPackage ./discord_conversation_summary_bot { };
 	christmasd = pkgs.callPackage ./christmasd { };
+	fullyhacks-qrms = pkgs.callPackage ./fullyhacks-qrms { };
 
 	# Java
 	triggers = pkgs.callPackage ./triggers {};

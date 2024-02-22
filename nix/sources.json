@@ -97,6 +97,18 @@
         "url": "https://github.com/EthanThatOneKid/discord_conversation_summary_bot/archive/3771e8cabc7f7992b81f21dea53f7bd338a9aa07.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "fullyhacks-qrms": {
+        "branch": "main",
+        "description": null,
+        "homepage": null,
+        "owner": "acmCSUFDev",
+        "repo": "fullyhacks-qrms",
+        "rev": "9737f7cc8b437643c6f1d77e0a99664f15fb2ea4",
+        "sha256": "1gx455zryjq2r4f02wh11hcrjfmpnliizks4lbdhmdvcyxs319g1",
+        "type": "tarball",
+        "url": "https://github.com/acmCSUFDev/fullyhacks-qrms/archive/9737f7cc8b437643c6f1d77e0a99664f15fb2ea4.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "go-workshop": {
         "branch": "main",
         "description": "Go workshop for first-time Go programmers. ",
