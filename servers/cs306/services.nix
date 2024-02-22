@@ -245,7 +245,7 @@ in
 				script = ''
 					${pkgs.fullyhacks-qrms}/bin/fullyhacks-qrms \
 						--root-token-file "${tokenFile}" \
-						--addr ":${port}" \
+						--addr ":${builtins.toString port}" \
 						--db "$STATE_DIRECTORY/database.db"
 				'';
 			};
