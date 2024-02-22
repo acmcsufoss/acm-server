@@ -17,41 +17,24 @@ rec {
 		arch = "x86_64";
 	};
 
-	unminifiedUbuntuImage = pkgs.dockerTools.buildImage {
-		name = "unminified-ubuntu";
+	# See https://nixos.org/manual/nixpkgs/stable/#ssec-pkgs-dockerTools-buildLayeredImage.
+	imageFile = pkgs.dockerTools.buildLayeredImage {
+		name = "experimental-discord-bot-image";
 		tag = "latest";
-
 		fromImage = ubuntuImage;
-		fromImageName = null;
-		fromImageTag = "latest";
+		enableFakechroot = true;
 
-		runAsRoot = ''
-			#!${pkgs.runtimeShell}
-			yes | /usr/local/sbin/unminimize
+		contents = pkgs.writeShellScriptBin "experimental-discord-bot" ''
+			echo "Checking for Internet connectivity..."
+			wget --spider http://google.com
 
+			echo "Initializing the package manager..."
 			apt update
 			apt install -y --no-install-recommends \
 				ca-certificates \
 				curl \
 				bash \
 				git
-		'';
-
-		config = {
-			Entrypoint = [ "/bin/bash" ];
-		};
-	};
-
-	# See https://nixos.org/manual/nixpkgs/stable/#ssec-pkgs-dockerTools-buildLayeredImage.
-	imageFile = pkgs.dockerTools.buildLayeredImage {
-		name = "experimental-discord-bot-image";
-		tag = "latest";
-		fromImage = unminifiedUbuntuImage;
-		enableFakechroot = true;
-
-		contents = pkgs.writeShellScriptBin "experimental-discord-bot" ''
-			echo "Checking for Internet connectivity..."
-			wget --spider http://google.com
 
 			echo "Installing Go..."
 			apt install -y golang
