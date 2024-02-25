@@ -73,3 +73,7 @@ spookathon.acmcsuf.com {
 blinktest.acmcsuf.com {
 	reverse_proxy * unix//run/christmasd-test/http.sock
 }
+
+fullyhacksqr.acmcsuf.com {
+	reverse_proxy * http://localhost:38574
+}

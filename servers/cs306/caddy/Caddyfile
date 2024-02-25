@@ -58,7 +58,3 @@ status.acmcsuf.com {
 ics.acmcsuf.com {
 	reverse_proxy * unix//run/discord-ical-srv/http.sock
 }
-
-fullyhacksqr.acmcsuf.com {
-	reverse_proxy * http://localhost:38574
-}
