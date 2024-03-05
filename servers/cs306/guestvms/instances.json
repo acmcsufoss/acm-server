@@ -1,0 +1,10 @@
+{
+  "diamond": {
+    "ports": {
+      "http": 80,
+    },
+    "public_keys": [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIH8o50nEwislB3zcNeEt7s79CuKzgz0SHQm1wX8iv0CV diamond@lilyhoshii"
+    ]
+  }
+}
