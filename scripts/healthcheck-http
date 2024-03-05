@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+. "$(dirname "$0")/lib/init"
+
+lib::require_installed curl
+
+# Constants.
+CURL_TIMEOUT=${CURL_TIMEOUT:-5}
+CURL_VERBOSE=${CURL_VERBOSE:-}
+
+main() {
+	lib::require_args 1 $# "<endpoint>"
+	local endpoint="$1"
+
+	curlFlags=(-L -s -o /dev/null -f --max-time "$CURL_TIMEOUT")
+	if [[ "$CURL_VERBOSE" == 1 ]]; then
+		curlFlags+=(-v)
+	fi
+
+	if ! curl "${curlFlags[@]}" "$endpoint"; then
+		echo "Failed to reach $endpoint" >&2
+		return 1
+	fi
+}
+
+if lib::is_main; then
+	main "$@"
+fi

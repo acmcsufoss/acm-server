@@ -4,8 +4,8 @@ let sources = import ../nix/sources.nix;
 
 in {
 	imports = [
-		../packages/imports.nix
-		../nix/modules
+		<acm-aws/packages/imports.nix>
+		<acm-aws/nix/modules>
 	];
 
 	services.journald = {
