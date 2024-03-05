@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+. "$(dirname "$0")/lib/init"
 
 main() {
 	flags=()
@@ -24,4 +24,6 @@ main() {
 		-pass "file:./secrets/ssh/id_ed25519"
 }
 
-main "$@"
+if lib::is_main; then
+	main "$@"
+fi

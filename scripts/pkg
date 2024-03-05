@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
-set -e
-
-[[ "$RUNNER_DEBUG" == 1 ]] && set -x
+. "$(dirname "$0")/lib/init"
 
 main() {
 	case "$1" in
@@ -145,6 +143,6 @@ pkg::update() {
 }
 
 # Only run main if this script is not being sourced as a library.
-if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+if lib::is_main; then
 	main "$@"
 fi

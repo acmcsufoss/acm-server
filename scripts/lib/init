@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+set -eo pipefail
+
+# Force set -x if RUNNER_DEBUG is set for GitHub Actions.
+[[ "$RUNNER_DEBUG" == 1 ]] && set -x
+
+# Ensure that the script only executes once.
+if [[ -n "${_LIB_INCLUDED}" ]]; then
+	return
+fi
+declare -A _LIB_INCLUDED
+
+# include sources the given file exactly once.
+# The given source file is expected to be relative to the current script.
+lib::include() {
+	local file
+	file="$(dirname "${BASH_SOURCE[0]}")/$1"
+	file="$(realpath "$file")"
+
+	if [[ -n "${_LIB_INCLUDED[$file]}" ]]; then
+		return
+	fi
+	_LIB_INCLUDED[$file]=1
+
+	# Enable a sentinel value to detect if the file is being sourced.
+	# We use this check in lib::is_main to determine if the current script is
+	# the main script.
+	_LIB_SOURCING=1
+
+	# shellcheck source=/dev/null
+	source "$file"
+
+	# Unset the sentinel value.
+	unset _LIB_SOURCING
+}
+
+# is_main returns 0 if the current script is the main script.
+# This is useful for checking if the main function should be called.
+#
+# Usage: lib::is_main "$0"
+lib::is_main() {
+	[[ -z "${_LIB_SOURCING}" ]]
+	return $?
+}
+
+# is_installed returns 0 if all the given packages are installed.
+lib::is_installed() {
+	for package in "$@"; do
+		if ! command -v "$package" > /dev/null; then
+			return 1
+		fi
+	done
+}
+
+# require_installed returns 0 if the given apc
+lib::require_installed() {
+	for package in "$@"; do
+		if ! command -v "$package" > /dev/null; then
+			echo "Missing required package: $package" >&2
+			return 1
+		fi
+	done
+}
+
+# require_args returns 0 if the given number of arguments are provided.
+# If not, it prints an error message in arg 2 and exits with status 1.
+#
+# Usage: lib::require_args <count> $# <usage>
+lib::require_args() {
+	local count="$1"
+	local actual="$2"
+	local message="$3"
+
+	if (( $# != 3 )); then
+		echo 'Usage: lib::require_args <count> $# <usage>' >&2
+		return 1
+	fi
+
+	if (( actual != count )); then
+		echo "Usage: $0 $message" >&2
+		return 1
+	fi
+}

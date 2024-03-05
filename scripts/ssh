@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
-set -e
+. "$(dirname "$0")/lib/init"
 
 main() {
 	publicIP=$(./scripts/ip "$1")
 	ssh -o 'IdentitiesOnly=yes' -i ./secrets/ssh/id_ed25519 "root@${publicIP}"
 }
 
-main "$@"
+if lib::is_main; then
+	main "$@"
+fi
