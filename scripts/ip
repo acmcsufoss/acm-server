@@ -28,7 +28,7 @@ ip::find() {
 		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[].attributes.public_ip // empty' \
 		./secrets/terraform.tfstate)
 	if [[ "$awsIP" != "" ]]; then
-		echo "$name"
+		echo "$awsIP"
 		return
 	fi
 
