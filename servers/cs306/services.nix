@@ -24,6 +24,25 @@ in
 			environment = import <acm-aws/secrets/acm-nixie-env.nix>;
 		};
 
+		crying-counter = {
+			# Deal with this thing not having a config flag for some weird reason.
+			# The database path is both hard-coded and relies on the existing database from the source
+			# repository. This is a terrible way to handle things, but it's what we have to work with.
+			script = ''
+				DATABASE_PATH="crying_counter/db/counts.sqlite"
+				mkdir -p $(dirname $DATABASE_PATH)
+
+				# If the database doesn't exist, copy it from the source repository.
+				if [[ ! -f $DATABASE_PATH ]]; then
+					cp --no-preserve=mode,ownership ${sources.crying-counter}/$DATABASE_PATH $DATABASE_PATH
+					chmod 600 $DATABASE_PATH
+				fi
+
+				${getExe pkgs.crying-counter}
+			'';
+			environment = import <acm-aws/secrets/crying-counter-env.nix>;
+		};
+
 		discord-conversation-summary-bot = {
 			command = getExe pkgs.discord_conversation_summary_bot;
 			workingDirectory = pkgs.writeTextDir

@@ -22,4 +22,7 @@ rec {
 
 	# Deno
 	pomo = pkgs.callPackage ./pomo { };
+
+	# Python
+	crying-counter = pkgs.callPackage ./crying-counter { };
 }

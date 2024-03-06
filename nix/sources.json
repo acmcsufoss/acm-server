@@ -36,6 +36,18 @@
         "url": "https://github.com/acmcsufdev/christmasd/archive/ffafb44636e84fe7cc0b89cfedfcc02ed60f8fd4.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "crying-counter": {
+        "branch": "main",
+        "description": "Discord bot that detects and analyzes phrases sent in a server.",
+        "homepage": "",
+        "owner": "acmcsufoss",
+        "repo": "crying-counter",
+        "rev": "0c8a2ee6174232ac5be007582e0cb71f4960edb5",
+        "sha256": "121qasyv00arr3nd0aiggjp7m2diwsqjaff48cs64v1ha0s2yw3l",
+        "type": "tarball",
+        "url": "https://github.com/acmcsufoss/crying-counter/archive/0c8a2ee6174232ac5be007582e0cb71f4960edb5.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "diamondburned_nix-update": {
         "branch": "master",
         "description": "Swiss-knife for updating nix packages.",
@@ -168,6 +180,18 @@
         "sha256": "1c8rjv87fv9bfnp6j4g5wnsf8lyl9aldvy947ihshkd178fpfw23",
         "type": "tarball",
         "url": "https://github.com/NixOS/nixpkgs/archive/29176972b4be60f7d3eb3101f696c99f2e6ada57.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "poetry2nix": {
+        "branch": "master",
+        "description": "Convert poetry projects to nix automagically [maintainer=@adisbladis] ",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "poetry2nix",
+        "rev": "3c92540611f42d3fb2d0d084a6c694cd6544b609",
+        "sha256": "1jfrangw0xb5b8sdkimc550p3m98zhpb1fayahnr7crg74as4qyq",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/poetry2nix/archive/3c92540611f42d3fb2d0d084a6c694cd6544b609.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "pomo": {
