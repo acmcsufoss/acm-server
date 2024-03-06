@@ -6,7 +6,8 @@ let
 
 	checkScript =
 		with lib;
-		(optionalString self.checkUsers ''
+		("set -eo pipefail") +
+		(optionalString (self.checkUsers) ''
 			loggedInUsers=$(users)
 			if [[ "$loggedInUsers" != "" ]]; then
 				echo "Users are logged in, not running healthcheck" >&2
@@ -14,8 +15,8 @@ let
 				exit 0
 			fi
 		'') +
-		(optionalString self.httpEndpoint != null ''
-			exec ${<acm-aws/scripts/healthcheck-http>} ${self.httpEndpoint}
+		(optionalString (self.httpEndpoint != null) ''
+			${<acm-aws/scripts/healthcheck-http>} ${self.httpEndpoint}
 		'');
 
 	checkDeps =
