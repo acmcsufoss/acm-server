@@ -16,7 +16,7 @@ let
 			fi
 		'') +
 		(optionalString (self.httpEndpoint != null) ''
-			${<acm-aws/scripts/healthcheck-http>} ${self.httpEndpoint}
+			${<acm-aws/scripts>}/healthcheck-http ${self.httpEndpoint}
 		'');
 
 	checkDeps =
