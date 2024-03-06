@@ -65,4 +65,24 @@
 			};
 		};
 	};
+
+	# Enable netdata, which is a lightweight alternative to Grafana.
+	# https://nixos.wiki/wiki/Netdata
+	# https://dataswamp.org/~solene/2022-09-16-netdata-cloud-nixos.html
+	services.netdata = {
+		enable = true;
+		configDir = {
+			"stream.conf" = pkgs.writeText "stream.conf" ''
+				[stream]
+					enabled = yes
+					enable compression = yes
+
+				[${builtins.readFile <acm-aws/secrets/netdata-key>}]
+					enabled = yes
+					allow from = 100.*
+					default memory mode = dbengine
+					health enabled by default = yes
+			'';
+		};
+	};
 }
