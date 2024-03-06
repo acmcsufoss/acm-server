@@ -29,7 +29,7 @@ To use the source in Nix, do
 let sources = import <acm-aws/nix/sources.nix>;
 
 in {
-	src = sources.github-repo;
+  src = sources.github-repo;
 }
 ```
 
@@ -53,8 +53,8 @@ languages. Hopefully, you'll get the gist of it.
 If you cannot find the programming language that you want to package for, refer
 to the [Nixpkgs manual, ch. 17 (Languages and Frameworks)](https://nixos.org/manual/nixpkgs/stable/#chap-language-support).
 
-> **Note**: Nix package files usually go in `./packages/`, either as a file
-> (e.g. `./packages/program.nix`) or as a directory (e.g.
+> [!NOTE]
+> Nix package files usually go in `./packages/` as a directory (e.g.
 > `./packages/program/default.nix`).
 
 Once the package file is written, they need to be added into
@@ -63,22 +63,57 @@ Once the package file is written, they need to be added into
 ```nix
 { pkgs ? import <acm-aws/nix/nixpkgs.nix> }:
 
-let
-    self = {
-	    # Other stuff...
-	    acmregister = pkgs.callPackage ./acmregister.nix { };
-	    # Other stuff...
-    };
-in self
+rec {
+  # Other stuff...
+  program = pkgs.callPackage ./program { };
+  # Other stuff...
+}
 ```
 
 ### Python
 
-TODO. Err... I don't know myself.
+The recommended way to package Python projects is to convert that project to
+use Poetry for dependency management. This is because Poetry can generate a
+`pyproject.toml` file that Nix can use to build the package.
+
+> [!IMPORTANT]
+> Make sure that you're able to run the project using `poetry run python -m
+> <MODULE_PATH>` before you start packaging it.
+
+Once that's done, simply use `buildPoetryPackage`:
+
+```nix
+{ buildPoetryPackage }:
+
+let
+  sources = import <acm-aws/nix/sources.nix>;
+in
+
+buildPoetryPackage {
+  pname = "project-name";
+  module = "path.to.python.module";
+  src = sources.project-name;
+}
+```
 
 ### JavaScript
 
 TODO. Use `buildNpmPackage`: https://github.com/serokell/nix-npm-buildpackage
+
+### Deno
+
+```nix
+{ buildDenoPackage }:
+
+buildDenoPackage rec {
+  pname = "pomo";
+  src = (import <acm-aws/nix/sources.nix>).pomo;
+  entrypoint = "server/main.ts";
+  # TODO: fill this in once you have it.
+  # See buildGoModule's vendorSha256 for more info.
+  outputHash = "";
+}
+```
 
 ### Go
 
@@ -88,25 +123,24 @@ TODO. Use `buildNpmPackage`: https://github.com/serokell/nix-npm-buildpackage
 # new enough.
 { buildGo119Module }:
 
-let src = (import <acm-aws/nix/sources.nix>).acmregister;
+let
+  sources = import <acm-aws/nix/sources.nix>;
+in
 
-in buildGo119Module {
-	# Define the name and version of the package.
-	pname = "acmregister";
-	version = "main";
+buildGo119Module {
+  pname = "acmregister";
+  version = "main";
+  src = sources.acmregister;
 
-	# Inherit our src variable.
-	inherit src;
+  # Use an empty vendorHash hash. This forces Nix to fetch a new set of Go #
+  # dependencies for our package. The hash can later be updated by running
+  # ./scripts/pkg update <name>.
+  vendorHash = "";
 
-	# Use a fake vendorSha256 hash. This forces Nix to fetch a new set of Go #
-	# dependencies for our package. The hash can later be updated by running
-	# ./scripts/pkg update <name>.
-	vendorSha256 = "0000000000000000000000000000000000000000000000000000000000000000";
-
-	# This is optional, but we can specify what Go package to build within the
-	# module to avoid having to build all packages. This is useful if the module
-	# contains multiple unnecessary package mains.
-	# subPackages = [ "." ];
+  # This is optional, but we can specify what Go package to build within the
+  # module to avoid having to build all packages. This is useful if the module
+  # contains multiple unnecessary package mains.
+  # subPackages = [ "." ];
 }
 ```
 
@@ -126,102 +160,31 @@ to the most reliable process on the server.
 > against data loss, power surge, etc. All it does is keep things alive for as
 > long as it can manage to.
 
-> **Note**: throughout the code, you'll see mentions of a "target". A target is
-> a special kind of systemd service. Each target usually refers to a specific
-> event that the system can trigger. For example:
->
-> - `network-online.target` is triggered when the network is up and running,
-> - `multi-user.target` is triggered when the system is ready for user
->   interaction.
+In most cases, adding a new systemd service is as simple as adding 2 lines of
+code into the `services.nix` file under `services.managed.services`. This
+module will automatically generate the systemd service file for us.
 
-A basic systemd service looks like this in Nix:
+For example:
 
 ```nix
 {
-	# Declare that we want a new systemd service.
-	systemd.services.hellobot = {
-		# Enable our service.
-		enable = true;
-		description = "Hello world bot";
-		# `after' lists the services and "targets" that we want to start our
-		# service after. Here, we want to start our service after the network
-		# is up and running.
-		after = [ "network-online.target" ];
-		# `wantedBy' lists the services and targets that our service should
-		# always start immediately after.
-		#
-		# This differs from `after' in that by using `wantedBy', we're telling
-		# systemd that our service must always start then, while `after' is
-		# just a suggestion.
-		wantedBy = [ "multi-user.target" ];
-		# Optionally clarify the environment variables that we want to pass
-		# into our service. It is recommended that this be a Nix file inside a
-		# folder named `secrets' for them to be hidden from public.
-		environment = import <acm-aws/secrets/acm-nixie-env.nix>;
-		serviceConfig = {
-			# Declare that our service is a long-running process.
-			Type = "simple";
-			# If the process requires a place to write to, we can tell systemd
-			# to reserve a directory in /var/lib. Here, we're getting
-			# /var/lib/hellobot.
-			RuntimeDirectory = "hellobot";
-			# Set the command to run when our service starts. This should
-			# usually be the binary name and whatever arguments that it needs.
-			#
-			# Note that we're referring to pkgs.name here followed by a /bin
-			# path. This is because each Nix package usually contains a /bin
-			# folder that contains all the binaries that the package provides.
-			ExecStart = "${pkgs.hellobot}/bin/hellobot --database-path /var/lib/hellobot";
-			# Assign the nobody user and group to this process. This is the most
-			# basic way to protect the server against potential vulnerabilities
-			# in the process.
-			User = "nobody";
-			Group = "nobody";
-		};
-	};
+  services.managed.services = with lib; {
+    hellobot = {
+      # Set the command to run when our service starts. This should
+      # usually be the binary name and whatever arguments that it needs.
+      # Here, we're using /var/lib/hellobot, which is automatically
+      # created by systemd.
+      command = [ (getExe pkgs.hellobot) "--database-path" "/var/lib/hellobot" ];
+      # Optionally clarify the environment variables that we want to pass
+      # into our service. It is recommended that this be a Nix file inside a
+      # folder named `secrets' for them to be hidden from public.
+      environment = import <acm-aws/secrets/acm-nixie-env.nix>;
+    };
+  };
 }
 ```
 
-This may look long, but it's not too bad without all the comments.
-
-### Installing a systemd service directly into a configuration
-
-The laziest way to apply the systemd service that we just made is to put it
-directly into a server's `configuration.nix` file.
-
-For example, we can paste our `hellobot` service directly into
-`./servers/cirno/configuration.nix`:
-
-```nix
-{ config, lib, pkgs, ... }:
-
-{
-	# Other stuff...
-
-	systemd.services.hellobot = {
-		enable = true;
-		description = "Hello world bot";
-		after = [ "network-online.target" ];
-		wantedBy = [ "multi-user.target" ];
-		environment = import <acm-aws/secrets/acm-nixie-env.nix>;
-		serviceConfig = {
-			Type = "simple";
-			RuntimeDirectory = "hellobot";
-			ExecStart = ''
-				${pkgs.hellobot}/bin/hellobot \
-					--database-path /var/lib/hellobot \
-					--http-address localhost:40002
-			'';
-			User = "nobody";
-			Group = "nobody";
-		};
-	};
-
-	# Other stuff...
-}
-```
-
-You can have a look at cirno's `configuration.nix` file to see how it looks
+You can have a look at cs306's `services.nix` file to see how it looks
 like with other actual services.
 
 ## Making a Nix service option (recommended)
@@ -233,11 +196,11 @@ A Nix service option often looks something like this:
 
 ```nix
 {
-	services.caddy = {
-		enable = true;
-		configFile = <acm-aws/secrets/Caddyfile>;
-		environment = import <acm-aws/secrets/caddy-env.nix>;
-	};
+  services.caddy = {
+    enable = true;
+    configFile = <acm-aws/secrets/Caddyfile>;
+    environment = import <acm-aws/secrets/caddy-env.nix>;
+  };
 }
 ```
 
@@ -262,13 +225,11 @@ lets the user write something like this:
 { config, lib, pkgs, ... }:
 
 {
-	services.hellobot = {
-		enable = true;
-		httpAddress = "localhost:40002";
-		environment = {
-			BOT_TOKEN = "Bot token";
-		};
-	};
+  services.hellobot = {
+    enable = true;
+    httpAddress = "localhost:40002";
+    environment = import <acm-aws/secrets/acm-nixie-env.nix>;
+  };
 }
 ```
 
@@ -303,70 +264,70 @@ with lib;
 let cfg = config.services.hellobot;
 
 in {
-	# Define the skeleton of the options that we want to expose to the user.
-	options.services.hellobot = {
-		# The `enable' option is a special option that is used to enable or
-		# disable the service. It is a boolean option that defaults to false.
-		enable = mkEnableOption "Enable the Hello world bot";
+  # Define the skeleton of the options that we want to expose to the user.
+  options.services.hellobot = {
+    # The `enable' option is a special option that is used to enable or
+    # disable the service. It is a boolean option that defaults to false.
+    enable = mkEnableOption "Enable the Hello world bot";
 
-		# Define our httpAddress option. This is a string option that defaults
-		# to "localhost:40002".
-		httpAddress = mkOption {
-			type = types.str;
-			default = "localhost:40002";
-			description = "The address that the bot should listen on";
-		};
+    # Define our httpAddress option. This is a string option that defaults
+    # to "localhost:40002".
+    httpAddress = mkOption {
+      type = types.str;
+      default = "localhost:40002";
+      description = "The address that the bot should listen on";
+    };
 
-		# Define our environment option. This is an attribute set of string
-		# values.
-		environment = mkOption {
-			type = types.attrsOf types.str;
-			default = {};
-			description = "Environment variables for the bot";
-		};
+    # Define our environment option. This is an attribute set of string
+    # values.
+    environment = mkOption {
+      type = types.attrsOf types.str;
+      default = {};
+      description = "Environment variables for the bot";
+    };
 
-		# Define the package that this service option is for. We'll just
-		# directly import our package file to be the default one.
-		package = mkOption {
-			default = pkgs.callPackage ./default.nix {};
-			type = types.package;
-			description = "Caddy package to use.";
-		};
-	};
+    # Define the package that this service option is for. We'll just
+    # directly import our package file to be the default one.
+    package = mkOption {
+      default = pkgs.callPackage ./default.nix {};
+      type = types.package;
+      description = "Caddy package to use.";
+    };
+  };
 
-	# Define what will happen to the system configuration when this service
-	# option is enabled.
-	config = mkIf cfg.enable {
-		# We install this package globally if the service is enabled. This lets
-		# the user run `hellobot' from the command line.
-		environment.systemPackages = [ cfg.package ];
+  # Define what will happen to the system configuration when this service
+  # option is enabled.
+  config = mkIf cfg.enable {
+    # We install this package globally if the service is enabled. This lets
+    # the user run `hellobot' from the command line.
+    environment.systemPackages = [ cfg.package ];
 
-		# We put our systemd service that we just wrote into the system
-		# configuration here.
-		systemd.services.hellobot = {
-			enable = true;
-			description = "Hello world bot";
-			after = [ "network-online.target" ];
-			wantedBy = [ "multi-user.target" ];
-			# Pay attention here. We use the environment option that the user
-			# set while using services.hellobot.environment.
-			environment = cfg.environment;
-			serviceConfig = {
-				Type = "simple";
-				RuntimeDirectory = "hellobot";
-				# This is also different: we use the options that the user set
-				# instead of hard-coding them. The exception is database-path,
-				# which we let systemd handle.
-				ExecStart = ''
-					${cfg.package}/bin/hellobot \
-						--database-path /var/lib/hellobot \
-						--http-address ${cfg.httpAddress}
-				'';
-				User = "nobody";
-				Group = "nobody";
-			};
-		};
-	};
+    # We put our systemd service that we just wrote into the system
+    # configuration here.
+    systemd.services.hellobot = {
+      enable = true;
+      description = "Hello world bot";
+      after = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      # Pay attention here. We use the environment option that the user
+      # set while using services.hellobot.environment.
+      environment = cfg.environment;
+      serviceConfig = {
+        Type = "simple";
+        RuntimeDirectory = "hellobot";
+        # This is also different: we use the options that the user set
+        # instead of hard-coding them. The exception is database-path,
+        # which we let systemd handle.
+        ExecStart = ''
+          ${cfg.package}/bin/hellobot \
+            --database-path /var/lib/hellobot \
+            --http-address ${cfg.httpAddress}
+        '';
+        User = "nobody";
+        Group = "nobody";
+      };
+    };
+  };
 }
 ```
 
@@ -395,11 +356,11 @@ the `imports` list:
 let ...;
 
 in {
-	imports = [
-		# ...
-		./hellobot/service.nix
-		# ...
-	];
+  imports = [
+    # ...
+    ./hellobot/service.nix
+    # ...
+  ];
 }
 ```
 
@@ -412,17 +373,15 @@ our `configuration.nix` file:
 { config, lib, pkgs, ... }:
 
 {
-	# Other stuff...
+  # Other stuff...
 
-	services.hellobot = {
-		enable = true;
-		httpAddress = "localhost:40002";
-		environment = {
-			BOT_TOKEN = "Bot token";
-		};
-	};
+  services.hellobot = {
+    enable = true;
+    httpAddress = "localhost:40002";
+    environment = import <acm-aws/secrets/acm-nixie-env.nix>;
+  };
 
-	# Other stuff...
+  # Other stuff...
 }
 ```
 
