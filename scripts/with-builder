@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+. "$(dirname "$0")/lib/init"
+
+lib::include ip
+
+main() {
+	local builderMachine="$1"
+	local args=( "${@:2}" )
+
+	if ! addr=$(ip::find "$builderMachine"); then
+		echo "Could not find IP for server '$builderMachine'" >&2
+		exit 1
+	fi
+
+	export NIX_CONFIG NIX_SSH_OPTS
+	NIX_CONFIG="builders = ssh://$addr"
+	NIX_SSH_OPTS="-i $(lib::root_path secrets/ssh/id_ed25519)"
+
+	"${args[@]}"
+}
+
+if lib::is_main; then
+	main "$@"
+fi
