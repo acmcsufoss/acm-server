@@ -32,6 +32,11 @@ ip::find() {
 		return
 	fi
 
+	if [[ -z "$TAILNET_NAME" ]]; then
+		echo "TAILNET_NAME is not set" >&2
+		return 1
+	fi
+
 	if getent hosts "$name.$TAILNET_NAME.ts.net" > /dev/null; then
 		echo "$name.$TAILNET_NAME.ts.net"
 		return
