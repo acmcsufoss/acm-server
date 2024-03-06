@@ -14,7 +14,7 @@ declare -A _LIB_INCLUDED
 # The given source file is expected to be relative to the current script.
 lib::include() {
 	local file
-	file="$(dirname "${BASH_SOURCE[0]}")/$1"
+	file="$(dirname "${BASH_SOURCE[0]}")/../$1"
 	file="$(realpath "$file")"
 
 	if [[ -n "${_LIB_INCLUDED[$file]}" ]]; then
