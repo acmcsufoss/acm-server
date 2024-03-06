@@ -14,8 +14,7 @@ declare -A _LIB_INCLUDED
 # The given source file is expected to be relative to the current script.
 lib::include() {
 	local file
-	file="$(dirname "${BASH_SOURCE[0]}")/../$1"
-	file="$(realpath "$file")"
+	file="$(lib::scripts_path "$1")"
 
 	if [[ -n "${_LIB_INCLUDED[$file]}" ]]; then
 		return
@@ -80,4 +79,29 @@ lib::require_args() {
 		echo "Usage: $0 $message" >&2
 		return 1
 	fi
+}
+
+# root_path returns the root path of the project.
+# This is the repository path.
+#
+# Arguments given to the script are concatenated to the root path:
+# shellcheck disable=SC2120
+#
+# Usage: lib::root_path <tail...>
+lib::root_path() {
+	local tailPath
+	printf -v tailPath "/%s" "$@"
+	realpath "$(dirname "${BASH_SOURCE[0]}")/../..$tailPath"
+}
+
+# scripts_path returns the path to the scripts directory.
+#
+# Arguments given to the script are concatenated to the scripts path:
+# shellcheck disable=SC2120
+#
+# Usage: lib::scripts_path <tail...>
+lib::scripts_path() {
+	local tailPath
+	printf -v tailPath "/%s" "$@"
+	echo -n "$(lib::root_path)/scripts$tailPath"
 }
