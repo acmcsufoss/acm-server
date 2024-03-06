@@ -10,6 +10,9 @@ on:
         required: true
   workflow_dispatch:
 
+env:
+  NIX_BUILDER: cs306
+
 jobs:
   make-all:
     name: Run all package Makefiles
@@ -100,7 +103,8 @@ jobs:
         if: steps.terraform-plan.outputs.status == 2
         run: |-
           set -o pipefail
-          terraform apply --auto-approve "/tmp/acm-aws-plan" \
+          ./scripts/with-builder "$NIX_BUILDER" \
+            terraform apply --auto-approve "/tmp/acm-aws-plan" \
             |& tee /tmp/terraform-apply.log \
             |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
 
