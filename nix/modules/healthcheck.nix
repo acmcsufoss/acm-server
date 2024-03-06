@@ -20,7 +20,7 @@ let
 		'');
 
 	checkDeps =
-		(with pkgs; [ coreutils ]) ++
+		(with pkgs; [ bash coreutils ]) ++
 		(if self.httpEndpoint != null then with pkgs; [ curl ] else []);
 in
 
