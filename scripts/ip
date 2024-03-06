@@ -13,11 +13,6 @@ main() {
 		return
 	fi
 
-	if getent hosts "$name.$TAILNET_NAME.ts.net" > /dev/null; then
-		echo "$name.$TAILNET_NAME.ts.net"
-		return
-	fi
-
 	echo "Could not find IP for $name" >&2
 	exit 1
 }
@@ -25,16 +20,24 @@ main() {
 # ip::find($1: instance_name?) -> public_ip?
 ip::find() {
 	local name
-	name=$(jq -r \
-		--arg name "$1" \
+	name="$1"
+
+	local awsIP
+	awsIP=$(jq -r \
+		--arg name "$name" \
 		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[].attributes.public_ip // empty' \
 		./secrets/terraform.tfstate)
-	if [[ "$name" == "" ]]; then
-		return 1
+	if [[ "$awsIP" != "" ]]; then
+		echo "$name"
+		return
 	fi
 
-	echo "$name"
-	return 0
+	if getent hosts "$name.$TAILNET_NAME.ts.net" > /dev/null; then
+		echo "$name.$TAILNET_NAME.ts.net"
+		return
+	fi
+
+	return 1
 }
 
 # ip::list() -> (name + " " + public_ip)[]
