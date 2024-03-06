@@ -66,7 +66,6 @@ in
 			description = "Timer for the healthcheck";
 			wantedBy = [ "timers.target" ];
 			after = [ "network.target" ];
-			unit = "healthcheck.service";
 			timerConfig = {
 				OnCalendar = self.calendar;
 				Persistent = true;
