@@ -46,7 +46,7 @@ let # https://deno.land/manual@v1.32.4/basics/modules/integrity_checking
 in
 
 runCommand name {
-	inherit src entrypoint lockfile buildInputs;
+	inherit pname src entrypoint lockfile buildInputs;
 	nativeBuildInputs = [ makeWrapper deno denoDir ];
 	passthru = {
 		inherit outputHash;

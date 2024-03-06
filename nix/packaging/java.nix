@@ -18,5 +18,8 @@ writeTextFile {
 	text = "#!/bin/sh\nexec ${jre}/bin/java -jar ${jar} \"\$@\"";	
 	executable = true;
 	destination = "/bin/${pname}";
-	meta = meta // { noNixUpdate = true; };
+	meta = meta // {
+		noNixUpdate = true;
+		mainProgram = pname;
+	};
 }

@@ -11,6 +11,8 @@
 		./hardware-configuration.nix
 		./services.nix
 		./recovery.nix
+		./telemetry.nix
+		./caddy
 	];
 
 	boot.loader.systemd-boot.enable = true;
