@@ -1,5 +1,14 @@
 { config, lib, pkgs, ... }:
 
+let
+	tailnet = builtins.getEnv "TAILNET_NAME";
+	tailnetAddr = name: "${name}.${tailnet}.ts.net";
+in
+
+assert lib.assertMsg
+	(tailnet != null && tailnet != "")
+	"$TAILNET_NAME environment variable must be set, are you in the nix-shell?";
+
 {
 	services.telegraf = {
 		enable = true;
@@ -71,6 +80,22 @@
 	# https://dataswamp.org/~solene/2022-09-16-netdata-cloud-nixos.html
 	services.netdata = {
 		enable = true;
+		config =
+			with lib;
+			with builtins;
+			let
+				concat = l: concatStringsSep " " (flatten l);
+				config = {
+					web = rec {
+						"bind to" = concat [
+							"127.0.0.1"
+							"unix:/run/netdata/netdata.sock=dashboard"
+							(map (host: "${tailnetAddr host}=streaming") [ "cirno" ])
+						];
+						"default port" = 19999;
+					};
+				};
+			in config;
 		configDir = {
 			"stream.conf" = pkgs.writeText "stream.conf" ''
 				[stream]
