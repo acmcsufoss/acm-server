@@ -26,35 +26,4 @@
 			'';
 		};
 	};
-
-	# Gather system metrics using Telegraf into cirno's VictoriaMetrics.
-	services.telegraf = {
-		enable = true;
-		extraConfig = {
-			inputs = {
-				net    = {};
-				mem    = {};
-				disk   = {};
-				swap   = {};
-				system = {};
-				diskio = {};
-				processes = {};
-				prometheus = {
-					urls = [
-						"http://localhost:2019/metrics" # Caddy
-					];
-				};
-				systemd_units = {};
-				internet_speed = {
-					interval = "2h";
-				};
-			};
-			outputs = {
-				influxdb = {
-					database = "telegraf";
-					urls = [ "http://cs306:8428" ];
-				};
-			};
-		};
-	};
 }
