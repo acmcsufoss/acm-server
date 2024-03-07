@@ -87,12 +87,25 @@ assert lib.assertMsg
 				concat = l: concatStringsSep " " (flatten l);
 				config = {
 					web = rec {
+						"web server threads" = 6;
+						"default port" = 19999;
 						"bind to" = concat [
 							"127.0.0.1"
-							"unix:/run/netdata/netdata.sock=dashboard"
+							"unix:/run/netdata/netdata.sock"
 							(map (host: "${tailnetAddr host}=streaming") [ "cirno" ])
 						];
-						"default port" = 19999;
+						"allow connections from" = concat [
+							"localhost"
+							"100.*"
+							(tailnetAddr "*")
+						];
+						"allow streaming from" = concat [
+							config.web."allow connections from"
+						];
+						"allow dashboard from" = concat [
+							config.web."allow connections from"
+							"netdata.acmcsuf.com"
+						];
 					};
 				};
 			in config;
