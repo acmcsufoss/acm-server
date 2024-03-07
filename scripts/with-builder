@@ -15,9 +15,15 @@ main() {
 			exit 1
 		fi
 
-		echo "Using builder machine via SSH at $addr" >&2
+		system=$(nix-instantiate --eval --json "./servers/$builderMachine/" -A pkgs.system | jq -r)
+		if [[ -z "$system" ]]; then
+			echo "Could not determine system type for server '$builderMachine'" >&2
+			exit 1
+		fi
+
+		echo "Using builder machine via SSH at $addr ($system)" >&2
 		export NIX_CONFIG NIX_SSH_OPTS
-		NIX_CONFIG="builders = ssh://$addr"
+		NIX_CONFIG="builders = ssh://$addr $system"
 		NIX_SSH_OPTS="-i $(lib::root_path secrets/ssh/id_ed25519)"
 	fi
 
