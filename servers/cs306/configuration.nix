@@ -58,6 +58,11 @@
 		useRoutingFeatures = "both";
 	};
 
+	services.logind.extraConfig = ''
+		# Disable the power button
+		HandlePowerKey=ignore
+	'';
+
 	networking.firewall.interfaces.tailscale0 = {
 		allowedTCPPortRanges = [ { from = 0; to = 65535; } ];
 		allowedUDPPortRanges = [ { from = 0; to = 65535; } ];
