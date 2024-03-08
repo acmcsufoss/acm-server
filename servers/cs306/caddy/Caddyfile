@@ -60,5 +60,5 @@ ics.acmcsuf.com {
 }
 
 netdata.acmcsuf.com {
-	reverse_proxy * unix//run/netdata/netdata.sock
+	reverse_proxy * localhost:19999
 }

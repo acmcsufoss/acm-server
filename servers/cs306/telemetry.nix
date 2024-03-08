@@ -28,7 +28,6 @@ assert lib.assertMsg
 						# the NixOS firewall to restrict access.
 						"bind to" = concat [
 							"127.0.0.1"
-							"unix:/run/netdata/netdata.sock"
 							(map (host: "${tailnetAddr host}=streaming") [ "cirno" ])
 						];
 					};
