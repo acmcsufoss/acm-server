@@ -23,12 +23,18 @@ To add a GitHub repository into the package source list, use the command
 niv add github-username/github-repo
 ```
 
+> [!NOTE]
+> You can add a source without using `niv` by using the "Add a GitHub source
+> using Niv" GitHub Action!
+
 To use the source in Nix, do
 
 ```nix
-let sources = import <acm-aws/nix/sources.nix>;
+let
+  sources = import <acm-aws/nix/sources.nix>;
+in
 
-in {
+{
   src = sources.github-repo;
 }
 ```
@@ -38,7 +44,7 @@ Refer to `niv add --help` for more information.
 
 ## Making a Nix package
 
-Like many other Linux distributions, when you "make a package," you're writing
+Like many other Linux distributions, when you "make a package", you're writing
 files that let the system's package manager know how to install the program into
 the system for the user to use.
 
@@ -144,8 +150,9 @@ buildGo119Module {
 }
 ```
 
-> **Note**: if the source repository uses Go workspace, then packaging it
-> becomes a bit more tedious. Adding `GOWORK = "off";` should fix it.
+> [!NOTE]
+> If the source repository uses Go workspace, then packaging it becomes a bit
+> more tedious. Adding `GOWORK = "off";` should fix it.
 
 ## Making a systemd service
 
@@ -156,9 +163,10 @@ For example, if we want to run a Discord bot, we'd want it to stay up ideally
 forever. By making the bot process a systemd service, we're entrusting that task
 to the most reliable process on the server.
 
-> **Note**: systemd service is not magic. It does not protect the process
-> against data loss, power surge, etc. All it does is keep things alive for as
-> long as it can manage to.
+> [!NOTE]
+> systemd service is not magic. It does not protect the process against data
+> loss, power surge, etc. All it does is keep things alive for as long as it
+> can manage to.
 
 In most cases, adding a new systemd service is as simple as adding 2 lines of
 code into the `services.nix` file under `services.managed.services`. This
@@ -239,17 +247,21 @@ When writing a Nix service option, we will want to declare the options that we
 want to expose to the user. This is done by setting a new attribute set inside
 `options`.
 
-> **Note**: the `options` attribute is a special attribute that is used to
-> declare options, while the `config` attribute is used to read and write
-> configuration values.
+> [!NOTE]
+> The `options` attribute is a special attribute that is used to declare
+> options, while the `config` attribute is used to read and write configuration
+> values.
 
-> **Note**: [I](https://github.com/diamondburned) strongly advise to use GitHub
-> Copilot to write the options below. I don't really remember all the functions
-> that I should be using, so I just use Copilot to write most of it.
+> [!NOTE]
+> [Diamond](https://github.com/diamondburned) strongly advises to use GitHub
+> Copilot to write the options below. She doesn't really remember all the
+> functions that she should be using, so she uses Copilot to write them for
+> her.
 
-> **Note**: we'll be using the term "attribute" and "attribute set" a lot. An
-> "attribute set" is like a JSON object, while an "attribute" is like a JSON
-> field within an object.
+> [!NOTE]
+> We'll be using the term "attribute" and "attribute set" a lot. An "attribute
+> set" is like a JSON object, while an "attribute" is like a JSON field within
+> an object.
 
 ```nix
 { config, lib, pkgs, ... }:
@@ -385,9 +397,11 @@ our `configuration.nix` file:
 }
 ```
 
-> **Note**: NixOS defines many options similar to the one that we just made. To
-> search for what's available, go to [search.nixos.org/options](https://search.nixos.org/options).
-> There are over 10,000 options available!
+> [!NOTE]
+> NixOS defines many options similar to the one that we just made. To search
+> for what's available, go to
+> [search.nixos.org/options](https://search.nixos.org/options). There are over
+> 10,000 options available!
 >
 > Here are some options that you might be interested in:
 >
@@ -417,5 +431,6 @@ gomod2nix.toml: go.mod go.sum
     gomod2nix
 ```
 
-> **Note**: All package Makefiles are run during the deployment process within
-> the GitHub Actions workflow. Deploying locally does not run the Makefiles.
+> [!NOTE]
+> All package Makefiles are run during the deployment process within the GitHub
+> Actions workflow. Deploying locally does not run the Makefiles.
