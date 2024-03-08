@@ -1,0 +1,59 @@
+name: Add a GitHub source using Niv
+
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        type: string
+        default: "acmcsufoss/example"
+        required: true
+        description: >-
+          The GitHub repository to add in the format "owner/repo".
+      branch:
+        type: string
+        description: >-
+          The branch to add the package to.
+          Defaults to the default branch.
+
+jobs:
+  add:
+    name: Add ${{ inputs.package }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          # Use ref_name instead of ref so we always get the branch to pull our
+          # latest commit from.
+          ref: ${{ github.ref_name }}
+
+      - name: Install Nix packages
+        uses: diamondburned/cache-install@main
+        with:
+          shell-file: shell.nix
+          instantiated-files: packages/
+          nix-install-url: https://releases.nixos.org/nix/nix-2.18.1/install
+
+      - name: Add source using Niv
+        run: |-
+          nivArgs=( add "$INPUT_PACKAGE" )
+          if [[ -n "$INPUT_BRANCH" ]]; then
+            nivArgs+=( --branch "$INPUT_BRANCH" )
+          fi
+          niv "${nivArgs[@]}"
+        env:
+          INPUT_PACKAGE: ${{ inputs.package }}
+          INPUT_BRANCH: ${{ inputs.branch }}
+          # Set the GITHUB_TOKEN variable to prevent 403 errors.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit changes, if any
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          branch: ${{ github.ref_name }}
+          commit_message: |-
+            Add package source ${{ inputs.package }}
+
+            GitHub repository ${{ inputs.package }} was added to the sources
+            list using Niv via GitHub Actions.
+
+            The action workflow was triggered by ref ${{ github.sha }}.
