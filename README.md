@@ -62,6 +62,13 @@ Afterwards, initialize the local Terraform workspace:
 terraform init
 ```
 
+If you aren't using `nix-shell`, you need to source the environment:
+```sh
+set -o allexport
+source .env
+set +o allexport
+```
+
 ## Deploying
 
 ### Deploy locally
