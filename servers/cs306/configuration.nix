@@ -45,6 +45,9 @@
 
 	nixpkgs.config.allowUnfree = true;
 
+	# Bump this to force Terraform to re-create the instance.
+	environment.etc."fuck-ups".text = "1";
+
 	environment.systemPackages = with pkgs; [
 		vim
 		wget
