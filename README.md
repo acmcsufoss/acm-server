@@ -64,6 +64,11 @@ terraform init
 
 ## Deploying
 
+> [!IMPORTANT]
+> The only way to deploy to our servers is via Terraform, either done locally
+> or through GitHub Actions. **Do not** manually change anything on the servers
+> without going through Terraform.
+
 ### Deploy locally
 
 To deploy locally, ensure you have Nix installed and have loaded the Nix shell.
