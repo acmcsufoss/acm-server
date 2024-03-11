@@ -74,17 +74,5 @@
 	# Enable wake-on-LAN for Ethernet.
 	networking.interfaces.enp8s0.wakeOnLan.enable = true;
 
-	# Disable multicast on WiFi.
-	systemd.services.wifi-disable-multicast = {
-		description = "Disable multicast on WiFi";
-		serviceConfig.Type = "oneshot";
-		script = ''
-			${pkgs.iproute2}/bin/ip link set wlp3s0 multicast off
-		'';
-		after = [ "network.target" "network-online.target" ];
-		wants = [ "network-online.target" ];
-		wantedBy = [ "multi-user.target" ];
-	};
-
 	system.stateVersion = "23.05"; # Did you read the comment?
 }
