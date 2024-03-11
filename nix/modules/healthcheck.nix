@@ -52,11 +52,15 @@ in
 			wantedBy = [ "multi-user.target" ];
 			after = [ "network.target" ];
 			serviceConfig = {
-				Type = "simple";
+				Type = "oneshot";
+				# Retry every 30 seconds if the check fails.
 				Restart = "on-failure";
+				RestartSec = 30;
+				# Permit 10 restarts in 10 minutes.
 				StartLimitBurst = 10;
-				StartLimitInterval = "5m";
-				StartLimitAction = "restart-force";
+				StartLimitIntervalSec = 10 * 60;
+				# If the check fails all 5 times within 10 minutes, reboot the system.
+				StartLimitAction = "reboot-force";
 			};
 			script = checkScript;
 			path = checkDeps;
