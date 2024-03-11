@@ -2,7 +2,7 @@
 # your system.	Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
 	imports = [ # Include the results of the hardware scan.
@@ -69,6 +69,24 @@
 	networking.firewall.interfaces.tailscale0 = {
 		allowedTCPPortRanges = [ { from = 0; to = 65535; } ];
 		allowedUDPPortRanges = [ { from = 0; to = 65535; } ];
+	};
+
+	# Enable wake-on-LAN for Ethernet.
+	networking.interfaces.enp8s0.wakeOnLan = {
+		enable = true;
+		policy = "magic";
+	};
+
+	# Disable multicast on WiFi.
+	systemd.services.wifi-disable-multicast = {
+		description = "Disable multicast on WiFi";
+		serviceConfig.Type = "oneshot";
+		script = ''
+			${pkgs.iproute2}/bin/ip link set wlp3s0 multicast off
+		'';
+		after = [ "network.target" "network-online.target" ];
+		wants = [ "network-online.target" ];
+		wantedBy = [ "multi-user.target" ];
 	};
 
 	system.stateVersion = "23.05"; # Did you read the comment?
