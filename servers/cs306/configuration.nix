@@ -72,10 +72,7 @@
 	};
 
 	# Enable wake-on-LAN for Ethernet.
-	networking.interfaces.enp8s0.wakeOnLan = {
-		enable = true;
-		policy = "magic";
-	};
+	networking.interfaces.enp8s0.wakeOnLan.enable = true;
 
 	# Disable multicast on WiFi.
 	systemd.services.wifi-disable-multicast = {
