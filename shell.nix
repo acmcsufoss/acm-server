@@ -1,6 +1,7 @@
 { pkgs ? import ./nix/nixpkgs.nix }:
 
-let pkgssrc = (import ./nix/sources.nix).nixpkgs;
+let
+	pkgssrc = (import ./nix/sources.nix).nixpkgs;
 in
 
 pkgs.mkShell {
@@ -8,7 +9,7 @@ pkgs.mkShell {
 	buildInputs = with pkgs; [
 		terraform
 		awscli2
-		rnix-lsp
+		# rnix-lsp
 		nix-update
 		jq
 		niv
