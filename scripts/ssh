@@ -2,6 +2,12 @@
 . "$(dirname "$0")/lib/init"
 
 main() {
+	if [[ $(dd if=secrets/ssh/id_ed25519 bs=1 skip=1 | head -c 8) == "GITCRYPT" ]]; then
+		git-crypt unlock
+	fi
+	# git doesn't save file mode properly - so we have to override it
+	# this is very common because it's also necessary after any git-crypt operation
+	chmod 600 secrets/ssh/id_ed25519
 	publicIP=$(./scripts/ip "$1")
 	ssh -o 'IdentitiesOnly=yes' -i ./secrets/ssh/id_ed25519 "root@${publicIP}"
 }
