@@ -78,5 +78,50 @@
 	# Enable wake-on-LAN for Ethernet.
 	networking.interfaces.enp8s0.wakeOnLan.enable = true;
 
+	# Enable incus with reproducible config
+	# Manual changes will cause irreproducibility - do not edit outside of this!
+	# Test any changes before pushing, particularly with networking
+	virtualisation.incus.enable = true;
+	virtualisation.incus.preseed = {
+		networks = [
+			{
+				config = {
+					"ipv4.address" = "172.16.100.1/24";
+					"ipv4.nat" = "true";
+					"ipv4.firewall" = "false";
+					"ipv6.firewall" = "false";
+				};
+				name = "incusbr0";
+				type = "bridge";
+			}
+		];
+		profiles = [
+			{
+				devices = {
+					eth0 = {
+						name = "eth0";
+						network = "incusbr0";
+						type = "nic";
+					};
+					root = {
+						path = "/";
+						pool = "default";
+						size = "200GiB";
+						type = "disk";
+					};
+				};
+			}
+		];
+		storage_pools = [
+			{
+				config = {
+					source = "/var/lib/incus/storage-pools/default";
+				};
+				driver = "dir";
+				name = "default";
+			}
+		];
+	};
+
 	system.stateVersion = "23.05"; # Did you read the comment?
 }
