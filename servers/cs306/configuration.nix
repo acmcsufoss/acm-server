@@ -51,6 +51,7 @@
 	environment.systemPackages = with pkgs; [
 		vim
 		wget
+		zellij
 	];
 
 	services.openssh.enable = true;
