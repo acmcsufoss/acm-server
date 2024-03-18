@@ -2,8 +2,25 @@
 . "$(dirname "$0")/lib/init"
 
 main() {
-	publicIP=$(./scripts/ip "$1")
-	ssh -o 'IdentitiesOnly=yes' -i ./secrets/ssh/id_ed25519 "root@${publicIP}"
+	local target="$1"
+	local sshArgs=( "${@:2}" )
+
+	local user host
+	if [[ "$target" == *"@"* ]]; then
+		user="${target%%@*}"
+		host="${target##*@}"
+	else
+		user="root"
+		host="$target"
+	fi
+
+	if publicIP=$(./scripts/ip "$host" 2> /dev/null); then
+		host="$publicIP"
+	else
+		echo "No known IP for Tailscale name \"$host\", using it directly..." >&2
+	fi
+
+	ssh -o 'IdentitiesOnly=yes' -i ./secrets/ssh/id_ed25519 "$user@$host" "${sshArgs[@]}"
 }
 
 if lib::is_main; then
