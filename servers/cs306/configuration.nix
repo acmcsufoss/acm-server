@@ -51,7 +51,10 @@
 	environment.systemPackages = with pkgs; [
 		vim
 		wget
+
+		# Poentially useful utilities.
 		zellij
+		croc
 	];
 
 	services.openssh.enable = true;
