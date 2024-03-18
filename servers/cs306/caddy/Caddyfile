@@ -62,3 +62,7 @@ ics.acmcsuf.com {
 netdata.acmcsuf.com {
 	reverse_proxy * localhost:19999
 }
+
+madness.acmcsuf.com {
+	reverse_proxy * localhost:8391
+}
