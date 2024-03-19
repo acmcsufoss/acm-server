@@ -86,7 +86,7 @@
 		networks = [
 			{
 				config = {
-					"ipv4.address" = "172.16.100.1/24";
+					"ipv4.address" = "172.16.100.1/16";
 					"ipv4.nat" = "true";
 					"ipv4.firewall" = "false";
 					"ipv6.firewall" = "false";
