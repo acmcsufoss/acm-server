@@ -37,6 +37,7 @@ resource "aws_key_pair" "secrets_ssh" {
 }
 
 module "cirno" {
+	host = "cirno.${var.tailnet_name}.ts.net"
 	source = "./servers/cirno"
 	key_name = aws_key_pair.secrets_ssh.key_name
 	ssh_private_key_file = local.ssh.private_key

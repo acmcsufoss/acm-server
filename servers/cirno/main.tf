@@ -13,13 +13,19 @@ variable "ssh_private_key_file" {
 	type = string
 }
 
+variable "host" {
+	description = "The host to use, otherwise the AWS public IP is used"
+	type = string
+	default = null
+}
+
 resource "aws_security_group" "cirno" {
-	ingress {
-		from_port = 22
-		to_port = 22
-		protocol = "tcp"
-		cidr_blocks = [ "0.0.0.0/0" ]
-	}
+	# ingress {
+	# 	from_port = 22
+	# 	to_port = 22
+	# 	protocol = "tcp"
+	# 	cidr_blocks = [ "0.0.0.0/0" ]
+	# }
 	ingress {
 		from_port = 80
 		to_port = 80
@@ -67,7 +73,7 @@ resource "aws_instance" "cirno" {
 module "deployment" {
 	source = "git::https://github.com/diamondburned/terraform-nixos.git//deploy_nixos?ref=9d26ace355b2ed7d64a253b11ab12395a1395030"
 	nixos_config = "${path.module}"
-	target_host = aws_instance.cirno.public_ip
+	target_host = var.host != null ? var.host : aws_instance.cirno.public_ip
 	ssh_private_key_file = var.ssh_private_key_file
 	ssh_agent = false
 	hermetic = true

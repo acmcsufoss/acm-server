@@ -22,16 +22,6 @@ ip::find() {
 	local name
 	name="$1"
 
-	local awsIP
-	awsIP=$(jq -r \
-		--arg name "$name" \
-		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[].attributes.public_ip // empty' \
-		./secrets/terraform.tfstate)
-	if [[ "$awsIP" != "" ]]; then
-		echo "$awsIP"
-		return
-	fi
-
 	if [[ -z "$TAILNET_NAME" ]]; then
 		echo "TAILNET_NAME is not set" >&2
 		return 1
@@ -39,6 +29,16 @@ ip::find() {
 
 	if getent hosts "$name.$TAILNET_NAME.ts.net" > /dev/null; then
 		echo "$name.$TAILNET_NAME.ts.net"
+		return
+	fi
+
+	local awsIP
+	awsIP=$(jq -r \
+		--arg name "$name" \
+		'.resources[] | select(.type == "aws_instance") | select(.name == $name) | .instances[].attributes.public_ip // empty' \
+		./secrets/terraform.tfstate)
+	if [[ "$awsIP" != "" ]]; then
+		echo "$awsIP"
 		return
 	fi
 
