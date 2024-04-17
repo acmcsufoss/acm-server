@@ -139,10 +139,10 @@
         "homepage": "",
         "owner": "nix-community",
         "repo": "gomod2nix",
-        "rev": "89cd0675b96775aa3ee86e7c0cf5bc238dd27976",
-        "sha256": "1x7w9ibp9nxzsaqg9lm6sav0438rwdh76r9pi40hikzn4nl9w4p0",
+        "rev": "872b63ddd28f318489c929d25f1f0a3c6039c971",
+        "sha256": "1wh9rlhg2w42fsavh7wxvmw42l7m5wg290gnp571dq0qcr1z7kg1",
         "type": "tarball",
-        "url": "https://github.com/nix-community/gomod2nix/archive/89cd0675b96775aa3ee86e7c0cf5bc238dd27976.tar.gz",
+        "url": "https://github.com/nix-community/gomod2nix/archive/872b63ddd28f318489c929d25f1f0a3c6039c971.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nix-npm-buildpackage": {
