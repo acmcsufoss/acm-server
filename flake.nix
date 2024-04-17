@@ -74,24 +74,8 @@
 			};
 
 			nixosConfigurations = {
-				cirno = nixpkgs.lib.nixosSystem {
-					system = "x86_64-linux";
-					modules = [
-						({ ... }: { nixpkgs.overlays = [ overlays.default ]; })
-						./servers/base.nix
-						./servers/cirno/configuration.nix
-					];
-					specialArgs = inputs // { inherit self; };
-				};
-				cs306 = nixpkgs.lib.nixosSystem {
-					system = "x86_64-linux";
-					modules = [
-						({ ... }: { nixpkgs.overlays = [ overlays.default ]; })
-						./servers/base.nix
-						./servers/cs306/configuration.nix
-					];
-					specialArgs = inputs // { inherit self; };
-				};
+				cirno = import ./servers/cirno inputs;
+				cs306 = import ./servers/cs306 inputs;
 			};
 		}
 	);

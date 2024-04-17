@@ -1,8 +1,7 @@
-let
-	sources = import <acm-aws/nix/sources.nix>;
-in
+{ nixpkgs, ... }@inputs:
 
-import "${sources.nixpkgs}/nixos" {
+nixpkgs.lib.nixosSystem {
 	system = "x86_64-linux";
-	configuration = import ./configuration.nix;
+	modules = [ ./servers/cirno/configuration.nix ];
+	specialArgs = inputs;
 }

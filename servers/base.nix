@@ -1,11 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, self, ... }:
 
-let sources = import ../nix/sources.nix;
-
-in {
+{
 	imports = [
-		<acm-aws/packages/imports.nix>
-		<acm-aws/nix/modules>
+		(self + "/packages/imports.nix")
+		(self + "/nix/modules")
 	];
 
 	services.journald = {
@@ -41,5 +39,10 @@ in {
 	];
 
 	# Deploy ./static to all servers.
-	deployment.staticPaths = [ ../static ];
+	deployment.staticPaths = [ (self + "/static") ];
+
+	# Add the flake's overlays to the system.
+	nixpkgs.overlays = [
+		self.overlays.${pkgs.system}.default
+	];
 }
