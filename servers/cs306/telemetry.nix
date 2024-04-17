@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, self, secretsPath, ... }:
 
 let
 	tailnet = builtins.getEnv "TAILNET_NAME";
@@ -39,7 +39,7 @@ assert lib.assertMsg
 					enabled = yes
 					enable compression = yes
 
-				[${builtins.readFile <acm-aws/secrets/netdata-key>}]
+				[${builtins.readFile (secretsPath "netdata-key")}]
 					enabled = yes
 					allow from = 100.*
 					default memory mode = dbengine

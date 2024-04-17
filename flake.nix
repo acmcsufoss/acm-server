@@ -29,10 +29,48 @@
 
 	flake-utils.lib.eachDefaultSystem (system:
 		let
-			pkgs = nixpkgs.legacyPackages.${system};
 			overlays = self.overlays.${system};
 		in
 		{
+			devShells = let
+				pkgs = import nixpkgs {
+					inherit system;
+					overlays = [
+						overlays.buildTools
+					];
+					config = {
+						# Allow unfree packages for Terraform.
+						allowUnfree = true;
+					};
+				};
+			in
+			{
+				default = pkgs.mkShell {
+					name = "acm-aws-shell";
+
+					packages = with pkgs; [
+						terraform
+						awscli2
+						nix-update
+						jq
+						niv
+						git
+						git-crypt
+						openssl
+						yamllint
+						expect
+						shellcheck
+					] ++ [
+						# Fix Nix Flake's weird scoping issue.
+						pkgs.gomod2nix
+					];
+
+					# Enforce purity by unsetting NIX_PATH.
+					# This messes up any code that uses Nix channels.
+					NIX_PATH = "";
+				};
+			};
+
 			overlays = {
 				# Overlay for the build tools that our packages use.
 				buildTools = final: prev: {
@@ -40,12 +78,15 @@
 					# Build tools
 					#
 					inherit (gomod2nix.legacyPackages.${system})
-						mkGoEnv buildGoApplication;
+						mkGoEnv buildGoApplication gomod2nix;
+
 					inherit (poetry2nix.lib.mkPoetry2Nix { pkgs = prev; })
 						mkPoetryApplication;
+
 					inherit (nix-npm-buildpackage.legacyPackages.${system})
 						buildNpmPackage
 						buildYarnPackage;
+
 					buildDenoPackage = final.callPackage ./nix/packaging/deno.nix { };
 					buildJavaPackage = final.callPackage ./nix/packaging/java.nix { };
 					buildGradlePackage = final.callPackage ./nix/packaging/gradle.nix { };
@@ -74,8 +115,40 @@
 			};
 
 			nixosConfigurations = {
-				cirno = import ./servers/cirno inputs;
-				cs306 = import ./servers/cs306 inputs;
+				cirno = self.lib.nixosSystem {
+					system = "x86_64-linux";
+					configuration = ./servers/cirno/configuration.nix;
+				};
+				cs306 = self.lib.nixosSystem {
+					system = "x86_64-linux";
+					configuration = ./servers/cs306/configuration.nix;
+				};
+			};
+
+			lib = {
+				# All nixosConfigurations should have this in their specialArgs.
+				nixosArgs = { system }: inputs // {
+					# Import Niv sources directly into the arguments for convenience.
+					sources = import ./nix/sources.nix {
+						inherit system;
+						pkgs = nixpkgs.legacyPackages.${system};
+					};
+					# TODO: migrate away from Nix store-based secrets.
+					# See https://github.com/acmcsufoss/acm-aws/issues/34.
+					secretsPath = secret: self + "/secrets/" + secret;
+				};
+
+				mkNixosSystem = { system, configurationFile }:
+					nixpkgs.lib.nixosSystem {
+						inherit system;
+						modules = [
+							./servers/base.nix
+							configurationFile
+						];
+						specialArgs = self.lib.nixosArgs {
+							inherit system;
+						};
+					};
 			};
 		}
 	);

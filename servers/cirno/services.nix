@@ -1,14 +1,10 @@
-{ config, lib, pkgs, ... }:
-
-let
-	sources = import <acm-aws/nix/sources.nix>;
-in
+{ config, lib, pkgs, self, ... }:
 
 {
 	services.diamondburned.caddy = {
 		enable = true;
 		configFile = ./Caddyfile;
-		environment = import <acm-aws/secrets/caddy-env.nix>;
+		environment = import (self + "/secrets/caddy-env.nix");
 	};
 
 	systemd.services.acmregister = {
@@ -16,7 +12,7 @@ in
 		description = "ACM member registration Discord bot";
 		after = [ "network-online.target" ];
 		wantedBy = [ "multi-user.target" ];
-		environment = import ./secrets/acmregister-env.nix;
+		environment = import (self + "/secrets/acmregister-env.nix");
 		serviceConfig = {
 			Type = "simple";
 			ExecStart = "${pkgs.acmregister}/bin/acmregister";

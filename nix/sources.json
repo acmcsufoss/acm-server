@@ -157,19 +157,6 @@
         "url": "https://github.com/serokell/nix-npm-buildpackage/archive/200e47aabd2b55993561c47e8390c89bdeb18b8a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nixpkgs": {
-        "branch": "nixos-23.11",
-        "description": "Nix Packages collection",
-        "homepage": "",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "b94a96839afcc56de3551aa7472b8d9a3e77e05d",
-        "sha256": "1j5vs24bgy2arl342lrh3znc1pdz68kcjp2rpgy3sccpd9sibqqn",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs/archive/b94a96839afcc56de3551aa7472b8d9a3e77e05d.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
-        "version": "nixos-unstable"
-    },
     "nixpkgs_newer": {
         "branch": "nixpkgs-unstable",
         "description": "Nix Packages collection",
