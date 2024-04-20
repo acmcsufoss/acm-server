@@ -1,13 +1,8 @@
-# Edit this configuration file to define what should be installed on
-# your system.	Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, self, ... }:
 
 {
-	imports = [ # Include the results of the hardware scan.
-		<acm-aws/servers/base.nix>
-		# <acm-aws/containers/cs306/test.nix>
+	imports = [
+		(self + "/servers/base.nix")
 		./hardware-configuration.nix
 		./services.nix
 		./recovery.nix

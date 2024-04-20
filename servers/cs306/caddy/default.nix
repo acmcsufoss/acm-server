@@ -1,7 +1,7 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, secretsPath, ... }:
 
 let
-	environment = import <acm-aws/secrets/caddy-env.nix>;
+	environment = import (secretsPath "caddy-env.nix");
 
 	preprocessedCaddyfile = pkgs.runCommandLocal "Caddyfile-preprocessed" {} ''
 		cp ${./Caddyfile} $out

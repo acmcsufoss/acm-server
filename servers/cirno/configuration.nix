@@ -1,9 +1,9 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ config, lib, pkgs, modulesPath, self, ... }:
 
 {
 	imports = [
 		(modulesPath + "/virtualisation/amazon-image.nix")
-		<acm-aws/servers/base.nix>
+		(self + "/servers/base.nix")
 		./services.nix
 		./telemetry.nix
 	];
