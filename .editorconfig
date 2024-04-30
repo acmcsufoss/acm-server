@@ -3,3 +3,7 @@ root = true
 [*.nix]
 indent_style = tab
 indent_size = 2
+
+[{*.hcl,*.tf}]
+indent_style = tab
+indent_size = 2
