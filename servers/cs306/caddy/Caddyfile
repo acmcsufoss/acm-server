@@ -75,5 +75,8 @@ isos.acmcsuf.com {
 		root /var/www/isos
 		browse
 	}
-	header Cache-Control "public, max-age=31536000, immutable"
+
+	# Only assign immutable Cache-Control header to files, not directories.
+	@files not path / */
+	header @files Cache-Control "public, max-age=31536000, immutable"
 }
