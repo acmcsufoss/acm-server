@@ -66,3 +66,14 @@ netdata.acmcsuf.com {
 madness.acmcsuf.com {
 	reverse_proxy * localhost:8391
 }
+
+# Host ISOs locally for the club.
+# ISOs stored here must be immutable. New ISO releases must have a different
+# file path.
+isos.acmcsuf.com {
+	file_server {
+		root /var/www/isos
+		browse
+	}
+	header Cache-Control "public, max-age=31536000, immutable"
+}

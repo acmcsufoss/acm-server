@@ -22,4 +22,9 @@ in
 		configFile = preprocessedCaddyfile;
 		inherit environment;
 	};
+
+	systemd.tmpfiles.rules = [
+		"d /var/www      0755 caddy caddy -"
+		"d /var/www/isos 0755 root root -"
+	];
 }
