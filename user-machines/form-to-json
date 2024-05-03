@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# ""
+# "email[]"
+# "name"
+# "id"
+# "email[]"
+# "discord"
+# "default_password"
+# "ssh_public_key"
+
+set -eo pipefail
+
+BASE_DIR="$(dirname "$0")"
+TEMP_FILE="$(mktemp)"
+USERS_FILE="$BASE_DIR/secrets/user-vms.json"
+
+readarray -t lines < <(cat "$1")
+lines=( "${lines[@]:1}" ) # Skip header
+
+(
+	declare -A users
+	while read -r id; do
+		users["$id"]=1
+	done < <(jq -r '.[].id' "$USERS_FILE")
+
+	jq '.[]' "$USERS_FILE"
+
+	for line in "${lines[@]}"; do
+		mapfile -td $'\t' fields < <(echo -e "$line")
+
+		id="${fields[3]}"
+		if [[ -n "${users[$id]}" ]]; then
+			continue
+		fi
+	
+		ssh_public_key=${fields[7]}
+		if [[ "$ssh_public_key" == "ssh-"* ]]; then
+			ssh_public_key=$(jq -n --arg key "$ssh_public_key" '$key')
+		else
+			if [[ "$ssh_public_key" != "" ]]; then
+				echo "INFO: Invalid SSH key for user ${fields[2]}: ${fields[7]}" >&2
+			fi
+			ssh_public_key="null"
+		fi
+	
+		jq -n \
+			--arg "id" "${id}" \
+			--arg "name" "${fields[2]}" \
+			--arg "email1" "${fields[1]}" \
+			--arg "email2" "${fields[4]}" \
+			--arg "discord" "${fields[5]}" \
+			--arg "default_password" "${fields[6]}" \
+			--argjson "ssh_public_key" "${ssh_public_key}" \
+			'{
+				id: $id,
+				name: $name,
+				email: [$email1, $email2],
+				discord: $discord,
+				default_password: $default_password,
+				ssh_public_key: $ssh_public_key
+			}'
+	done
+) \
+	| jq -s '.' \
+	> "$TEMP_FILE"
+
+mv "$TEMP_FILE" "$USERS_FILE"
+"$BASE_DIR/users-validate"
