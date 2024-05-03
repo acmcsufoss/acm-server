@@ -43,11 +43,11 @@ let
 							plain_text_passwd = user.default_password;
 						} //
 						(lib.optionalAttrs (user.ssh_public_key != null) {
-							ssh_authorized_keys = user.ssh_keys;
+							ssh_authorized_keys = [ user.ssh_public_key ];
 						})
 					)
 				];
-				ssh_pwauth = true;
+				ssh_pwauth = user.ssh_public_key == null;
 				ssh_deletekeys = true;
 				package_update = true;
 				packages = [
