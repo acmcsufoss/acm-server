@@ -2,7 +2,12 @@
 
 let
 	inherit (import <acm-aws/user-machines/vm/config.nix> { inherit pkgs; })
+		hostOrderToIP
 		ips;
+
+	findUserIDWithIP =
+		ip:
+		lib.findFirst (user: user.ip == ip) null config.acm.user-vms.usersInfo;
 in
 
 {
@@ -34,12 +39,14 @@ in
 				}
 			];
 			Presets = map
-				(offset:
+				(order:
 					let
-						ip = ips.ipFromOffset offset;
+						ip   = hostOrderToIP order;
+						user = findUserIDWithIP ip;
 					in
 					{
-						Title = "SSH to ${ip}";
+						Title =
+							if user != null then "${user.id} (${ip})" else "${ip}";
 						Type = "SSH";
 						Host = "${ip}:22";
 					}

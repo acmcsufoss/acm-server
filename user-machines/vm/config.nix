@@ -28,6 +28,10 @@ in
 			mkCloudInitImage;
 	};
 
+	inherit
+		hostOrderToIP
+		mkCloudInitImage;
+
 	ips = rec {
 		start = {
 			ip = "192.168.168.2";
