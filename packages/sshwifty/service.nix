@@ -32,7 +32,7 @@ in
 			wantedBy = [ "multi-user.target" ];
 			after = [ "network.target" ];
 			environment = {
-				SSHWIFTY_CONFIG = pkgs.writeText "sshwifty.json" self.config;
+				SSHWIFTY_CONFIG = pkgs.writeText "sshwifty.json" (builtins.toJSON self.config);
 			};
 			serviceConfig = {
 				ExecStart = "${lib.getExe self.package}";
