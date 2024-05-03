@@ -105,3 +105,49 @@ lib::scripts_path() {
 	printf -v tailPath "/%s" "$@"
 	echo -n "$(lib::root_path)/scripts$tailPath"
 }
+
+# log prints a message with a timestamp prefix.
+lib::log() {
+	printf -v prefix "[%(%H:%M:%S)T] "
+	echo "${prefix}${*}" >&2
+}
+
+# logf prints a formatted message with a timestamp prefix.
+# shellcheck disable=SC2059
+#
+# Usage: lib::logf <format> <args...>
+lib::logf() {
+	printf -v prefix "[%(%H:%M:%S)T] "
+	printf "${prefix}${1}\n" "${@:2}" >&2
+}
+
+# fatal prints a message and exits with status 1.
+lib::fatal() {
+	lib::log "$@"
+	exit 1
+}
+
+# mktmpname takes in a file path and returns a temporary file path pointing to
+# the same directory. Note that the temporary file is created by this function.
+#
+# Usage: lib::mktmpname <file>
+lib::mktmpname() {
+	local file="$1"
+	local dir
+	dir="$(dirname "$file")"
+	mktemp "$dir/.$(basename "$file").XXXXXXXX"
+}
+
+# write_file writes the given content to the given file path.
+# It differs from regularly piping to a file in that the function will try to
+# create a temporary file for writing before moving it to the target file.
+# This is to prevent partial writes in case of an error.
+# 
+# Usage: command | lib::write_file <file>
+lib::write_file() {
+	local file="$1"
+	local tmpFile
+	tmpFile="$(lib::mktmpname "$file")"
+	cat > "$tmpFile"
+	mv "$tmpFile" "$file"
+}

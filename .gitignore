@@ -6,3 +6,5 @@ result
 results
 /servers/exp*
 .envrc
+.venv
+.nixos-test-history

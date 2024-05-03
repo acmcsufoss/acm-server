@@ -1,4 +1,17 @@
 {
+    "NixVirt": {
+        "branch": "master",
+        "description": "LibVirt domain management for Nix",
+        "homepage": null,
+        "owner": "AshleyYakeley",
+        "repo": "NixVirt",
+        "rev": "f6bc308804cc3c35457ed012c031b121af1578a8",
+        "sha256": "19j9rcsbvg9qmrxaqmswd6mxy9qr983hs1f7p827kqm07bpmdwh2",
+        "type": "tarball",
+        "url": "https://github.com/AshleyYakeley/NixVirt/archive/f6bc308804cc3c35457ed012c031b121af1578a8.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
+        "version": "master"
+    },
     "acm-nixie": {
         "branch": "main",
         "description": "acmCSUF's version of the nixie bot.",
@@ -107,6 +120,18 @@
         "sha256": "0qlyiyhfpvp0fy5j0fykgcbq90ql7nnpqrybwvpcc8gn74dsip5i",
         "type": "tarball",
         "url": "https://github.com/EthanThatOneKid/discord_conversation_summary_bot/archive/3771e8cabc7f7992b81f21dea53f7bd338a9aa07.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "flake-compat": {
+        "branch": "master",
+        "description": null,
+        "homepage": null,
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
+        "sha256": "0m9grvfsbwmvgwaxvdzv6cmyvjnlww004gfxjvcl806ndqaxzy4j",
+        "type": "tarball",
+        "url": "https://github.com/edolstra/flake-compat/archive/0f9255e01c2351cc7d116c072cb317785dd33b33.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "fullyhacks-qrms": {

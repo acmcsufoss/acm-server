@@ -7,19 +7,23 @@ in
 pkgs.mkShell {
 	name = "acm-aws-shell";
 	buildInputs = with pkgs; [
+		cloud-init
 		terraform
 		awscli2
-		# rnix-lsp
 		nix-update
 		jq
 		niv
 		git
 		git-crypt
 		openssl
-		yamllint
 		gomod2nix
 		expect
+
+		# editor tools.
+		yamllint
 		shellcheck
+		nodePackages.bash-language-server
+		# rnix-lsp
 	];
 
 	shellHook = ''

@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+. "$(dirname "$0")/../scripts/lib/init"
+
+USERS_FILE="$(dirname "$0")/secrets/user-vms.json"
+USERS_ID_REGEX='^[a-zA-Z0-9\-_.]{1,32}$'
+
+main() {
+	lib::require_installed uuidgen jq
+
+	# Format the JSON file.
+	users_jq '.' | lib::write_file "$USERS_FILE"
+
+	# Guarantee that there are no null IDs.
+	readarray -t nullUsers < <(users_jq -c '.[] | select(.id == null)')
+	if (( ${#nullUsers[@]} > 0 )); then
+		lib::log "Null IDs found in $USERS_FILE for the following users:"
+		for user in "${nullUsers[@]}"; do
+			lib::log "  $user"
+		done
+		return 1
+	fi
+
+	# Guarantee that all user IDs are unique.
+	readarray -t duplicateIDs < <(users_jq -r '.[].id' | sort | uniq -d)
+	if (( ${#duplicateIDs[@]} > 0 )); then
+		lib::log "Duplicate user IDs found in $USERS_FILE for the following users:"
+		for user in "${duplicateIDs[@]}"; do
+			lib::log "  - $user"
+		done
+		return 1
+	fi
+
+	# Validate all user IDs. We ask jq to return one JSON string per line in
+	# case the IDs have a new line. Ideally this should be never, but...
+	readarray -t userIDs < <(users_jq '.[].id')
+	for id in "${userIDs[@]}"; do
+		# Trim the quotes manually then compare that result with the parsed JSON
+		# string. None of our characters should require special escaping, so
+		# manually trimming should just work.
+		id="${id%\"}"
+		id="${id#\"}"
+		if [[ $id != $(jq -r -n --arg id "$id" '$id') ]]; then
+			lib::logf "Invalid user ID %q found in %s." "$id" "$USERS_FILE"
+			return 1
+		fi
+
+		# Actually pass the ID through regex.
+		if [[ ! $id =~ $USERS_ID_REGEX ]]; then
+			lib::logf "Invalid user ID %q found in %s." "$id" "$USERS_FILE"
+			return 1
+		fi
+	done
+
+	# Guarantee that all users have a unique UUID.
+	readarray -t idsWithNoUUID < <(users_jq -r '.[] | select(.uuid == null) | .id')
+	for id in "${idsWithNoUUID[@]}"; do
+		uuid=$(uuidgen)
+		dupe=$(users_jq --arg uuid "$uuid" -r '.[] | select(.uuid == $uuid) | .id')
+		if [[ $dupe != "" ]]; then
+			lib::fatal "uuidgen returned colliding UUID $uuid, please retry."
+		fi
+
+		lib::logf "Assigning user with ID %q UUID %s." "$id" "$uuid"
+		users_jq \
+			--arg id   "$id" \
+			--arg uuid "$uuid" \
+			'(.[] | select(.id == $id)).uuid = $uuid' | lib::write_file "$USERS_FILE"
+	done
+}
+
+users_jq() {
+	jq "$@" "$USERS_FILE"
+}
+
+if lib::is_main; then
+	main "$@"
+fi
