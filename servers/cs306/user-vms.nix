@@ -19,7 +19,7 @@ in
 	};
 
 	services.diamondburned.caddy.sites."https://vps.acmcsuf.com" = ''
-		root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersData)}
+		root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 		rewrite * /vps.json
 		file_server
 	'';
