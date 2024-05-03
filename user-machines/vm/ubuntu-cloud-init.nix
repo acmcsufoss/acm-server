@@ -42,7 +42,7 @@ let
 							lock_passwd = false;
 							plain_text_passwd = user.default_password;
 						} //
-						(lib.optionalAttrs (user ? "ssh_public_key" && user.ssh_public_key != null) {
+						(lib.optionalAttrs (user.ssh_public_key != null) {
 							ssh_authorized_keys = user.ssh_keys;
 						})
 					)

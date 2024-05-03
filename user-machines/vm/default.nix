@@ -79,6 +79,11 @@ in
 							type = types.str;
 							description = "The default password for the user.";
 						};
+						ssh_public_key = mkOption {
+							type = types.nullOr types.str;
+							default = null;
+							description = "The SSH public key for the user.";
+						};
 						uuid = mkOption {
 							type = types.str;
 							description = "The UUID of the user.";
