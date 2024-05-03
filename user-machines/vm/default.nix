@@ -213,6 +213,7 @@ in
 					};
 
 					final = base // {
+						type = "kvm";
 						os = {
 							type = "hvm";
 							arch = "x86_64";
@@ -245,6 +246,7 @@ in
 								];
 						};
 						devices = base.devices // {
+							emulator = "/run/libvirt/nix-emulators/qemu-system-x86_64";
 							disk = with lib; [
 								{
 									type = "volume";
