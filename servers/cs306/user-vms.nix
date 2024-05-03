@@ -26,6 +26,7 @@ in
 	services.diamondburned.caddy.sites."http://vps.acmcsuf.com" = ''
 		root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 		rewrite * /vps.json
+		header Cache-Control "must-revalidate"
 		file_server
 	'';
 
