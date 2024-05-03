@@ -80,7 +80,3 @@ isos.acmcsuf.com {
 	@files not path / */
 	header @files Cache-Control "public, max-age=31536000, immutable"
 }
-
-ssh.acmcsuf.com {
-	reverse_proxy * localhost:38274
-}

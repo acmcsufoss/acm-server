@@ -18,7 +18,7 @@ in
 		poolDirectory = "/var/lib/acm-vm";
 	};
 
-	services.diamondburned.caddy.sites."https://vps.acmcsuf.com" = ''
+	services.diamondburned.caddy.sites."http://vps.acmcsuf.com" = ''
 		root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 		rewrite * /vps.json
 		file_server
