@@ -29,7 +29,8 @@ lines=( "${lines[@]:1}" ) # Skip header
 		mapfile -td $'\t' fields < <(echo -e "$line")
 
 		id="${fields[3]}"
-		if [[ -n "${users[$id]}" ]]; then
+		echo "INFO: Processing user $id..." >&2
+		if [[ -n "${users["$id"]}" ]]; then
 			continue
 		fi
 	
