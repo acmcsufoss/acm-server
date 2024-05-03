@@ -131,4 +131,23 @@ in
 		enable = true;
 		config = builtins.readFile <acm-aws/secrets/dischord-config.toml>;
 	};
+
+	services.sshwifty = {
+		enable = true;
+		config = {
+			Servers = [
+				{
+					ListenInterface = "127.0.0.1";
+					ListenPort = 38274;
+				}
+			];
+			Presets = [
+				# {
+				# 	Title = "GitHub";
+				# 	Type = "SSH";
+				# }
+			];
+			OnlyAllowPresetRemotes = true;
+		};
+	};
 }

@@ -2,6 +2,7 @@
 
 rec {
 	jre_small = pkgs.callPackage ./jre-small {};
+	sshwifty = pkgs.callPackage ./sshwifty {};
 	quizler = pkgs.callPackage ./quizler {};
 
 	# Go

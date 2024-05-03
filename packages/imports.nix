@@ -6,6 +6,7 @@ in {
 	imports = [
 		./caddy/caddy.nix
 		./sysmet/sysmet.nix
+		./sshwifty/service.nix
 		./dischord/service.nix
 		./christmasd/service.nix
 	];
