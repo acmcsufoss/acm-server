@@ -46,7 +46,7 @@
         </li>
         <li class="url">
           <b>URL:</b>
-          {{ $url := ($user.id | strings.ReplaceAll "." "_") }}
+          {{ $url := ($user.id | strings.ReplaceAll "." "_" | strings.ToLower | printf "%s.vps.acmcsuf.com") }}
           <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
         </li>
         <li class="ssh">
