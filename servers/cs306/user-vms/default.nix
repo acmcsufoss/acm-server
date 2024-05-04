@@ -19,8 +19,8 @@ let
 		gomplate \
 			--file ${./vps.html} \
 			--out $out/index.html \
-			--datasource users=file://${pkgs.writeFile "users.json" (builtins.toString config.acm.user-vms.users)} \
-			--datasource usersInfo=file://${pkgs.writeFile "usersInfo.json" (builtins.toString config.acm.user-vms.usersInfo)}
+			--datasource users=file://${pkgs.writeFile "users.json" (builtins.toJSON config.acm.user-vms.users)} \
+			--datasource usersInfo=file://${pkgs.writeFile "usersInfo.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 	'';
 in
 
