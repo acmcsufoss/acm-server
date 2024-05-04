@@ -83,7 +83,8 @@ in
 				}
 			'';
 		} // (builtins.listToAttrs (map (user: {
-			name = "http://${user.id}.vps.acmcsuf.com";
+			# TODO: actually fix the . issue.
+			name = "http://${builtins.replaceStrings ["."] ["_"] user.id}.vps.acmcsuf.com";
 			value = ''
 				reverse_proxy * http://${user.ip}:80
 			'';

@@ -46,11 +46,12 @@
         </li>
         <li class="url">
           <b>URL:</b>
-          <a href="https://{{ $user.id }}.vps.acmcsuf.com">{{ $user.id }}.vps.acmcsuf.com</a>
+		  {{ $url := ($user.id | strings.ReplaceAll "." "_" }}
+		  <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
         </li>
         <li class="ssh">
           <b>SSH:</b>
-          Check <a href="https://ssh.acmcsuf.com">ssh.acmcsuf.com</a> for <code>{{ $info.ip }}</code>.
+          Check <a href="https://ssh.acmcsuf.com" target="_blank">ssh.acmcsuf.com</a> for <code>{{ $info.ip }}</code>.
         </li>
       </ul>
     </li>
@@ -67,7 +68,35 @@
 
 <footer>
   <p>
-    <span><a href="https://acmcsuf.com">ACM at CSUF</a></span> &bull;
-    <span>Provided by <a href="https://libdb.so">Diamond</a> with ❤️ and 🏳️‍⚧️</span>
+    <span>Provided by <a href="https://acmcsuf.com" target="_blank">ACM at CSUF</a></span> &bull;
+    <span>Made by <a href="https://libdb.so" target="_blank">Diamond</a> with ❤️ and 🏳️‍⚧️</span>
   </p>
 </footer>
+
+<style>
+  body {
+    margin: 0 auto;
+    padding: 1em;
+    max-width: 600px;
+  }
+
+  .users-list {
+    list-style: none;
+    padding-left: 1em;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  footer {
+    text-align: center;
+    border-top: 1px solid var(--pico-muted-border-color);
+    margin-top: 2em;
+    font-size: 0.8em;
+  }
+</style>
