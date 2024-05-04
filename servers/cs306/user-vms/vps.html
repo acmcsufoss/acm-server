@@ -34,6 +34,15 @@
       <b class="user-id">{{ $user.id }}</b>
       <span>(<span class="user-name">{{ $user.name }}</span>)</span>
       <ul class="users-info-list">
+        <li class="url">
+          <b>Website URL:</b>
+          {{ $url := ($user.id | strings.ReplaceAll "." "_" | strings.ToLower | printf "%s.vps.acmcsuf.com") }}
+          <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
+        </li>
+        <li class="discord">
+          <b>Discord:</b>
+          <span>@<span>{{ $user.discord }}</span></span>
+        </li>
         <li class="email">
           <b>Email:</b>
           <span>
@@ -44,14 +53,9 @@
             {{- end -}}
           </span>
         </li>
-        <li class="url">
-          <b>URL:</b>
-          {{ $url := ($user.id | strings.ReplaceAll "." "_" | strings.ToLower | printf "%s.vps.acmcsuf.com") }}
-          <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
-        </li>
         <li class="ssh">
           <b>SSH:</b>
-          Check <a href="https://ssh.acmcsuf.com" target="_blank">ssh.acmcsuf.com</a> for <code>{{ $info.ip }}</code>.
+          <a href="https://ssh.acmcsuf.com" target="_blank">ssh.acmcsuf.com</a> with <code>{{ $info.ip }}</code>.
         </li>
       </ul>
     </li>
