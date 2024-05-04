@@ -10,9 +10,9 @@
 		# <acm-aws/containers/cs306/test.nix>
 		./hardware-configuration.nix
 		./services.nix
-		./user-vms.nix
 		./recovery.nix
 		./telemetry.nix
+		./user-vms
 		./caddy
 	];
 

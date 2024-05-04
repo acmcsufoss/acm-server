@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="https://acmcsuf.com/favicon.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+<title>vps.acmcsuf.com</title>
+
+<hgroup>
+  <h1>vps.acmcsuf.com</h1>
+  <p>Virtual private servers (VPS) provided to members of <a href="https://acmcsuf.com">ACM at CSUF</a>.</p>
+</hgroup>
+
+<section>
+  <h2>SSH Usage</h2>
+  <p>
+    To work around the school's networking policies, SSH access must be done via
+    <a href="https://ssh.acmcsuf.com">ssh.acmcsuf.com</a>. Simply wait for the
+    page to load, then click on the <kbd>+</kbd> button and find your username
+    on the list.
+  </p>
+</section>
+
+<section>
+  <h2>Users</h2>
+  <ol class="users-list">
+    {{ range $i := until (len .users) }}
+    <li>
+      {{ $user := index .users $i }}
+      {{ $info := index .usersInfo $i }}
+      <b class="user-id">{{ $user.id }}</b>
+      <span>(<span class="user-name">{{ $user.name }}</span>)</span>
+      <ul class="users-info-list">
+        <li>
+          <b>URL:</b>
+          <a href="https://{{ $user.id }}.vps.acmcsuf.com">{{ $user.id }}.vps.acmcsuf.com</a>
+        </li>
+        <li>
+          <b>SSH:</b>
+          Check <a href="https://ssh.acmcsuf.com">ssh.acmcsuf.com</a> for your username.
+        </li>
+      </ul>
+    </li>
+    {{ end }}
+  </ol>
+</section>
+
+<section>
+  <h2>Extras</h2>
+  <ul>
+    <li><a href="/vps.json">JSON IP list</a></li>
+  </ul>
+</section>
+
+<footer>
+  <p>
+    <span><a href="https://acmcsuf.com">ACM at CSUF</a></span> &bull;
+    <span>Provided by <a href="https://libdb.so">Diamond</a> with ❤️ and 🏳️‍⚧️</span>
+  </p>
+</footer>
