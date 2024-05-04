@@ -37,7 +37,7 @@
         <li class="email">
           <b>Email:</b>
           <span>
-            {{- range $i, $email := $info.email -}}
+            {{- range $i, $email := $user.email -}}
             {{- if not (eq $email "") -}}
             {{- if $i }}, {{ end -}}<a href="mailto:{{ $email }}">{{ $email }}</a>
             {{- end -}}
@@ -50,7 +50,7 @@
         </li>
         <li class="ssh">
           <b>SSH:</b>
-          Check <a href="https://ssh.acmcsuf.com">ssh.acmcsuf.com</a> for your username.
+          Check <a href="https://ssh.acmcsuf.com">ssh.acmcsuf.com</a> for <code>{{ $info.ip }}</code>.
         </li>
       </ul>
     </li>
