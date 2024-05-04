@@ -23,8 +23,9 @@
 <section>
   <h2>Users</h2>
   <ol class="users-list">
-    {{ range $i := until (len .users) }}
+    {{ range $i_ := math.Seq (len .users) }}
     <li>
+      {{ $i := math.Sub $i_ 1 }}
       {{ $user := index .users $i }}
       {{ $info := index .usersInfo $i }}
       <b class="user-id">{{ $user.id }}</b>
