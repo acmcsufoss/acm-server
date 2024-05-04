@@ -22,7 +22,7 @@ let
 			--file ${./vps.html} \
 			--out $out/index.html \
 			--datasource users=file://${usersFile} \
-			--datasource usersInfo=file://${pkgs.writeText "usersInfo.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
+			--datasource users-info=file://${pkgs.writeText "usersInfo.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 	'';
 in
 
