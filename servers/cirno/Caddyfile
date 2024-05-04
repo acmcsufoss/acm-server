@@ -66,7 +66,8 @@ spookathon.acmcsuf.com {
 # This means we won't have to worry about getting a public IP address
 # for the server. Note that Tailscale traffic is encrypted, so we don't
 # need to worry about MITM attacks.
-*.acmcsuf.com {
+*.acmcsuf.com,
+*.vps.acmcsuf.com {
 	reverse_proxy * http://cs306:80
 }
 
