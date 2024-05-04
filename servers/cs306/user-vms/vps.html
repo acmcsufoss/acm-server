@@ -30,11 +30,21 @@
       <b class="user-id">{{ $user.id }}</b>
       <span>(<span class="user-name">{{ $user.name }}</span>)</span>
       <ul class="users-info-list">
-        <li>
+        <li class="email">
+          <b>Email:</b>
+          <span>
+            {{- range $i, $email := $info.email -}}
+            {{- if not (eq $email "") -}}
+            {{- if $i }}, {{ end -}}<a href="mailto:{{ $email }}">{{ $email }}</a>
+            {{- end -}}
+            {{- end -}}
+          </span>
+        </li>
+        <li class="url">
           <b>URL:</b>
           <a href="https://{{ $user.id }}.vps.acmcsuf.com">{{ $user.id }}.vps.acmcsuf.com</a>
         </li>
-        <li>
+        <li class="ssh">
           <b>SSH:</b>
           Check <a href="https://ssh.acmcsuf.com">ssh.acmcsuf.com</a> for your username.
         </li>

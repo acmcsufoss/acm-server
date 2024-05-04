@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 let
+	usersFile = <acm-aws/user-machines/secrets/user-vms.json>;
+
 	inherit (import <acm-aws/user-machines/vm/config.nix> { inherit pkgs; })
 		hostOrderToIP
 		ips;
@@ -19,8 +21,8 @@ let
 		gomplate \
 			--file ${./vps.html} \
 			--out $out/index.html \
-			--datasource users=file://${pkgs.writeFile "users.json" (builtins.toJSON config.acm.user-vms.users)} \
-			--datasource usersInfo=file://${pkgs.writeFile "usersInfo.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
+			--datasource users=file://${usersFile} \
+			--datasource usersInfo=file://${pkgs.writeText "usersInfo.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 	'';
 in
 
@@ -31,7 +33,7 @@ in
 
 	acm.user-vms = {
 		enable = true;
-		users = builtins.fromJSON (builtins.readFile <acm-aws/user-machines/secrets/user-vms.json>);
+		users = builtins.fromJSON (builtins.readFile usersFile);
 		# Pin all CPU usages to the 4 host cores.
 		cpuPinning = [4 5 6 7];
 		poolDirectory = "/var/lib/acm-vm";
@@ -81,7 +83,7 @@ in
 				}
 			'';
 		} // (builtins.listToAttrs (map (user: {
-			name = ["http://${user.id}.vps.acmcsuf.com"];
+			name = "http://${user.id}.vps.acmcsuf.com";
 			value = ''
 				reverse_proxy * http://${user.ip}:80
 			'';
