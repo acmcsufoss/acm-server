@@ -46,8 +46,8 @@
         </li>
         <li class="url">
           <b>URL:</b>
-		  {{ $url := ($user.id | strings.ReplaceAll "." "_" }}
-		  <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
+          {{ $url := ($user.id | strings.ReplaceAll "." "_") }}
+          <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
         </li>
         <li class="ssh">
           <b>SSH:</b>
