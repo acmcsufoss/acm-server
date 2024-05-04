@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  NIX_BUILDER: cs306
+  NIX_BUILDER: ""
 
 jobs:
   make-all:
