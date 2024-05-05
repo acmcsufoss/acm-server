@@ -298,6 +298,14 @@ in
 									readonly = true;
 								}
 							];
+							memballoon = {
+								model = "virtio-non-transitional";
+
+								# TODO: https://github.com/AshleyYakeley/NixVirt/pull/35
+								#
+								# autodeflate = true;
+								# freePageReporting = true;
+							};
 							interface = {
 								type = "network";
 								model.type = "virtio";
