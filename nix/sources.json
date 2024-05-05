@@ -5,10 +5,10 @@
         "homepage": null,
         "owner": "AshleyYakeley",
         "repo": "NixVirt",
-        "rev": "f6bc308804cc3c35457ed012c031b121af1578a8",
-        "sha256": "19j9rcsbvg9qmrxaqmswd6mxy9qr983hs1f7p827kqm07bpmdwh2",
+        "rev": "24dca31fd29c26e92799d3e282e5f2abe8ab7b7b",
+        "sha256": "0xw0y40nj54r340sw07by1c0ybqs80wby66fpndm8j96b71ddbml",
         "type": "tarball",
-        "url": "https://github.com/AshleyYakeley/NixVirt/archive/f6bc308804cc3c35457ed012c031b121af1578a8.tar.gz",
+        "url": "https://github.com/AshleyYakeley/NixVirt/archive/24dca31fd29c26e92799d3e282e5f2abe8ab7b7b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz",
         "version": "master"
     },
