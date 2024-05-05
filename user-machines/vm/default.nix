@@ -228,7 +228,7 @@ in
 						# Allow 512BM total to the VM, but only allocate 128MB initially.
 						# See https://pmhahn.github.io/virtio-balloon/.
 						memory = { count = 512; unit = "MiB"; };
-						currentMemory = { count = 256; unit = "MiB"; };
+						currentMemory = { count = 150; unit = "MiB"; };
 
 						sysinfo = {
 							type = "smbios";
