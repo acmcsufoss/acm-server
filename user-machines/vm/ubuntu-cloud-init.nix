@@ -50,12 +50,16 @@ let
 				ssh_pwauth = user.ssh_public_key == null;
 				ssh_deletekeys = true;
 				package_update = true;
+				package_upgrade = true;
+				package_reboot_if_required = true;
 				packages = [
 					"htop"
 					"curl"
 					"git"
 				];
 				runcmd = [
+					# Uninstall multipath-tools, since that's useless.
+					"apt remove -y --autoremove multipath-tools multipath-tools-boot"
 					# Permanently disable cloud-init after first boot.
 					# This permits the user to change anything they want afterwards.
 					"touch /etc/cloud/cloud-init.disabled"
