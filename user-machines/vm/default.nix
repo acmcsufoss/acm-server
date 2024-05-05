@@ -204,7 +204,6 @@ in
 					base = virtlib.domain.templates.linux {
 						name = "acm-vm-${user.id}";
 						uuid = user.uuid;
-						memory = { count = 512; unit = "MiB"; };
 						storage_vol = {
 							# Replaced by final.devices.disk[0].
 						};
@@ -214,6 +213,7 @@ in
 
 					final = base // {
 						type = "kvm";
+
 						os = {
 							type = "hvm";
 							arch = "x86_64";
@@ -224,14 +224,22 @@ in
 							# Set each devices.disk[]'s boot order instead.
 							# boot = [];
 						};
+
+						# Allow 512BM total to the VM, but only allocate 128MB initially.
+						# See https://pmhahn.github.io/virtio-balloon/.
+						memory = { count = 512; unit = "MiB"; };
+						currentMemory = { count = 256; unit = "MiB"; };
+
 						sysinfo = {
 							type = "smbios";
 							system.serial = "ds=nocloud";
 						};
+
 						vcpu = {
 							placement = "static";
 							count = 1;
 						};
+
 						cputune = {
 							vcpupin =
 								if self.cpuPinning == null
@@ -245,6 +253,7 @@ in
 									}
 								];
 						};
+
 						devices = base.devices // {
 							emulator = "/run/libvirt/nix-emulators/qemu-system-x86_64";
 							disk = with lib; [
