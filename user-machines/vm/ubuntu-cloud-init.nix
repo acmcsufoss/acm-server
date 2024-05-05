@@ -24,9 +24,7 @@ let
 	lib = pkgs.lib;
 
 	# Add the repo's admin public key.
-	# publicKeys = [
-	# 	(builtins.readFile ./secrets/ssh/id_ed25519.pub)
-	# ];
+	adminPublicKey = builtins.readFile <acm-aws/secrets/ssh/id_ed25519.pub>;
 
 	hostname = "acm-vm-${user.id}";
 
@@ -34,18 +32,15 @@ let
 		let
 			base = {
 				users = [
-					(
-						{
-							name = user.id;
-							sudo = "ALL=(ALL) NOPASSWD:ALL";
-							shell = "/bin/bash";
-							lock_passwd = false;
-							plain_text_passwd = user.default_password;
-						} //
-						(lib.optionalAttrs (user.ssh_public_key != null) {
-							ssh_authorized_keys = [ user.ssh_public_key ];
-						})
-					)
+					{
+						name = user.id;
+						sudo = "ALL=(ALL) NOPASSWD:ALL";
+						shell = "/bin/bash";
+						lock_passwd = false;
+						plain_text_passwd = user.default_password;
+						ssh_authorized_keys =
+							[ adminPublicKey ] ++ optional (user.ssh_public_key != null) user.ssh_public_key;
+					}
 				];
 				ssh_pwauth = user.ssh_public_key == null;
 				ssh_deletekeys = true;
