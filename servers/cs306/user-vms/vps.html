@@ -3,6 +3,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="icon" href="https://acmcsuf.com/favicon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.classless.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap">
 <title>VPS - ACM at CSUF</title>
 <meta property="og:title" content="VPS - ACM at CSUF">
 <meta property="og:description" content="Virtual private servers (VPS) provided to members of ACM at CSUF.">
@@ -106,13 +109,42 @@
 <style>
   body {
     margin: 0 auto;
-    padding: 1em;
-    max-width: 600px;
+    padding: var(--pico-spacing) 0;
+    max-width: clamp(400px, 90vw, 800px);
+
+    --pico-block-spacing-vertical: 2.5rem;
+    --pico-font-family-sans-serif: 'Roboto', sans-serif;
+    --pico-font-family-monospace: 'Roboto Mono', monospace;
+  }
+
+  h1, h2, h3 {
+    --pico-font-family: var(--pico-font-family-monospace);
+  }
+
+  hgroup h1 {
+    margin-bottom: calc(var(--pico-spacing) * 0.5);
+  }
+
+  hgroup,
+  section {
+    margin: var(--pico-block-spacing-vertical) 0;
   }
 
   .users-list {
     list-style: none;
-    padding-left: 1em;
+    padding-left: 0;
+  }
+
+  .users-list > li {
+    margin: calc(var(--pico-block-spacing-vertical) / 2) 0;
+    padding: calc(var(--pico-spacing) * 0.5) calc(var(--pico-spacing) * 0.75);
+    border-left: 4px solid var(--pico-primary-border);
+  }
+
+  .users-info-list {
+    margin: calc(var(--pico-spacing)/2) 0;
+    margin-bottom: 0;
+    padding: 0 calc(var(--pico-spacing) * 1.5);
   }
 
   a {
