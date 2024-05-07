@@ -22,10 +22,24 @@
   </p>
 </section>
 
+<section>
+  <h2>Hosting a Website</h2>
+  <p>
+    VPS hosted by us are automatically provided a free domain roughly in the format
+    <code>${USER}.vps.acmcsuf.com</code>. You may check your exact URL in the <a href="#users">Users
+    section</a> below.
+  </p>
+  <p>
+    To start hosting a website, simply start a web server at port <code>:80</code> in your VPS and
+    it will automatically be accessible via the domain. Both HTTP and WebSocket connections are
+    supported.
+  </p>
+</section>
+
 {{ $users := datasource "users" }}
 {{ $usersInfo := datasource "users-info" }}
 
-<section>
+<section id="users">
   <h2>Users</h2>
   <ol class="users-list">
     {{ range $i_ := math.Seq (len $users) }}
@@ -70,6 +84,16 @@
   <ul>
     <li><a href="/vps.json">JSON IP list</a></li>
   </ul>
+</section>
+
+<section>
+  <h2>Support</h2>
+  <p>
+    For any questions or issues, please contact us on the <a href="https://acmcsuf.com/discord">ACM
+      at CSUF Discord</a>, preferably by sending a message in the <code>#dev-chat</code> Discord
+    channel. Note that we require you to be registered in the Discord server with your CSUF email
+    to access the channel.
+  </p>
 </section>
 
 <footer>
