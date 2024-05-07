@@ -50,8 +50,10 @@
       {{ $i := math.Sub $i_ 1 }}
       {{ $user := index $users $i }}
       {{ $info := index $usersInfo $i }}
-      <b class="user-id">{{ $user.id }}</b>
-      <span>(<span class="user-name">{{ $user.name }}</span>)</span>
+      <h3 class="user-header">
+        <b class="user-id">{{ $user.id }}</b>
+        <span class="user-name">{{ $user.name }}</span>
+      </h3>
       <ul class="users-info-list">
         <li class="url">
           <b>Website URL:</b>
@@ -117,8 +119,12 @@
     --pico-font-family-monospace: 'Roboto Mono', monospace;
   }
 
-  h1, h2, h3 {
+  h1, h2 {
     --pico-font-family: var(--pico-font-family-monospace);
+  }
+
+  h3, h4, h5, h6 {
+    --pico-font-family: var(--pico-font-family-sans-serif);
   }
 
   hgroup h1 {
@@ -141,10 +147,30 @@
     border-left: 4px solid var(--pico-primary-border);
   }
 
+  .user-header {
+    font-size: 1.15em;
+    font-weight: normal;
+  }
+
+  .user-header .user-name {
+    color: var(--pico-muted-color);
+    font-size: 0.85em;
+    padding-left: calc(var(--pico-spacing) * 0.25);
+  }
+
   .users-info-list {
     margin: calc(var(--pico-spacing)/2) 0;
     margin-bottom: 0;
-    padding: 0 calc(var(--pico-spacing) * 1.5);
+    padding: 0;
+    color: var(--pico-primary);
+  }
+
+  .users-info-list li {
+    list-style: none;
+  }
+
+  .users-info-list list > b {
+    font-weight: bold;
   }
 
   a {
