@@ -140,7 +140,7 @@ in
 		acm.user-vms.usersInfo = imap0 (i: user: {
 			id = user.id;
 			ip = ips.ipFromOffset i;
-			sanitized_id = lib.toLower (builtins.replaceStrings ["."] ["_"] user.id);
+			sanitized_id = toLower (replaceStrings ["."] ["_"] user.id);
 		}) self.users;
 
 		virtualisation.libvirt.enable = true;

@@ -52,7 +52,7 @@
       <ul class="users-info-list">
         <li class="url">
           <b>Website URL:</b>
-          {{ $url := ($user.sanitized_id | printf "%s.vps.acmcsuf.com") }}
+          {{ $url := ($info.sanitized_id | printf "%s.vps.acmcsuf.com") }}
           <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
         </li>
         <li class="discord">

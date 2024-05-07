@@ -82,12 +82,14 @@ in
 			}
 		'';
 		"http://*.vps.acmcsuf.com" =
-			(lib.concatStrings (lib.imap0 (i: user: ''
-				@user${i} <<CEL
+			with lib;
+			with builtins;
+			(concatStrings (imap0 (i: user: ''
+				@user_${toString i} <<CEL
 					{host} == "${user.sanitized_id}.vps.acmcsuf.com" ||
 					{host}.endsWith(".${user.sanitized_id}.vps.acmcsuf.com")
 					CEL
-				handle @user${i} {
+				handle @user_${toString i} {
 					reverse_proxy * http://${user.ip}:80
 				}
 			'') config.acm.user-vms.usersInfo)) +
