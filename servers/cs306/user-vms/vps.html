@@ -52,7 +52,7 @@
       <ul class="users-info-list">
         <li class="url">
           <b>Website URL:</b>
-          {{ $url := ($user.id | strings.ReplaceAll "." "_" | strings.ToLower | printf "%s.vps.acmcsuf.com") }}
+          {{ $url := ($user.sanitized_id | printf "%s.vps.acmcsuf.com") }}
           <a href="https://{{ $url }}" target="_blank">{{ $url }}</a>
         </li>
         <li class="discord">

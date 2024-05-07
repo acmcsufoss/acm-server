@@ -107,6 +107,10 @@ in
 							type = types.str;
 							description = "The IP address of the user's VM.";
 						};
+						sanitized_id = mkOption {
+							type = types.str;
+							description = "The username of the user, sanitized for use in the URL.";
+						};
 					};
 				});
 				description = ''
@@ -136,6 +140,7 @@ in
 		acm.user-vms.usersInfo = imap0 (i: user: {
 			id = user.id;
 			ip = ips.ipFromOffset i;
+			sanitized_id = lib.toLower (builtins.replaceStrings ["."] ["_"] user.id);
 		}) self.users;
 
 		virtualisation.libvirt.enable = true;

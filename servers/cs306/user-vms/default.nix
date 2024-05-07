@@ -66,27 +66,35 @@ in
 		};
 	};
 
-	services.diamondburned.caddy.sites =
-		{
-			"http://ssh.acmcsuf.com" = ''
-				reverse_proxy * localhost:38274
-			'';
-			"http://vps.acmcsuf.com" = ''
-				header Cache-Control "public, no-cache, max-age 86400"
-				handle /vps.json {
-					root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
-					file_server
+	services.diamondburned.caddy.sites = {
+		"http://ssh.acmcsuf.com" = ''
+			reverse_proxy * localhost:38274
+		'';
+		"http://vps.acmcsuf.com" = ''
+			header Cache-Control "public, no-cache, max-age 86400"
+			handle /vps.json {
+				root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
+				file_server
+			}
+			handle {
+				root * ${vpsFiles}
+				file_server
+			}
+		'';
+		"http://*.vps.acmcsuf.com" =
+			(lib.concatStrings (lib.imap0 (i: user: ''
+				@user${i} <<CEL
+					{host} == "${user.sanitized_id}.vps.acmcsuf.com" ||
+					{host}.endsWith(".${user.sanitized_id}.vps.acmcsuf.com")
+					CEL
+				handle @user${i} {
+					reverse_proxy * http://${user.ip}:80
 				}
+			'') config.acm.user-vms.usersInfo)) +
+			''
 				handle {
-					root * ${vpsFiles}
-					file_server
+					abort
 				}
 			'';
-		} // (builtins.listToAttrs (map (user: {
-			# TODO: actually fix the . issue.
-			name = "http://${builtins.replaceStrings ["."] ["_"] user.id}.vps.acmcsuf.com";
-			value = ''
-				reverse_proxy * http://${user.ip}:80
-			'';
-		}) config.acm.user-vms.usersInfo));
+	};
 }
