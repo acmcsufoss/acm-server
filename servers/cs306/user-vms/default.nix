@@ -72,7 +72,7 @@ in
 				reverse_proxy * localhost:38274
 			'';
 			"http://vps.acmcsuf.com" = ''
-				header Cache-Control "must-revalidate"
+				header Cache-Control "public, no-cache, max-age 86400"
 				handle /vps.json {
 					root * ${pkgs.writeTextDir "vps.json" (builtins.toJSON config.acm.user-vms.usersInfo)}
 					file_server
