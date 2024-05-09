@@ -307,7 +307,7 @@ in
 							emulator = "/run/libvirt/nix-emulators/qemu-system-x86_64";
 							disk = with lib; [
 								{
-									type = "volume";
+									type = "file";
 									device = "disk";
 									driver = {
 										name = "qemu";
@@ -315,9 +315,7 @@ in
 										cache = "writeback";
 										discard = "unmap";
 									};
-									source = {
-										file = "${self.poolDirectory}/${user.uuid}.img";
-									};
+									source.file = "${self.poolDirectory}/${user.uuid}.img";
 									target = {
 										dev = "vda";
 										bus = "virtio";
