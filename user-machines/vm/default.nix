@@ -158,12 +158,12 @@ in
 					volumes = (map (user: {
 						present = !userIsDeleted user;
 						definition = virtlib.volume.writeXML {
-							name = "${user.uuid}.qcow2";
+							name = "${user.uuid}.raw";
 							capacity = { count = 4; unit = "GiB"; };
-							allocation = { count = 256; unit = "MiB"; };
 							target = {
-								format.type = "qcow2";
+								format.type = "raw";
 								permissions.mode = "0700";
+								nocow = {};
 							};
 						};
 					}) self.users);
@@ -267,13 +267,13 @@ in
 									device = "disk";
 									driver = {
 										name = "qemu";
-										type = "qcow2";
-										cache = "none";
+										type = "raw";
+										cache = "writethrough";
 										discard = "unmap";
 									};
 									source = {
 										pool = "acm-vm-pool";
-										volume = "${user.uuid}.qcow2";
+										volume = "${user.uuid}.raw";
 									};
 									target = {
 										dev = "vda";
