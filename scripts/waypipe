@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+. "$(dirname "$0")/lib/init"
+
+lib::include ssh
+lib::require_installed waypipe
+
+main() {
+	sshArgs=()
+	ssh::append_args "$1" sshArgs
+	sshArgs+=( "${@:2}" )
+
+	waypipe ssh "${sshArgs[@]}"
+}
+
+if lib::is_main; then
+	main "$@"
+fi

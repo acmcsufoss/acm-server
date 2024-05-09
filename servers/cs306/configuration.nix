@@ -54,6 +54,7 @@
 		wget
 
 		# Poentially useful utilities.
+		waypipe
 		zellij
 		croc
 	];

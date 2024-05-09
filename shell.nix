@@ -17,6 +17,7 @@ pkgs.mkShell {
 		git-crypt
 		openssl
 		gomod2nix
+		waypipe
 		expect
 
 		# editor tools.

@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 . "$(dirname "$0")/lib/init"
 
-main() {
+lib::include ip
+
+# ssh::append_args($1: instance_name, $2: out_var)
+ssh::append_args() {
 	local target="$1"
-	local sshArgs=( "${@:2}" )
 
 	local user host
 	if [[ "$target" == *"@"* ]]; then
@@ -14,13 +16,24 @@ main() {
 		host="$target"
 	fi
 
-	if publicIP=$(./scripts/ip "$host" 2> /dev/null); then
+	if publicIP=$(ip::find "$host"); then
 		host="$publicIP"
 	else
 		echo "No known IP for Tailscale name \"$host\", using it directly..." >&2
 	fi
 
-	ssh -o 'IdentitiesOnly=yes' -i ./secrets/ssh/id_ed25519 "$user@$host" "${sshArgs[@]}"
+	declare -n outVar="$2"
+	outVar+=( -o 'IdentitiesOnly=yes' -i './secrets/ssh/id_ed25519' "$user@$host" )
+}
+
+main() {
+	local target="$1"
+
+	sshArgs=()
+	ssh::append_args "$target" sshArgs
+	sshArgs+=( "${@:2}" )
+
+	ssh "${sshArgs[@]}"
 }
 
 if lib::is_main; then
