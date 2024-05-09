@@ -155,7 +155,6 @@ in
 			after = [ "libvirtd.service" ];
 			path = with pkgs; [
 				qemu
-				libvirt
 				e2fsprogs
 			];
 			script = ''
@@ -167,40 +166,43 @@ in
 
 				log() { echo "$@" >&2; }
 
-				# Ensure that the virsh pool exists.
-				virsh pool-define ${virtlib.pool.writeXML {
-					uuid = "d988b1ac-1732-4185-809b-d3b30bc1eef3";
-					name = "acm-vm-pool";
-					type = "dir";
-					target.path = self.poolDirectory;
-				}}
+				# Ensure the volume is created with the correct permissions.
+				umask 077
 
-				# Start the pool if it's not already started.
-				virsh pool-start "$POOL_NAME" --build || {
-					log "Failed to start pool $POOL_NAME; pool may already be started."
-				}
+				# Ensure the pool directory exists.
+				mkdir -p "$POOL_DIRECTORY"
 
 				for uuid in ${concatStringsSep " " (map (user: user.uuid) activeUsers)}; do
 					volume="$uuid.img"
 					echo "Creating $volume..."
 
-					if ! virsh vol-info --pool "$POOL_NAME" "$volume"; then
-						virsh vol-create-as "$POOL_NAME" "$volume" "$VOLUME_SIZE" --format raw
-						virsh vol-upload "$volume" ${mkRawImage ubuntu.image} --pool "$POOL_NAME"
+					if [[ -f "$volumePath" ]]; then
+						log "  volume already exists."
+					else
+						log "  creating volume..."
 
-						# Manually mark the file as no COW if possible.
-						chattr +C "$POOL_DIRECTORY/$volume" &> /dev/null || {
-							log "Could not mark $POOL_DIRECTORY/$volume as no COW."
+						# Clone the backing store image to a raw image then grow it.
+						qemu-img convert -O raw -S 0 ${ubuntu.image} "$volumePath"
+
+						# Disable copy-on-write for performance.
+						chattr +C "$volumePath" 2> /dev/null || {
+							log "  couldn't disable copy-on-write, maybe the filesystem doesn't support it?"
 						}
 					fi
+
+					log "  resizing volume to $VOLUME_SIZE..."
+					qemu-img resize -f raw "$volumePath" "$VOLUME_SIZE"
+
+					log "  done!"
 				done
 
 				for uuid in ${concatStringsSep " " (map (user: user.uuid) deletedUsers)}; do
 					volume="$uuid.img"
 					echo "Deleting $volume..."
 
-					if virsh vol-info --pool "$POOL_NAME" "$volume"; then
-						virsh vol-delete --pool "$POOL_NAME" "$volume"
+					if [[ -f "$volumePath" ]]; then
+						log "  volume exists, deleting..."
+						rm "$volumePath"
 					fi
 				done
 			'';
@@ -317,8 +319,7 @@ in
 										discard = "unmap";
 									};
 									source = {
-										pool = "acm-vm-pool";
-										volume = "${user.uuid}.img";
+										file = "${self.poolDirectory}/${user.uuid}.img";
 									};
 									target = {
 										dev = "vda";
