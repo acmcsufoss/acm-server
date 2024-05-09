@@ -32,6 +32,8 @@ in
 		hostOrderToIP
 		mkCloudInitImage;
 
+	volumeSize = "4G";
+
 	ips = rec {
 		start = {
 			ip = "192.168.168.2";

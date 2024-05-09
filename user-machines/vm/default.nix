@@ -23,7 +23,8 @@ let
 	inherit (import ./config.nix { inherit pkgs; })
 		lib
 		ips
-		ubuntu;
+		ubuntu
+		volumeSize;
 
 	mkRawImage = image: pkgs.runCommand
 		"${image.name}-raw.img"
@@ -47,12 +48,6 @@ in
 				type = types.str;
 				default = "/var/lib/acm-vm";
 				description = "The directory to store VM disk images in.";
-			};
-
-			volumeSizeGB = mkOption {
-				type = types.int;
-				default = 4;
-				description = "The size in GB of the VM disk images applied to new and existing images.";
 			};
 	
 			virtConnection = mkOption {
@@ -162,7 +157,7 @@ in
 
 				export POOL_NAME="acm-vm-pool"
 				export POOL_DIRECTORY=${self.poolDirectory}
-				export VOLUME_SIZE=${toString self.volumeSizeGB}"GiB"
+				export VOLUME_SIZE=${volumeSize}
 
 				log() { echo "$@" >&2; }
 
@@ -174,7 +169,8 @@ in
 
 				for uuid in ${concatStringsSep " " (map (user: user.uuid) activeUsers)}; do
 					volume="$uuid.img"
-					echo "Creating $volume..."
+					volumePath="$POOL_DIRECTORY/$volume"
+					echo "Creating $volumePath..."
 
 					if [[ -f "$volumePath" ]]; then
 						log "  volume already exists."
@@ -198,7 +194,8 @@ in
 
 				for uuid in ${concatStringsSep " " (map (user: user.uuid) deletedUsers)}; do
 					volume="$uuid.img"
-					echo "Deleting $volume..."
+					volumePath="$POOL_DIRECTORY/$volume"
+					echo "Deleting $volumePath..."
 
 					if [[ -f "$volumePath" ]]; then
 						log "  volume exists, deleting..."
