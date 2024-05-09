@@ -132,10 +132,6 @@ in
 	# TODO: tainted: high-privileges
 
 	config = mkIf self.enable ({
-		systemd.tmpfiles.rules = [
-			"d ${self.poolDirectory} 0700 root root -"
-		];
-
 		acm.user-vms.usersInfo = imap0 (i: user: {
 			id = user.id;
 			ip = ips.ipFromOffset i;
@@ -175,10 +171,8 @@ in
 					if [[ -f "$volumePath" ]]; then
 						log "  volume already exists."
 					else
-						log "  creating volume..."
-
-						# Clone the backing store image to a raw image then grow it.
-						qemu-img convert -O raw -S 0 ${ubuntu.image} "$volumePath"
+						log "  cloning volume from image ${ubuntu.image}..."
+						cp --no-preserve=mode,ownership ${mkRawImage ubuntu.image} "$volumePath"
 
 						# Disable copy-on-write for performance.
 						chattr +C "$volumePath" 2> /dev/null || {
