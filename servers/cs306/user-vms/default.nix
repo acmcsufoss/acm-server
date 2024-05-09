@@ -34,8 +34,11 @@ in
 	acm.user-vms = {
 		enable = true;
 		users = builtins.fromJSON (builtins.readFile usersFile);
-		# Pin all CPU usages to the 4 host cores.
-		cpuPinning = [4 5 6 7];
+		# Pin all CPU usages to the last 2 cores.
+		cpuPinning = [
+			2 3 # 3rd core
+			6 7 # 4th core
+		];
 		poolDirectory = "/var/lib/acm-vm";
 	};
 

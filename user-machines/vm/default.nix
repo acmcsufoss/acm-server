@@ -40,6 +40,12 @@ in
 				default = "/var/lib/acm-vm";
 				description = "The directory to store VM disk images in.";
 			};
+
+			volumeSize = mkOption {
+				type = types.str;
+				default = "4G";
+				description = "The size of the VM disk images applied to new and existing images.";
+			};
 	
 			virtConnection = mkOption {
 				type = types.str;
@@ -143,6 +149,61 @@ in
 			sanitized_id = toLower (replaceStrings ["."] ["_"] user.id);
 		}) self.users;
 
+		systemd.services.nixvirt-diskprep = {
+			serviceConfig.Type = "oneshot";
+			description = "Prepare VM disk images for NixVirt";
+			wantedBy = [ "multi-user.target" ];
+			requires = [ "libvirtd.service" ];
+			after = [ "libvirtd.service" ];
+			path = with pkgs; [
+				qemu
+				e2fsprogs
+			];
+			script = ''
+				set -euo pipefail
+
+				export POOL_DIRECTORY=${self.poolDirectory}
+				export VOLUME_SIZE=${self.volumeSize}
+				images=( ${concatStringsSep "\n" (map (user: "${user.uuid}.img") self.users)} )
+
+				log() { echo "$@" >&2; }
+
+				# Ensure the volume is created with the correct permissions.
+				umask 077
+
+				# Ensure the pool directory exists.
+				mkdir -p "$POOL_DIRECTORY"
+
+				for image in ''${images[@]}; do
+					volumePath="$POOL_DIRECTORY/$image"
+					log "For volume $volumePath:"
+
+					if [[ -f "$volumePath" ]]; then
+						log "  volume already exists."
+					else
+						log "  creating volume..."
+						# Clone the backing store image to a raw image then grow it.
+						qemu-img convert -O raw -S 0 ${ubuntu.image} "$volumePath"
+						# Disable copy-on-write for performance.
+						chattr +C "$volumePath" 2> /dev/null || {
+							log "  couldn't disable copy-on-write, maybe the filesystem doesn't support it?"
+						}
+					fi
+
+					log "  resizing volume to $VOLUME_SIZE..."
+					qemu-img resize -f raw "$volumePath" "$VOLUME_SIZE"
+
+					log "  done!"
+				done
+			'';
+		};
+
+		# Force NixVirt to run after the disk preparation service.
+		systemd.services.nixvirt.unitConfig = rec {
+			Requires = mkForce [ "libvirtd.service" "nixvirt-diskprep.service" ];
+			After = mkForce Requires;
+		};
+
 		virtualisation.libvirt.enable = true;
 
 		virtualisation.libvirt.connections.${self.virtConnection} = {
@@ -155,18 +216,6 @@ in
 						type = "dir";
 						target.path = self.poolDirectory;
 					};
-					volumes = (map (user: {
-						present = !userIsDeleted user;
-						definition = virtlib.volume.writeXML {
-							name = "${user.uuid}.raw";
-							capacity = { count = 4; unit = "GiB"; };
-							target = {
-								format.type = "raw";
-								permissions.mode = "0700";
-								nocow = {};
-							};
-						};
-					}) self.users);
 				}
 			];
 
@@ -233,7 +282,7 @@ in
 						# Allow 512BM total to the VM, but only allocate 128MB initially.
 						# See https://pmhahn.github.io/virtio-balloon/.
 						memory = { count = 512; unit = "MiB"; };
-						currentMemory = { count = 150; unit = "MiB"; };
+						currentMemory = { count = 256; unit = "MiB"; };
 
 						sysinfo = {
 							type = "smbios";
@@ -268,21 +317,16 @@ in
 									driver = {
 										name = "qemu";
 										type = "raw";
-										cache = "writethrough";
+										cache = "writeback";
 										discard = "unmap";
 									};
 									source = {
 										pool = "acm-vm-pool";
-										volume = "${user.uuid}.raw";
+										volume = "${user.uuid}.img";
 									};
 									target = {
 										dev = "vda";
 										bus = "virtio";
-									};
-									backingStore = {
-										type = "file";
-										format.type = ubuntu.image.format;
-										source.file = "${ubuntu.image}";
 									};
 								}
 								{

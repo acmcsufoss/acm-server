@@ -9,7 +9,7 @@ in
 pkgs.testers.runNixOSTest {
 	name = "user-machines-test";
 
-	nodes.machine = { config, pkgs, ... }: {
+	nodes.machine = { config, pkgs, lib, ... }: {
 		imports = [
 			./.
 		];
@@ -41,6 +41,10 @@ pkgs.testers.runNixOSTest {
 		# security.sudo.wheelNeedsPassword = false;
 
 		# programs.virt-manager.enable = true;
+
+		# Accommodate the large VMs.
+		# Base 1GB + 4GB per user.
+		virtualisation.diskSize = 1024 + ((lib.length config.acm.user-vms.users) * 4 * 1024);
 
 		acm.user-vms = {
 			enable = true;
