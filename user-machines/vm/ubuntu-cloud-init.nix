@@ -57,6 +57,9 @@ let
 					"apt remove -y --autoremove multipath-tools multipath-tools-boot"
 					# Uninstall apport bloat.
 					"apt remove -y --autoremove apport"
+					# This service is really slow.
+					"systemctl disable e2scrub_reap"
+					"systemctl mask e2scrub_reap"
 					# Permanently disable cloud-init after first boot.
 					# This permits the user to change anything they want afterwards.
 					"touch /etc/cloud/cloud-init.disabled"
