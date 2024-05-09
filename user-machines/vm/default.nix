@@ -15,12 +15,20 @@ let
 	virtlib = nixvirt.lib;
 
 	self = config.acm.user-vms;
+
+	activeUsers = filter (user: !userIsDeleted user) self.users;
+	deletedUsers = filter (user: userIsDeleted user) self.users;
 	userIsDeleted = user: user ? "deleted" && user.deleted;
 
 	inherit (import ./config.nix { inherit pkgs; })
 		lib
 		ips
 		ubuntu;
+
+	mkRawImage = image: pkgs.runCommand
+		"${image.name}-raw.img"
+		{ nativeBuildInputs = with pkgs; [ qemu ]; }
+		"qemu-img convert -O raw ${image} $out";
 
 	# utility value that signifies that a case is _impossible_.
 	_impossible_ = throw "This should be _impossible_";
@@ -129,19 +137,9 @@ in
 	# TODO: tainted: high-privileges
 
 	config = mkIf self.enable ({
-		systemd.tmpfiles.rules =
-			let
-				# Create GC roots to all known backing store images. This prevents them from being garbage
-				# collected by the Nix garbage collector.
-				imageRoot = pkgs.linkFarm "acm-vm-image-root" (map (image: {
-					name = image.outputHash;
-					path = image;
-				}) ubuntu.images);
-			in
-			[
-				"d  ${self.poolDirectory}             0700 root root -"
-				"L+ ${self.poolDirectory}/.image-root -    -     -   - ${imageRoot}"
-			];
+		systemd.tmpfiles.rules = [
+			"d ${self.poolDirectory} 0700 root root -"
+		];
 
 		acm.user-vms.usersInfo = imap0 (i: user: {
 			id = user.id;
@@ -157,43 +155,53 @@ in
 			after = [ "libvirtd.service" ];
 			path = with pkgs; [
 				qemu
+				libvirt
 				e2fsprogs
 			];
 			script = ''
 				set -euo pipefail
 
+				export POOL_NAME="acm-vm-pool"
 				export POOL_DIRECTORY=${self.poolDirectory}
-				export VOLUME_SIZE=${toString self.volumeSizeGB}"G"
-				images=( ${concatStringsSep "\n" (map (user: "${user.uuid}.img") self.users)} )
+				export VOLUME_SIZE=${toString self.volumeSizeGB}"GiB"
 
 				log() { echo "$@" >&2; }
 
-				# Ensure the volume is created with the correct permissions.
-				umask 077
+				# Ensure that the virsh pool exists.
+				virsh pool-define ${virtlib.pool.writeXML {
+					uuid = "d988b1ac-1732-4185-809b-d3b30bc1eef3";
+					name = "acm-vm-pool";
+					type = "dir";
+					target.path = self.poolDirectory;
+				}}
 
-				# Ensure the pool directory exists.
-				mkdir -p "$POOL_DIRECTORY"
+				# Start the pool if it's not already started.
+				virsh pool-start "$POOL_NAME" --build || {
+					log "Failed to start pool $POOL_NAME; pool may already be started."
+				}
 
-				for image in ''${images[@]}; do
-					volumePath="$POOL_DIRECTORY/$image"
-					log "For volume $volumePath:"
+				for uuid in ${concatStringsSep " " (map (user: user.uuid) activeUsers)}; do
+					volume="$uuid.img"
+					echo "Creating $volume..."
 
-					if [[ -f "$volumePath" ]]; then
-						log "  volume already exists."
-					else
-						log "  creating volume..."
-						# Clone the backing store image to a raw image then grow it.
-						qemu-img convert -O raw -S 0 ${ubuntu.image} "$volumePath"
-						# Disable copy-on-write for performance.
-						chattr +C "$volumePath" 2> /dev/null || {
-							log "  couldn't disable copy-on-write, maybe the filesystem doesn't support it?"
+					if ! virsh vol-info --pool "$POOL_NAME" "$volume"; then
+						virsh vol-create-as "$POOL_NAME" "$volume" "$VOLUME_SIZE" --format raw
+						virsh vol-upload "$volume" ${mkRawImage ubuntu.image} --pool "$POOL_NAME"
+
+						# Manually mark the file as no COW if possible.
+						chattr +C "$POOL_DIRECTORY/$volume" &> /dev/null || {
+							log "Could not mark $POOL_DIRECTORY/$volume as no COW."
 						}
 					fi
+				done
 
-					log "  resizing volume to $VOLUME_SIZE..."
-					qemu-img resize -f raw "$volumePath" "$VOLUME_SIZE"
+				for uuid in ${concatStringsSep " " (map (user: user.uuid) deletedUsers)}; do
+					volume="$uuid.img"
+					echo "Deleting $volume..."
 
-					log "  done!"
+					if virsh vol-info --pool "$POOL_NAME" "$volume"; then
+						virsh vol-delete --pool "$POOL_NAME" "$volume"
+					fi
 				done
 			'';
 		};
@@ -207,26 +215,6 @@ in
 		virtualisation.libvirt.enable = true;
 
 		virtualisation.libvirt.connections.${self.virtConnection} = {
-			pools = [
-				{
-					active = true;
-					definition = virtlib.pool.writeXML {
-						uuid = "d988b1ac-1732-4185-809b-d3b30bc1eef3";
-						name = "acm-vm-pool";
-						type = "dir";
-						target.path = self.poolDirectory;
-					};
-					volumes = (map (user: {
-						present = !userIsDeleted user;
-						definition = virtlib.volume.writeXML {
-							name = "${user.uuid}.img";
-							capacity = { count = self.volumeSizeGB; unit = "GiB"; };
-							target.format.type = "raw";
-						};
-					}) self.users);
-				}
-			];
-
 			networks = [
 				{
 					active = true;
