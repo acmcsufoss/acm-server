@@ -55,6 +55,8 @@ let
 				runcmd = [
 					# Uninstall multipath-tools, since that's useless.
 					"apt remove -y --autoremove multipath-tools multipath-tools-boot"
+					# Uninstall apport bloat.
+					"apt remove -y --autoremove apport"
 					# Permanently disable cloud-init after first boot.
 					# This permits the user to change anything they want afterwards.
 					"touch /etc/cloud/cloud-init.disabled"
