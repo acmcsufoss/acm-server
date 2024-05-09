@@ -218,7 +218,7 @@ in
 						volumes = (map (user: {
 							present = !userIsDeleted user;
 							definition = virtlib.volume.writeXML {
-								name = "${user.uuid}.raw";
+								name = "${user.uuid}.img";
 								target.format.type = "raw";
 							};
 						}) self.users);
