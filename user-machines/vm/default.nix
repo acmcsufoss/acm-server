@@ -215,14 +215,14 @@ in
 						name = "acm-vm-pool";
 						type = "dir";
 						target.path = self.poolDirectory;
-						volumes = (map (user: {
-							present = !userIsDeleted user;
-							definition = virtlib.volume.writeXML {
-								name = "${user.uuid}.img";
-								target.format.type = "raw";
-							};
-						}) self.users);
 					};
+					volumes = (map (user: {
+						present = !userIsDeleted user;
+						definition = virtlib.volume.writeXML {
+							name = "${user.uuid}.img";
+							target.format.type = "raw";
+						};
+					}) self.users);
 				}
 			];
 
