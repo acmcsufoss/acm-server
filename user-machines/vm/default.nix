@@ -41,10 +41,10 @@ in
 				description = "The directory to store VM disk images in.";
 			};
 
-			volumeSize = mkOption {
-				type = types.str;
-				default = "4G";
-				description = "The size of the VM disk images applied to new and existing images.";
+			volumeSizeGB = mkOption {
+				type = types.int;
+				default = 4;
+				description = "The size in GB of the VM disk images applied to new and existing images.";
 			};
 	
 			virtConnection = mkOption {
@@ -163,7 +163,7 @@ in
 				set -euo pipefail
 
 				export POOL_DIRECTORY=${self.poolDirectory}
-				export VOLUME_SIZE=${self.volumeSize}
+				export VOLUME_SIZE=${toString self.volumeSizeGB}"G"
 				images=( ${concatStringsSep "\n" (map (user: "${user.uuid}.img") self.users)} )
 
 				log() { echo "$@" >&2; }
@@ -220,6 +220,7 @@ in
 						present = !userIsDeleted user;
 						definition = virtlib.volume.writeXML {
 							name = "${user.uuid}.img";
+							capacity = { count = self.volumeSizeGB; unit = "GiB"; };
 							target.format.type = "raw";
 						};
 					}) self.users);
