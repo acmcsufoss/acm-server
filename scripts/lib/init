@@ -5,9 +5,12 @@ set -eo pipefail
 [[ "$RUNNER_DEBUG" == 1 ]] && set -x
 
 # Ensure that the script only executes once.
-if [[ -n "${_LIB_INCLUDED}" ]]; then
+if [[ -n "${_LIB_INITIALIZED}" ]]; then
 	return
 fi
+
+export _LIB_INITIALIZED=1
+export _LIB_SOURCING=0
 declare -A _LIB_INCLUDED
 
 # include sources the given file exactly once.
@@ -24,13 +27,13 @@ lib::include() {
 	# Enable a sentinel value to detect if the file is being sourced.
 	# We use this check in lib::is_main to determine if the current script is
 	# the main script.
-	_LIB_SOURCING=1
+	_LIB_SOURCING=$(( _LIB_SOURCING + 1 ))
 
 	# shellcheck source=/dev/null
 	source "$file"
 
 	# Unset the sentinel value.
-	unset _LIB_SOURCING
+	_LIB_SOURCING=$(( _LIB_SOURCING - 1 ))
 }
 
 # is_main returns 0 if the current script is the main script.
@@ -38,8 +41,7 @@ lib::include() {
 #
 # Usage: lib::is_main "$0"
 lib::is_main() {
-	[[ -z "${_LIB_SOURCING}" ]]
-	return $?
+	(( _LIB_SOURCING == 0 )) && return 0 || return 1
 }
 
 # is_installed returns 0 if all the given packages are installed.
