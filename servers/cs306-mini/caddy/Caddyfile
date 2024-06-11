@@ -1,0 +1,23 @@
+{
+	debug
+	auto_https off # rely on cirno's Caddy proxy
+	dynamic_dns {
+		provider netlify {env.NETLIFY_TOKEN}
+		domains {
+			# No need to add more subdomains here. dynamic_dns is just being
+			# dumb with how dynamic_domains is handled.
+			# https://github.com/mholt/caddy-dynamicdns/blob/master/caddyfile.go#L61
+			acmcsuf.com cs306-mini
+		}
+		dynamic_domains
+		# AWS doesn't give us IPv6.
+		versions ipv4
+		# Use cirno's public-facing IP.
+		ip_source static {env.CADDY_PUBLIC_IP}
+	}
+}
+
+cs306-mini.acmcsuf.com {
+	log
+	respond "Hello from CS306 but miniature! Brought to you by ACM at CSUF."
+}

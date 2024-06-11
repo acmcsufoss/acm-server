@@ -9,6 +9,8 @@
 		<acm-aws/servers/base.nix>
 
 		./hardware-configuration.nix
+		./services
+		./caddy
 	];
 
 	# Bootloader.
