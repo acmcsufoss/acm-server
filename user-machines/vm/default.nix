@@ -178,12 +178,12 @@ in
 						chattr +C "$volumePath" 2> /dev/null || {
 							log "  couldn't disable copy-on-write, maybe the filesystem doesn't support it?"
 						}
+
+						log "  resizing volume to $VOLUME_SIZE..."
+						qemu-img resize -f raw "$volumePath" "$VOLUME_SIZE"
+
+						log "  done!"
 					fi
-
-					log "  resizing volume to $VOLUME_SIZE..."
-					qemu-img resize -f raw "$volumePath" "$VOLUME_SIZE"
-
-					log "  done!"
 				done
 
 				for uuid in ${concatStringsSep " " (map (user: user.uuid) deletedUsers)}; do
