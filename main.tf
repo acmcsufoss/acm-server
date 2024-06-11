@@ -48,3 +48,9 @@ module "cs306" {
 	source = "./servers/cs306"
 	ssh_private_key_file = local.ssh.private_key
 }
+
+module "cs306-mini" {
+	host = "cs306-mini.${var.tailnet_name}.ts.net"
+	source = "./servers/cs306-mini"
+	ssh_private_key_file = local.ssh.private_key
+}

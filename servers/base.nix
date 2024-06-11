@@ -40,6 +40,10 @@ in {
 		git
 	];
 
+	users.users.root.openssh.authorizedKeys.keyFiles = [
+		<acm-aws/secrets/ssh/id_ed25519.pub>
+	];
+
 	# Deploy ./static to all servers.
 	deployment.staticPaths = [ ../static ];
 }
