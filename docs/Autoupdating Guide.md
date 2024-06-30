@@ -33,11 +33,11 @@ After that, push the changes to the `main` branch as usual.
 ## The `update-pkg` Action
 
 This repository contains an `update-pkg` action that automatically dispatches a
-new workflow run that updates the given package onto acm-aws. Use it as such:
+new workflow run that updates the given package onto acm-server. Use it as such:
 
 ```yml
 - name: Update package on production
-  uses: acmcsufoss/acm-aws/.github/actions/update-pkg@main
+  uses: acmcsufoss/acm-server/.github/actions/update-pkg@main
   with:
     token: ${{ secrets.PAT_TOKEN }}
     package: acmregister # !!!: swap with your own!
@@ -67,14 +67,14 @@ jobs:
     uses: ./.github/workflows/build.yml
 
   dispatch:
-    name: Dispatch to acm-aws
+    name: Dispatch to acm-server
     needs: build
     runs-on: ubuntu-latest
     environment: Production
     concurrency: Production
     steps:
       - name: Dispatch workflow
-        uses: acmcsufoss/acm-aws/.github/actions/update-pkg@main
+        uses: acmcsufoss/acm-server/.github/actions/update-pkg@main
         with:
           token: ${{ secrets.PAT_TOKEN }}
           package: acmregister

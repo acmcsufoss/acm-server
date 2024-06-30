@@ -1,8 +1,8 @@
-# acm-aws
+# acm-server
 
-![Deployment status badge](https://github.com/acmcsufoss/acm-aws/actions/workflows/deploy.yml/badge.svg?branch=main)
+![Deployment status badge](https://github.com/acmcsufoss/acm-server/actions/workflows/deploy.yml/badge.svg?branch=main)
 
-acm-aws contains the Terraform deployment files for ACM at CSUF. It uses
+acm-server contains the Terraform deployment files for ACM at CSUF. It uses
 Terraform and Nix to orchestrate cloud servers.
 
 ## What is?
@@ -28,7 +28,7 @@ have everything else handled automatically.
 
 ## Project Structure
 
-acm-aws has several root directories:
+acm-server has several root directories:
 
 - nix/ contains internal Nix files, such as the sources for some of our
   packages.
