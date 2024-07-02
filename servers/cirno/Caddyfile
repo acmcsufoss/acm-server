@@ -68,7 +68,7 @@ spookathon.acmcsuf.com {
 # need to worry about MITM attacks.
 *.acmcsuf.com,
 vps.acmcsuf.com, *.vps.acmcsuf.com {
-	reverse_proxy * http://cs306:80
+	reverse_proxy * http://cs306-mini:80
 }
 
 blinktest.acmcsuf.com {
