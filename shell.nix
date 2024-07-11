@@ -33,5 +33,7 @@ pkgs.mkShell {
 		set +o allexport
 
 		export NIX_PATH="$NIX_PATH:nixpkgs=${pkgssrc}:acm-aws=${builtins.toString ./.}";
+
+		chmod 400 secrets/ssh/*
 	'';
 }
