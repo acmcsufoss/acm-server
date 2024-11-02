@@ -1,7 +1,5 @@
 {
-  buildGo119Module,
-  fetchFromGitHub,
-  lib,
+	system,
 }:
 
 let
@@ -12,4 +10,4 @@ let
     }).defaultNix;
 in
 
-acmregister
+acmregister.packages.${system}.default
