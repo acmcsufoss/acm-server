@@ -19,6 +19,10 @@ variable "host" {
 	default = null
 }
 
+locals {
+	chosen_address = var.host != null ? var.host : aws_instance.cirno.public_ip
+}
+
 resource "aws_security_group" "cirno" {
 	# ingress {
 	# 	from_port = 22
@@ -71,11 +75,8 @@ resource "aws_instance" "cirno" {
 }
 
 module "deployment" {
-	source = "git::https://github.com/diamondburned/terraform-nixos.git//deploy_nixos?ref=9d26ace355b2ed7d64a253b11ab12395a1395030"
-	nixos_config = "${path.module}"
-	target_host = var.host != null ? var.host : aws_instance.cirno.public_ip
-	ssh_private_key_file = var.ssh_private_key_file
-	ssh_agent = false
-	hermetic = true
-	/* build_on_target = true */
+	source = "git::https://github.com/Gabriella439/terraform-nixos-ng.git//nixos?ref=af1a0af57287851f957be2b524fcdc008a21d9ae"
+	flake = ".#cirno"
+	host = "root@${local.chosen_address}"
+	ssh_options = "-i ${var.ssh_private_key_file} -o StrictHostKeyChecking=accept-new"
 }
