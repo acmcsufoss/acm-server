@@ -27,10 +27,6 @@
       nixosConfigurations = {
         # TODO: rename cirno to 'front-ec2' or something
         cirno = self.lib.nixosSystem ./servers/cirno/configuration.nix;
-
-        # Unused servers:
-        # cs306
-        # cs306-mini
       };
 
       nixosModules = import ./modules/_all.nix;

@@ -38,15 +38,3 @@ module "cirno" {
 	key_name = aws_key_pair.secrets_ssh.key_name
 	ssh_private_key_file = local.ssh.private_key
 }
-
-module "cs306" {
-	host = "cs306.${local.tailnet_name}.ts.net"
-	source = "./servers/cs306"
-	ssh_private_key_file = local.ssh.private_key
-}
-
-module "cs306-mini" {
-	host = "cs306-mini.${local.tailnet_name}.ts.net"
-	source = "./servers/cs306-mini"
-	ssh_private_key_file = local.ssh.private_key
-}
