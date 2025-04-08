@@ -7,7 +7,6 @@
 
 let
   self = config.services.healthcheck;
-  enable = checkScript != "";
 
   checkScript =
     with lib;
@@ -34,6 +33,8 @@ in
 
 {
   options.services.healthcheck = with lib; {
+    enable = mkEnableOption "healthcekc service for auto-rollback";
+
     httpEndpoint = mkOption {
       default = null;
       example = "google.com";
@@ -54,7 +55,7 @@ in
     };
   };
 
-  config = lib.mkIf enable {
+  config = lib.mkIf config.services.healthcheck.enable {
     systemd.services.healthcheck = {
       description = "Healthcheck for the server";
       wantedBy = [ "multi-user.target" ];
