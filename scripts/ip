@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 . "$(dirname "$0")/lib/init"
 
+# TODO: Move this to a config file
+TAILNET_NAME=wahoo-noodlefish
+
 main() {
 	name="$1"
 	if [[ $name == "" ]]; then
