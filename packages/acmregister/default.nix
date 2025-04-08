@@ -1,13 +1,11 @@
 {
-	system,
+  system,
+  inputs,
+  nivInputs,
 }:
 
+# TODO: migrate to flake inputs
 let
-  sources = import <acm-aws/nix/sources.nix>;
-  acmregister =
-    (import sources.flake-compat {
-      src = sources.acmregister;
-    }).defaultNix;
+  acmregister = (import inputs.flake-compat { src = nivInputs.acmregister; }).defaultNix;
 in
-
 acmregister.packages.${system}.default

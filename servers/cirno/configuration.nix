@@ -1,21 +1,22 @@
-{ config, lib, pkgs, modulesPath, ... }:
+{ pkgs, modulesPath, ... }:
 
 {
-	imports = [
-		(modulesPath + "/virtualisation/amazon-image.nix")
-		<acm-aws/servers/base.nix>
-		./services.nix
-		./telemetry.nix
-	];
+  imports = [
+    (modulesPath + "/virtualisation/amazon-image.nix")
+    ./services.nix
+    ./telemetry.nix
+  ];
 
-	networking.hostName = "cirno";
+  nixpkgs.system = "x86_64-linux";
 
-	services.tailscale.enable = true;
+  networking.hostName = "cirno";
 
-	# Use Terraform's AWS rules for this.
-	networking.firewall.enable = false;
+  services.tailscale.enable = true;
 
-	environment.systemPackages = with pkgs; [
-		ncdu
-	];
+  # Use Terraform's AWS rules for this.
+  networking.firewall.enable = false;
+
+  environment.systemPackages = with pkgs; [
+    ncdu
+  ];
 }

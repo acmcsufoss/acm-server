@@ -1,15 +1,16 @@
-{ config, pkgs, lib, ... }:
+{ self, ... }:
 
-let sources = import <acm-aws/nix/sources.nix> { };
+{
+  imports = [
+    ./caddy/caddy.nix
+    ./sysmet/sysmet.nix
+    ./sshwifty/service.nix
+    ./dischord/service.nix
+    ./christmasd/service.nix
+  ];
 
-in {
-	imports = [
-		./caddy/caddy.nix
-		./sysmet/sysmet.nix
-		./sshwifty/service.nix
-		./dischord/service.nix
-		./christmasd/service.nix
-	];
-
-	nixpkgs.overlays = import <acm-aws/nix/overlays.nix>;
+  nixpkgs.overlays = [
+    self.overlays.base
+    self.overlays.packages
+  ];
 }

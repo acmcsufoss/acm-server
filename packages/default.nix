@@ -1,29 +1,41 @@
-{ pkgs ? import <acm-aws/nix/nixpkgs.nix> }:
+{ pkgs, inputs }:
 
-rec {
-	jre_small = pkgs.callPackage ./jre-small {};
-	sshwifty = pkgs.callPackage ./sshwifty {};
-	quizler = pkgs.callPackage ./quizler {};
+let
+  inherit (inputs) self;
 
-	# Go
-	acmregister = pkgs.callPackage ./acmregister { };
-	acm-nixie = pkgs.callPackage ./acm-nixie { };
-	caddy = pkgs.callPackage ./caddy { };
-	sendlimiter = pkgs.callPackage ./sendlimiter { };
-	sysmet = pkgs.callPackage ./sysmet { };
-	dischord = pkgs.callPackage ./dischord { };
-	discord-ical-reminder = pkgs.callPackage ./discord-ical-reminder { };
-	discord-ical-srv = pkgs.callPackage ./discord-ical-srv { };
-	discord_conversation_summary_bot = pkgs.callPackage ./discord_conversation_summary_bot { };
-	christmasd = pkgs.callPackage ./christmasd { };
-	fullyhacks-qrms = pkgs.callPackage ./fullyhacks-qrms { };
+  callPackage = pkgs.lib.callPackageWith (
+    pkgs
+    // {
+      inherit inputs;
+      nivInputs = self.lib.nivInputs pkgs;
+    }
+  );
+in
 
-	# Java
-	triggers = pkgs.callPackage ./triggers {};
+{
+  jre_small = callPackage ./jre-small { };
+  sshwifty = callPackage ./sshwifty { };
+  quizler = callPackage ./quizler { };
 
-	# Deno
-	pomo = pkgs.callPackage ./pomo { };
+  # Go
+  acmregister = callPackage ./acmregister { };
+  acm-nixie = callPackage ./acm-nixie { };
+  caddy = callPackage ./caddy { };
+  sendlimiter = callPackage ./sendlimiter { };
+  sysmet = callPackage ./sysmet { };
+  dischord = callPackage ./dischord { };
+  discord-ical-reminder = callPackage ./discord-ical-reminder { };
+  discord-ical-srv = callPackage ./discord-ical-srv { };
+  discord_conversation_summary_bot = callPackage ./discord_conversation_summary_bot { };
+  christmasd = callPackage ./christmasd { };
+  fullyhacks-qrms = callPackage ./fullyhacks-qrms { };
 
-	# Python
-	crying-counter = pkgs.callPackage ./crying-counter { };
+  # Java
+  triggers = callPackage ./triggers { };
+
+  # Deno
+  pomo = callPackage ./pomo { };
+
+  # Python
+  crying-counter = callPackage ./crying-counter { };
 }

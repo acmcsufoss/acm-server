@@ -1,40 +1,49 @@
-{ lib
-, python3
-, fetchFromGitHub
-, nix
-, nix-prefetch-git
-, nixpkgs-fmt
-, nixpkgs-review
+{
+  pkgs,
+  lib,
+  python3,
+  nix,
+  nix-prefetch-git,
+  nixpkgs-fmt,
+  nixpkgs-review,
 }:
 
 let
-	src = (import ./sources.nix).diamondburned_nix-update;
+  nivInputs = import ./sources.nix { inherit pkgs; };
 in
 
 python3.pkgs.buildPythonApplication rec {
-	pname = "nix-update";
-	version = builtins.substring 0 7 src.rev;
-	pyproject = true;
+  pname = "nix-update";
+  version = builtins.substring 0 7 src.rev;
+  pyproject = true;
 
-	inherit src;
+  src = nivInputs.diamondburned_nix-update;
 
-	nativeBuildInputs = [
-		python3.pkgs.setuptools
-	];
+  nativeBuildInputs = [
+    python3.pkgs.setuptools
+  ];
 
-	makeWrapperArgs = [
-		"--prefix" "PATH" ":" (lib.makeBinPath [ nix nix-prefetch-git nixpkgs-fmt nixpkgs-review ])
-	];
+  makeWrapperArgs = [
+    "--prefix"
+    "PATH"
+    ":"
+    (lib.makeBinPath [
+      nix
+      nix-prefetch-git
+      nixpkgs-fmt
+      nixpkgs-review
+    ])
+  ];
 
-	checkPhase = ''
-		$out/bin/nix-update --help >/dev/null
-	'';
+  checkPhase = ''
+    $out/bin/nix-update --help >/dev/null
+  '';
 
-	meta = with lib; {
-		description = "Swiss-knife for updating nix packages";
-		inherit (src.meta) homepage;
-		license = licenses.mit;
-		mainProgram = "nix-update";
-		platforms = platforms.all;
-	};
+  meta = with lib; {
+    description = "Swiss-knife for updating nix packages";
+    inherit (src.meta) homepage;
+    license = licenses.mit;
+    mainProgram = "nix-update";
+    platforms = platforms.all;
+  };
 }
