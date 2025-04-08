@@ -1,8 +1,10 @@
-{ system ? builtins.currentSystem }:
+{
+  system,
+  inputs,
+  nivInputs,
+}:
 
 let
-	src   = import <acm-aws/nix/sources.nix>;
-	flake = import src.fullyhacks-qrms;
+  fullyhacks-qrms = (import inputs.flake-compat { src = nivInputs.fullyhacks-qrms; }).defaultNix;
 in
-
-flake.packages.${system}.default
+fullyhacks-qrms.packages.${system}.default

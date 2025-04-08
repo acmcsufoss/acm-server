@@ -26,27 +26,31 @@
     };
   };
 
-  # systemd.services."fullyhacks-qrms" =
-  # 	let
-  # 		tokenFile = <acm-aws/secrets/fullyhacks-token.txt>;
-  # 		port = 38574;
-  # 	in
-  # 		{
-  # 			enable = true;
-  # 			description = "Fullyhacks QR Management System";
-  # 			after = [ "network-online.target" ];
-  # 			wantedBy = [ "multi-user.target" ];
-  # 			serviceConfig = {
-  # 				Type = "simple";
-  # 				DynamicUser = true;
-  # 				ReadOnlyPaths = [ tokenFile ];
-  # 				StateDirectory = "fullyhacks-qrms";
-  # 			};
-  # 			script = ''
-  # 				${pkgs.fullyhacks-qrms}/bin/fullyhacks-qrms \
-  # 					--root-token-file "${tokenFile}" \
-  # 					--addr ":${builtins.toString port}" \
-  # 					--db "$STATE_DIRECTORY/database.db"
-  # 			'';
-  # 		};
+  systemd.services."fullyhacks-qrms" =
+    let
+      tokenFile = self.lib.secret "fullyhacks-token.txt";
+      port = 38574;
+    in
+    {
+      enable = true;
+      description = "Fullyhacks QR Management System";
+      after = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+      serviceConfig = {
+        Type = "simple";
+        DynamicUser = true;
+        ReadOnlyPaths = [ tokenFile ];
+        StateDirectory = "fullyhacks-qrms-2025";
+      };
+      script = ''
+        ${pkgs.fullyhacks-qrms}/bin/fullyhacks-qrms \
+          --root-token-file "${tokenFile}" \
+          --addr ":${builtins.toString port}" \
+          --db "$STATE_DIRECTORY/database.db"
+      '';
+    };
+
+  environment.systemPackages = with pkgs; [
+    fullyhacks-qrms
+  ];
 }
