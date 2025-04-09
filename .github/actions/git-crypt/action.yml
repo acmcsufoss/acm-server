@@ -19,3 +19,4 @@ runs:
       run: git-crypt unlock <(base64 -d <<< "$GIT_CRYPT_KEY")
       env:
         GIT_CRYPT_KEY: ${{ inputs.key }}
+      shell: bash
