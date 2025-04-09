@@ -153,3 +153,6 @@ lib::write_file() {
 	cat > "$tmpFile"
 	mv "$tmpFile" "$file"
 }
+
+# Enforce running in root directory.
+cd "$(lib::root_path)"

@@ -76,7 +76,7 @@ pkg::make() {
 	fi
 
 	for package in "${packages[@]}"; do
-		src=$(scripts/pkg src "$package")
+		src=$(pkg::src "$package")
 		dir=$(dirname "$src")
 		if [[ ! -f "$dir/Makefile" ]]; then
 			echo "No Makefile found for $package, skipping" >&2
