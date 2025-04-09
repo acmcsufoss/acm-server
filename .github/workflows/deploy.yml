@@ -42,6 +42,15 @@ jobs:
           purge-created: 0
           purge-primary-key: never
 
+      # Add a Nix channel as a workaround for terraform-nixos-ng.
+      # See https://github.com/Gabriella439/terraform-nixos-ng/issues/11.
+      #
+      # TODO: Remove this once terraform-nixos-ng is fixed.
+      - name: Add NixOS channel
+        run: |-
+          nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
+          nix-channel --update
+
       # Task: Initialize development environment
 
       # This step is a no-op. It just forces a first invocation of `nix develop`
