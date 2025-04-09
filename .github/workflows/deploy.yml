@@ -42,6 +42,13 @@ jobs:
           purge-created: 0
           purge-primary-key: never
 
+      # Task: Initialize development environment
+
+      # This step is a no-op. It just forces a first invocation of `nix develop`
+      # and will let us isolate any issues with the Nix environment.
+      - name: Initialize development environment
+        run: true
+
       # Task: Handle Makefiles
 
       # This shouldn't need any secrets.
