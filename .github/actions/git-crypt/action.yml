@@ -13,6 +13,7 @@ runs:
     - name: Install git-crypt
       run: |-
         nix profile install .#lib.nixpkgs.legacyPackages.x86_64-linux.git-crypt
+      shell: bash
 
     - name: Decrypt git-crypt secrets
       id: git-crypt
