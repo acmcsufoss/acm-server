@@ -1,18 +1,17 @@
 {
   lib,
-  buildGoApplication,
-  go_1_21,
+  buildGo122Module,
 }:
 
 with lib;
 
-buildGoApplication {
+buildGo122Module {
   pname = "caddy";
   version = "v2.6.2";
   src = ./.;
 
-  go = go_1_21;
-  modules = ./gomod2nix.toml;
+  vendorHash = builtins.readFile ./vendorHash.txt;
+
   subPackages = [ "." ];
 
   doCheck = false;

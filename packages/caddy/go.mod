@@ -1,8 +1,8 @@
 module localhost/caddy
 
-go 1.21
+go 1.22
 
-toolchain go1.21.0
+toolchain go1.24.1
 
 require (
 	github.com/caddy-dns/namecheap v0.0.0-20211109044219-3e5991606a7a
