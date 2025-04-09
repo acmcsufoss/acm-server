@@ -1,4 +1,9 @@
-{ self, pkgs, ... }:
+{
+  self,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -36,10 +41,11 @@
   xdg.mime.enable = false;
   xdg.sounds.enable = false;
 
+  # Exclude all default non-required packages for a lighter system.
+  environment.defaultPackages = lib.mkForce [ ];
+
   environment.systemPackages = with pkgs; [
     htop
-    wget
-    git
   ];
 
   users.users.root.openssh.authorizedKeys.keyFiles = [
