@@ -50,6 +50,7 @@ jobs:
         run: |-
           nix-channel --add https://nixos.org/channels/nixos-unstable nixpkgs
           nix-channel --update
+        shell: bash
 
       # Task: Initialize development environment
 
