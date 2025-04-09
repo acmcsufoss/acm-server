@@ -2,11 +2,11 @@
   description = "ACM at CSUF server deployments (github.com/acmcsufoss/acm-server)";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=b94a96839afcc56de3551aa7472b8d9a3e77e05d";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-23.11";
     flake-util.url = "github:numtide/flake-utils";
     flake-compat.url = "github:edolstra/flake-compat";
 
-    gomod2nix.url = "github:nix-community/gomod2nix";
+    gomod2nix.url = "github:nix-community/gomod2nix/v1.6.0";
     gomod2nix.inputs.nixpkgs.follows = "nixpkgs";
 
     nix-npm-buildpackage.url = "github:serokell/nix-npm-buildpackage";
@@ -120,5 +120,13 @@
             chmod 400 secrets/ssh/*
           '';
         };
+
+      packages = import ./packages {
+        inherit inputs;
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ self.overlays.base ];
+        };
+      };
     }));
 }

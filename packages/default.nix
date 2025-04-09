@@ -19,23 +19,23 @@ in
 
   # Go
   acmregister = callPackage ./acmregister { };
-  acm-nixie = callPackage ./acm-nixie { };
+  # acm-nixie = callPackage ./acm-nixie { };
   caddy = callPackage ./caddy { };
-  sendlimiter = callPackage ./sendlimiter { };
-  sysmet = callPackage ./sysmet { };
-  dischord = callPackage ./dischord { };
-  discord-ical-reminder = callPackage ./discord-ical-reminder { };
-  discord-ical-srv = callPackage ./discord-ical-srv { };
-  discord_conversation_summary_bot = callPackage ./discord_conversation_summary_bot { };
-  christmasd = callPackage ./christmasd { };
+  # sendlimiter = callPackage ./sendlimiter { };
+  # sysmet = callPackage ./sysmet { };
+  # dischord = callPackage ./dischord { };
+  # discord-ical-reminder = callPackage ./discord-ical-reminder { };
+  # discord-ical-srv = callPackage ./discord-ical-srv { };
+  # discord_conversation_summary_bot = callPackage ./discord_conversation_summary_bot { };
+  # christmasd = callPackage ./christmasd { };
   fullyhacks-qrms = callPackage ./fullyhacks-qrms { };
 
   # Java
-  triggers = callPackage ./triggers { };
+  # triggers = callPackage ./triggers { };
 
   # Deno
-  pomo = callPackage ./pomo { };
+  # pomo = callPackage ./pomo { };
 
   # Python
-  crying-counter = callPackage ./crying-counter { };
+  # crying-counter = callPackage ./crying-counter { };
 }
