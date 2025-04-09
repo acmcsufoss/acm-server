@@ -2,7 +2,7 @@
   description = "ACM at CSUF server deployments (github.com/acmcsufoss/acm-server)";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.11";
     flake-util.url = "github:numtide/flake-utils";
     flake-compat.url = "github:edolstra/flake-compat";
 

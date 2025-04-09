@@ -1,11 +1,11 @@
 {
   lib,
-  buildGo122Module,
+  buildGo123Module,
 }:
 
 with lib;
 
-buildGo122Module {
+buildGo123Module {
   pname = "caddy";
   version = "v2.6.2";
   src = ./.;

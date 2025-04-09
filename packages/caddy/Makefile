@@ -1,14 +1,10 @@
 .PHONY: hash
 vendorHash: tidy
-	vendorHash=$$(\
-		nix build '.#caddy.goModules' \
-			|& sed -n 's/.*\(sha256-.\{44\}\).*/\1/p' \
-			|  grep -vF \
-				-f "vendorHash.txt" \
-				-e "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="\
-	) \
-		&& echo $${vendorHash} > vendorHash.txt \
-		|| true # no updating needed
+	echo > vendorHash.txt
+	nix build --no-link '.#caddy.goModules' \
+		|& sed -n 's/.*\(sha256-.\{44\}\).*/\1/p' \
+		|  grep -vF "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=" \
+		>  vendorHash.txt
 
 .PHONY: tidy
 tidy: go.mod go.sum
