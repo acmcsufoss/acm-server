@@ -10,8 +10,11 @@ on:
         required: true
   workflow_dispatch:
 
-env:
-  NIX_BUILDER: ""
+defaults:
+  run:
+    # Use Nix for all of our build commands.
+    # Doing this will automatically run everything in our devShell.
+    shell: nix develop -c bash -e {0}
 
 jobs:
   make-all:
@@ -22,12 +25,7 @@ jobs:
         with:
           ref: ${{ github.ref_name }}
 
-      - name: Install Nix packages
-        uses: diamondburned/cache-install@main
-        with:
-          auto-optimise: true
-          instantiated-files: packages/
-          nix-install-url: https://releases.nixos.org/nix/nix-2.18.1/install
+      - uses: nixbuild/nix-quick-install-action@v30
 
       - name: Run all package Makefiles
         run: ./scripts/pkg make
@@ -53,14 +51,16 @@ jobs:
           # latest commit from.
           ref: ${{ github.ref_name }}
 
-      - name: Install Nix packages
-        id: nix-install
-        uses: diamondburned/cache-install@main
-        with:
-          auto-optimise: true
-          shell-file: shell.nix
-          instantiated-files: servers/*/default.nix
-          nix-install-url: https://releases.nixos.org/nix/nix-2.18.1/install
+      - uses: nixbuild/nix-quick-install-action@v30
+      - uses: nix-community/cache-nix-action@v6
+        with: # see https://github.com/nix-community/cache-nix-action#example-steps
+          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
+          restore-prefixes-first-match: nix-${{ runner.os }}-
+          gc-max-store-size-linux: 1G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-
+          purge-created: 0
+          purge-primary-key: never
 
       - name: Decrypt git-crypt secrets
         uses: ./.github/actions/git-crypt
@@ -103,10 +103,9 @@ jobs:
         if: steps.terraform-plan.outputs.status == 2
         run: |-
           set -o pipefail
-          ./scripts/with-builder "$NIX_BUILDER" \
-            terraform apply --auto-approve "/tmp/acm-aws-plan" \
+          terraform apply --auto-approve "/tmp/acm-aws-plan" \
             |& tee /tmp/terraform-apply.log \
-            |& grep -v 'deployment.null_resource.deploy_nixos (\(local\|remote\)-exec):'
+            |& grep -v 'deployment.null_resource.deploy (.*-exec):'
 
       - name: Commit changes, if any
         id: git-commit
