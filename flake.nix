@@ -32,6 +32,8 @@
       nixosModules = import ./modules/_all.nix;
 
       lib = rec {
+        inherit nixpkgs;
+
         nixosSystem =
           configurationFile:
           nixpkgs.lib.nixosSystem {
@@ -121,12 +123,13 @@
           '';
         };
 
-      packages = import ./packages {
-        inherit inputs;
-        pkgs = import nixpkgs {
-          inherit system;
-          overlays = [ self.overlays.base ];
-        };
-      };
+      packages =
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlays.base ];
+          };
+        in
+        (import ./packages { inherit inputs pkgs; });
     }));
 }

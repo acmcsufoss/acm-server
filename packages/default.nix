@@ -13,9 +13,9 @@ let
 in
 
 {
-  jre_small = callPackage ./jre-small { };
-  sshwifty = callPackage ./sshwifty { };
-  quizler = callPackage ./quizler { };
+  # jre_small = callPackage ./jre-small { };
+  # sshwifty = callPackage ./sshwifty { };
+  # quizler = callPackage ./quizler { };
 
   # Go
   acmregister = callPackage ./acmregister { };
