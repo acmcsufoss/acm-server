@@ -2,11 +2,14 @@
   self,
   pkgs,
   lib,
+  modulesPath,
   ...
 }:
 
 {
   imports = [
+    (modulesPath + "/profiles/minimal.nix")
+
     self.nixosModules.static
     self.nixosModules.healthcheck
     self.nixosModules.services-managed
@@ -30,19 +33,6 @@
       "flakes"
     ];
   };
-
-  documentation.enable = false;
-  documentation.nixos.enable = false;
-
-  programs.command-not-found.enable = false;
-
-  xdg.autostart.enable = false;
-  xdg.icons.enable = false;
-  xdg.mime.enable = false;
-  xdg.sounds.enable = false;
-
-  # Exclude all default non-required packages for a lighter system.
-  environment.defaultPackages = lib.mkForce [ ];
 
   environment.systemPackages = with pkgs; [
     htop
