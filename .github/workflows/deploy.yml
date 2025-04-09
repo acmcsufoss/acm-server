@@ -14,38 +14,18 @@ defaults:
   run:
     # Use Nix for all of our build commands.
     # Doing this will automatically run everything in our devShell.
-    shell: nix develop -c bash -e {0}
+    shell: nix develop -c bash -e -o pipefail {0}
 
 jobs:
-  make-all:
-    name: Run all package Makefiles
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{ github.ref_name }}
-
-      - uses: nixbuild/nix-quick-install-action@v30
-
-      - name: Run all package Makefiles
-        run: ./scripts/pkg make
-
-      - name: Commit changes, if any
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          branch: ${{ github.ref_name }}
-          commit_message: Run all Makefiles using GitHub Actions
-
   deploy:
     name: Deploy with Terraform
-    needs: make-all
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     environment: Production
     concurrency: Production
     outputs:
       commit_hash: ${{ steps.git-commit.outputs.commit_hash }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # Use ref_name instead of ref so we always get the branch to pull our
           # latest commit from.
@@ -62,13 +42,28 @@ jobs:
           purge-created: 0
           purge-primary-key: never
 
+      # Task: Handle Makefiles
+
+      # This shouldn't need any secrets.
+      # Avoid giving it any.
+      - name: Run all package Makefiles
+        run: ./scripts/pkg make
+
+      - name: Commit changes, if any
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          branch: ${{ github.ref_name }}
+          commit_message: Run all Makefiles using GitHub Actions
+
+      # Task: Apply Terraform deployment
+
       - name: Decrypt git-crypt secrets
         uses: ./.github/actions/git-crypt
         with:
           key: ${{ secrets.GIT_CRYPT_KEY }}
 
       - name: Initialize Tailscale
-        uses: tailscale/github-action@v2
+        uses: tailscale/github-action@v3
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
@@ -110,7 +105,7 @@ jobs:
       - name: Commit changes, if any
         id: git-commit
         if: steps.terraform-plan.outputs.status == 2
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "Update deployment using GitHub Actions"
           branch: ${{ github.ref_name }}
