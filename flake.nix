@@ -96,7 +96,8 @@
 
         # Variant of lib.secret specifically for files. This will actually copy
         # the file out to a separate derivation, which is more efficient.
-        secretFile' = pkgs: path: pkgs.writeText (builtins.baseNameOf path) (self.lib.secret path);
+        secretFile' =
+          pkgs: path: pkgs.writeText (builtins.baseNameOf path) (builtins.readFile (self.lib.secret path));
       };
     }
 
