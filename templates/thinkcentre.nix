@@ -7,12 +7,11 @@
 #
 #   - https://github.com/nix-community/disko/blob/master/lib/make-disk-image.nix
 #
-{ inputs, ... }:
-
-let
-  # Change me if needed.
-  diskPath = "/dev/sda";
-in
+{
+  lib,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -28,8 +27,8 @@ in
   system.stateVersion = "24.11";
 
   networking = {
-    hostName = "thinkcentre-newly-provisioned";
-    networkmanager.enable = true;
+    hostName = lib.mkDefault "thinkcentre-newly-provisioned";
+    networkmanager.enable = lib.mkDefault true;
   };
 
   services.openssh = {
@@ -70,7 +69,6 @@ in
       };
     };
     loader.grub = {
-      device = diskPath;
       efiSupport = false;
       timeoutStyle = "hidden";
     };
@@ -79,7 +77,7 @@ in
   disko.devices.disk = {
     main = {
       type = "disk";
-      device = diskPath;
+      device = lib.mkDefault "/dev/sda";
       content = {
         type = "gpt";
         partitions = {
@@ -87,18 +85,6 @@ in
             size = "1M";
             type = "EF02"; # for GRUB MBR (hybrid EFI/BIOS boot)
           };
-          # boot = {
-          #   size = "512M";
-          #   type = "EF00"; # for EFI boot
-          #   content = {
-          #     type = "filesystem";
-          #     format = "vfat";
-          #     mountpoint = "/boot";
-          #     mountOptions = [
-          #       "defaults"
-          #     ];
-          #   };
-          # };
           root = {
             name = "root";
             size = "100%";

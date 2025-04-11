@@ -39,13 +39,31 @@
         cs306-thinkcentre-1 = self.lib.nixosSystem ./servers/cs306-thinkcentre-1/configuration.nix;
 
         # Machine templates. Use this to bootstrap new servers.
-        #
-        # These templates never rely on any secrets, so a fresh git clone and a
-        # rebuild with .#templates.NAME is enough to get them running.
-        template-thinkcentre = self.lib.nixosSystem ./templates/thinkcentre.nix;
+        # See each template file for information on how to use them.
+        template-thinkcentre = self.lib.nixosSystem self.lib.templates.thinkcentre;
       };
 
-      nixosModules = import ./modules/_all.nix;
+      nixosModules = (import ./modules/_all.nix) // {
+        # Expose machine templates for importing.
+        template-thinkcentre = import ./templates/thinkcentre.nix;
+
+        packages = import ./packages/imports.nix;
+        base = import ./servers/base.nix;
+      };
+
+      overlays = {
+        # This overlay contains the base packages that we need to build our
+        # packages (the ones below).
+        base = import ./nix/overlays.nix inputs;
+        # The packages overlay is just for including all packages in our
+        # repository.
+        packages =
+          self: super:
+          import ./packages {
+            inherit inputs;
+            pkgs = super;
+          };
+      };
 
       lib = rec {
         inherit nixpkgs;
@@ -53,11 +71,7 @@
         nixosSystem =
           configurationFile:
           nixpkgs.lib.nixosSystem {
-            modules = [
-              ./packages/imports.nix
-              ./servers/base.nix
-              configurationFile
-            ];
+            modules = [ configurationFile ];
             specialArgs = {
               inherit self inputs;
             };
@@ -79,20 +93,6 @@
         #       - https://github.com/tweag/terraform-provider-secret
         #       - https://github.com/nix-community/terraform-nixos/blob/646cacb12439ca477c05315a7bfd49e9832bc4e3/examples/google/deploy_nixos.tf#L77-L81
         secret = path: ./secrets + ("/" + path);
-      };
-
-      overlays = {
-        # This overlay contains the base packages that we need to build our
-        # packages (the ones below).
-        base = import ./nix/overlays.nix inputs;
-        # The packages overlay is just for including all packages in our
-        # repository.
-        packages =
-          self: super:
-          import ./packages {
-            inherit inputs;
-            pkgs = super;
-          };
       };
     }
 

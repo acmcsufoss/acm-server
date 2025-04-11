@@ -78,5 +78,5 @@ module "deployment" {
 	source = "git::https://github.com/Gabriella439/terraform-nixos-ng.git//nixos?ref=af1a0af57287851f957be2b524fcdc008a21d9ae"
 	flake = ".#cirno"
 	host = "root@${local.chosen_address}"
-	ssh_options = "-i ${var.ssh_private_key_file} -o StrictHostKeyChecking=accept-new"
+	ssh_options = "-i ${var.ssh_private_key_file} -o IdentitiesOnly=yes -o StrictHostKeyChecking=accept-new"
 }

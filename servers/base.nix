@@ -1,7 +1,6 @@
 {
   self,
   pkgs,
-  lib,
   modulesPath,
   ...
 }:
@@ -11,9 +10,12 @@
     (modulesPath + "/profiles/minimal.nix")
 
     self.nixosModules.static
-    self.nixosModules.healthcheck
-    self.nixosModules.services-managed
+    self.nixosModules.packages
   ];
+
+  # Enable Tailscale globally!
+  # Tailscale is awesome; we love Tailscale.
+  services.tailscale.enable = true;
 
   services.journald = {
     gateway = {

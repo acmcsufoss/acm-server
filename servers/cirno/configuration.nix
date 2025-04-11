@@ -1,16 +1,23 @@
-{ pkgs, modulesPath, ... }:
+{
+  self,
+  pkgs,
+  modulesPath,
+  ...
+}:
 
 {
   imports = [
+    self.nixosModules.base
+
+    (modulesPath + "/profiles/minimal.nix")
     (modulesPath + "/virtualisation/amazon-image.nix")
+
     ./services.nix
   ];
 
   nixpkgs.system = "x86_64-linux";
 
   networking.hostName = "cirno";
-
-  services.tailscale.enable = true;
 
   # Use Terraform's AWS rules for this.
   networking.firewall.enable = false;
@@ -22,4 +29,6 @@
   environment.systemPackages = with pkgs; [
     ncdu
   ];
+
+  system.stateVersion = "23.11";
 }

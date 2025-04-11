@@ -19,6 +19,7 @@ locals {
 		public_key  = "./secrets/ssh/id_ed25519.pub"
 	}
 	tailnet_name = "wahoo-noodlefish"
+	tailnet = "${local.tailnet_name}.ts.net"
 }
 
 provider "aws" {
@@ -33,8 +34,14 @@ resource "aws_key_pair" "secrets_ssh" {
 }
 
 module "cirno" {
-	host = "cirno.${local.tailnet_name}.ts.net"
+	host = "cirno.${local.tailnet}"
 	source = "./servers/cirno"
 	key_name = aws_key_pair.secrets_ssh.key_name
 	ssh_private_key_file = local.ssh.private_key
 }
+
+# module "cs306-thinkcentre-1" {
+# 	host = "cs306-thinkcentre-1.${local.tailnet}"
+# 	source = "./servers/cs306-thinkcentre-1"
+# 	ssh_private_key_file = local.ssh.private_key
+# }
