@@ -16,7 +16,9 @@
   ];
 
   services.journald = {
-    enableHttpGateway = false;
+    gateway = {
+      enable = false;
+    };
     extraConfig = ''
       Compress=true
       SystemMaxUse=50M

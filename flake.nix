@@ -11,6 +11,15 @@
 
     nix-npm-buildpackage.url = "github:serokell/nix-npm-buildpackage";
     nix-npm-buildpackage.inputs.nixpkgs.follows = "nixpkgs";
+
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixos-hardware.url = "github:nixos/nixos-hardware";
+    nixos-hardware.inputs.nixpkgs.follows = "nixpkgs";
+
+    nixos-generators.url = "github:nix-community/nixos-generators";
+    nixos-generators.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -27,6 +36,13 @@
       nixosConfigurations = {
         # TODO: rename cirno to 'front-ec2' or something
         cirno = self.lib.nixosSystem ./servers/cirno/configuration.nix;
+        cs306-thinkcentre-1 = self.lib.nixosSystem ./servers/cs306-thinkcentre-1/configuration.nix;
+
+        # Machine templates. Use this to bootstrap new servers.
+        #
+        # These templates never rely on any secrets, so a fresh git clone and a
+        # rebuild with .#templates.NAME is enough to get them running.
+        template-thinkcentre = self.lib.nixosSystem ./templates/thinkcentre.nix;
       };
 
       nixosModules = import ./modules/_all.nix;
@@ -110,6 +126,8 @@
             gomod2nix
             waypipe
             expect
+            disko
+            nixos-generate
 
             # editor tools.
             yamllint

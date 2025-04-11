@@ -5,6 +5,7 @@ nixpkgs.lib.composeManyExtensions [
   (inputs.nix-npm-buildpackage.overlays.default)
   (self: super: {
     poetry2nix = import inputs.poetry2nix { pkgs = super; };
+    nixos-generate = inputs.nixos-generators.packages.${super.system}.nixos-generate;
   })
   (self: super: {
     buildDenoPackage = self.callPackage ./packaging/deno.nix { };

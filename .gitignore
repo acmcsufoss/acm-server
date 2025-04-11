@@ -1,6 +1,7 @@
 .terraform
 *.tfvars
 *.qcow2
+*.raw
 output
 result
 results
