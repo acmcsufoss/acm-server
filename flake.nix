@@ -93,6 +93,10 @@
         #       - https://github.com/tweag/terraform-provider-secret
         #       - https://github.com/nix-community/terraform-nixos/blob/646cacb12439ca477c05315a7bfd49e9832bc4e3/examples/google/deploy_nixos.tf#L77-L81
         secret = path: ./secrets + ("/" + path);
+
+        # Variant of lib.secret specifically for files. This will actually copy
+        # the file out to a separate derivation, which is more efficient.
+        secretFile' = pkgs: path: pkgs.writeText (builtins.baseNameOf path) (self.lib.secret path);
       };
     }
 

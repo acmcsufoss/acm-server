@@ -28,7 +28,7 @@
 
   systemd.services."fullyhacks-qrms" =
     let
-      tokenFile = self.lib.secret "fullyhacks-token.txt";
+      tokenFile = self.lib.secretFile' pkgs "fullyhacks-token.txt";
       port = 38574;
     in
     {
