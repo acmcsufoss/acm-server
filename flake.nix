@@ -117,9 +117,9 @@
               ];
           };
         in
-        pkgs.mkShell {
-          packages = with pkgs; [
-            cloud-init
+        with pkgs;
+        mkShell {
+          packages = [
             terraform
             awscli2
             nix-update
@@ -139,7 +139,8 @@
             shellcheck
             nodePackages.bash-language-server
             # rnix-lsp
-          ];
+          ]
+          ++ (lib.optional stdenv.isLinux cloud-init);
 
           shellHook = ''
             chmod 400 secrets/ssh/*
