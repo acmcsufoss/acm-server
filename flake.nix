@@ -129,9 +129,7 @@
             git-crypt
             openssl
             gomod2nix
-            waypipe
             expect
-            disko
             nixos-generate
 
             # editor tools.
@@ -140,10 +138,19 @@
             nodePackages.bash-language-server
             # rnix-lsp
           ]
-          ++ (lib.optional stdenv.isLinux cloud-init);
+          ++ (lib.optional stdenv.isLinux cloud-init)
+          ++ (lib.optional stdenv.isLinux waypipe)
+          ++ (lib.optional stdenv.isLinux disko);
 
           shellHook = ''
             chmod 400 secrets/ssh/*
+            if ${if stdenv.isLinux then "false" else "true"} then
+              echo "Some Linux-only dependencies were omitted from this shell."
+              echo "They are: [cloud-init, disko, waypipe]"
+              echo
+              echo "If you need them for development, please run this shell on"
+              echo "a Linux machine instead."
+            fi
           '';
         };
 
