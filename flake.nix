@@ -144,7 +144,7 @@
 
           shellHook = ''
             chmod 400 secrets/ssh/*
-            if ${if stdenv.isLinux then "false" else "true"} then
+            if ${if stdenv.isLinux then "false" else "true"}; then
               echo "Some Linux-only dependencies were omitted from this shell."
               echo "They are: [cloud-init, disko, waypipe]"
               echo
