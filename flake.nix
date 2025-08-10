@@ -120,22 +120,23 @@
         with pkgs;
         mkShell {
           packages = [
-            terraform
             awscli2
-            nix-update
-            jq
-            niv
+            bind.dnsutils
+            expect
             git
             git-crypt
-            openssl
             gomod2nix
-            expect
+            jq
+            niv
+            nix-update
             nixos-generate
+            openssl
+            terraform
 
             # editor tools.
-            yamllint
-            shellcheck
             nodePackages.bash-language-server
+            shellcheck
+            yamllint
             # rnix-lsp
           ]
           ++ (lib.optional stdenv.isLinux cloud-init)

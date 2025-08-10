@@ -30,7 +30,7 @@ ip::find() {
 		return 1
 	fi
 
-	if getent hosts "$name.$TAILNET_NAME.ts.net" > /dev/null; then
+	if nslookup "$name.$TAILNET_NAME.ts.net" > /dev/null; then
 		echo "$name.$TAILNET_NAME.ts.net"
 		return
 	fi
