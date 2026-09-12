@@ -5,7 +5,7 @@ go 1.23.6
 toolchain go1.24.1
 
 require (
-	github.com/caddy-dns/cloudflare v0.2.4
+	github.com/caddy-dns/cloudflare v0.1.0
 	github.com/caddy-dns/namecheap v0.0.0-20250228023406-ef9fadb67785
 	github.com/caddyserver/caddy/v2 v2.9.1
 	github.com/mholt/caddy-dynamicdns v0.0.0-20241025234131-7c818ab3fc34
@@ -25,7 +25,7 @@ require (
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/aryann/difflib v0.0.0-20210328193216-ff5ff6dc229b // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
-	github.com/caddyserver/certmagic v0.23.0 // indirect
+	github.com/caddyserver/certmagic v0.22.2 // indirect
 	github.com/caddyserver/zerossl v0.1.3 // indirect
 	github.com/ccoveille/go-safecast v1.6.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
@@ -67,8 +67,8 @@ require (
 	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.10 // indirect
-	github.com/libdns/cloudflare v0.2.2 // indirect
-	github.com/libdns/libdns v1.1.0 // indirect
+	github.com/libdns/cloudflare v0.1.3 // indirect
+	github.com/libdns/libdns v0.2.3 // indirect
 	github.com/libdns/namecheap v0.0.0-20250228022813-d8b4b66c5072 // indirect
 	github.com/manifoldco/promptui v0.9.0 // indirect
 	github.com/mattn/go-colorable v0.1.14 // indirect
