@@ -1,8 +1,8 @@
 {
 	email acmcsufullerton@gmail.com
-	acme_dns netlify {env.NETLIFY_TOKEN}
+	acme_dns cloudflare {env.CLOUDFLARE_TOKEN}
 	dynamic_dns {
-		provider netlify {env.NETLIFY_TOKEN}
+		provider cloudflare {env.CLOUDFLARE_TOKEN}
 		domains {
 			# No need to add more subdomains here. dynamic_dns is just being
 			# dumb with how dynamic_domains is handled.
